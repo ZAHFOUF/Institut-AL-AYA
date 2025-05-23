@@ -1,0 +1,30 @@
+# routes for the kernel
+kernel:
+  resource: AlAya\Kernel
+  type: attribute
+# Route spéciale pour rediriger '/' vers '/{_locale}'
+
+
+#routes for admin
+alAya_admin:
+  resource: "../../src/Agent/"
+  type: attribute
+  prefix: "/admin/{_locale}"
+  requirements:
+    _locale: fr|ar
+  defaults:
+    _locale: fr
+
+# Redirect /admin to /admin/fr
+alAya_admin_redirect:
+      path: /admin
+      controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::urlRedirectAction
+      defaults:
+        path: /admin/fr
+        permanent: true
+
+#routes for student
+alAya_student:
+  resource: "../../src/Student/"
+  type: attribute
+  prefix: "/"

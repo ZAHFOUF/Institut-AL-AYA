@@ -1,0 +1,118 @@
+{% extends '@AgentReportingBundle/main.twig' %}
+
+
+{% block page_title %}
+    {{ include('@AgentThemeBundle/partials/page-title.html.twig', {pagetitle: 'Programmes'|trans, title: 'Programmes'|trans } ) }}
+{% endblock %}
+
+{% block page_content %}
+    
+
+<div class="card">
+  <div class="card-header d-flex justify-content-between align-items-center" >
+    <h5 class="card-title mb-0">Liste des Programmes</h5>
+    <button style="background-color: #bdab7d;color: #FFF;" class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#addProgrammeModal">
+      <i class="ri-add-line"></i> Ajouter un programme
+    </button>
+  </div>
+  <div class="card-body">
+    <div class="table-responsive">
+      <table class="table table-bordered align-middle table-hover">
+        <thead class="table-light">
+          <tr>
+            <th>Nom</th>
+            <th>Module</th>
+            <th>Heures</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Alphabétisation</td>
+            <td>Arabe</td>
+            <td>20h</td>
+            <td>
+              <button class="btn btn-sm btn-soft-danger">
+                <i class="ri-delete-bin-line"></i> Supprimer
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td>Lurat Al-Qur’ân</td>
+            <td>Coran</td>
+            <td>30h</td>
+            <td>
+              <button class="btn btn-sm btn-soft-danger">
+                <i class="ri-delete-bin-line"></i> Supprimer
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td>Tuhfat Al-Atfâl</td>
+            <td>Coran</td>
+            <td>15h</td>
+            <td>
+              <button class="btn btn-sm btn-soft-danger">
+                <i class="ri-delete-bin-line"></i> Supprimer
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td>Fluidification</td>
+            <td>Arabe</td>
+            <td>10h</td>
+            <td>
+              <button class="btn btn-sm btn-soft-danger">
+                <i class="ri-delete-bin-line"></i> Supprimer
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+
+  <!-- Modal -->
+    <div class="modal fade" id="addProgrammeModal" tabindex="-1" aria-labelledby="addProgrammeModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+      <div class="modal-content">
+        <form>
+        <div class="modal-header">
+          <h5 class="modal-title" id="addProgrammeModalLabel">Ajouter un programme</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+          <label for="programmeNom" class="form-label">Nom</label>
+          <input type="text" class="form-control" id="programmeNom" required>
+          </div>
+          <div class="mb-3">
+          <label for="programmeModule" class="form-label">Module</label>
+          <input type="text" class="form-control" id="programmeModule" required>
+          </div>
+          <div class="mb-3">
+          <label for="programmeHeures" class="form-label">Heures</label>
+          <input type="number" class="form-control" id="programmeHeures" required>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary btn-alayah">Enregistrer</button>
+        </div>
+        </form>
+      </div>
+      </div>
+    </div>
+   
+{% endblock %}
+
+
+
+{% block pages_scripts %}
+<script type="text/javascript">
+       $("#teacher").select2();
+   
+</script>
+
+{% endblock %}

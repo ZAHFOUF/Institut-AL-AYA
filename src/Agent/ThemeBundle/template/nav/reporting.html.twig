@@ -1,0 +1,10 @@
+<a href="{{path('AgentDashboardBundle_MonPlaning')}}" class="nav-link menu-link"  aria-expanded="false" aria-controls="sidebarAuth4" >
+    <i class="bx bxs-dashboard"></i> <span data-key="t-authentication">{{ 'Planning'|trans }}</span>
+</a>
+
+{% if userCan('back_reporting_index',app.user) %}
+<a class="nav-link menu-link"  href="{{path('back_reporting_index')}}" aria-expanded="false" aria-controls="sidebarAuth3" >
+    <i class="ri-pie-chart-fill"></i> <span data-key="t-authentication">{{ 'Reporting Professeurs'|trans }}</span>
+</a>
+{% endif %}
+

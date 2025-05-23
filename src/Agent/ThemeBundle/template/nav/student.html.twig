@@ -1,0 +1,22 @@
+{% if userCan("back_student_index",app.user) %} 
+
+<a class="nav-link menu-link" href="{{path('back_student_index')}}"  role="button" aria-expanded="false" aria-controls="sidebarAuth1">
+    <i class=" ri-user-2-fill"></i> <span data-key="t-authentication">{{ 'Étudiants'|trans }}</span>
+</a>
+
+{% endif %}
+
+
+{% if userCan("back_group_index",app.user) %} 
+
+<a class="nav-link menu-link" href="{{path('back_group_index')}}"  role="button" aria-expanded="false" aria-controls="sidebarAuth1">
+    <i class=" ri-team-fill"></i> <span data-key="t-authentication">{{ 'Classes'|trans }}</span>
+</a>
+
+{% endif %}
+
+
+
+
+
+

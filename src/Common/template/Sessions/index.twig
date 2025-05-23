@@ -1,0 +1,49 @@
+<!-- Jours de disponibilités -->
+   <div class="form-group mb-3 ">
+    <label id="t3" for="days" class="form-label">{{ 'Jours de disponibilités'|trans }}</label>
+    <select multiple data-choices data-choices-sorting-false  class="form-select" id="days" name="session[days][]">
+        <option value="All">{{ 'Tous les jours'|trans }}</option>
+        <option value="Lundi">{{ 'Lundi'|trans }}</option>
+        <option value="Mardi">{{ 'Mardi'|trans }}</option>
+        <option value="Mercredi">{{ 'Mercredi'|trans }}</option>
+        <option value="Jeudi">{{ 'Jeudi'|trans }}</option>
+        <option value="Vendredi">{{ 'Vendredi'|trans }}</option>
+        <option value="Samedi">{{ 'Samedi'|trans }}</option>
+        <option value="Dimanche">{{ 'Dimanche'|trans }}</option>
+    </select>
+</div>
+
+<!-- Plages horaires disponibles -->
+<div class="form-group mb-3">
+    <label id="t4" class="form-label">{{ 'Plages horaires disponibles'|trans }} </label>
+    <div class="row">
+        <div class="col-sm-3 col-6">
+            <input class="form-check-input" type="checkbox" id="Matin" name="session[availability][]" value="Matin" style="cursor: pointer;" >
+            <label class="form-check-label" for="morning">{{ 'Matin'|trans }}</label>
+        </div>
+        <div class="col-sm-3 col-6">
+            <input class="form-check-input" type="checkbox" id="Après-midi" name="session[availability][]" value="Après-midi" style="cursor: pointer;" >
+            <label class="form-check-label" for="afternoon">{{ 'Après-midi'|trans }}</label>
+        </div>
+        <div class="col-sm-3 col-6 mt-2">
+            <input class="form-check-input" type="checkbox" id="Soir" name="session[availability][]" value="Soir" style="cursor: pointer;" >
+            <label class="form-check-label" for="evening">{{ 'Soir'|trans }}</label>
+        </div>
+        <div class="col-sm-3 col-6  mt-2">
+            <input class="form-check-input" type="checkbox" id="Nuit" name="session[availability][]" value="Nuit" style="cursor: pointer;" >
+            <label class="form-check-label" for="night">{{ 'Nuit'|trans }}</label>
+        </div>
+
+    </div>
+    
+</div>
+
+
+
+<div class="form-group mb-3">
+    <label id="t5" for="timezone" >{{ 'Fuseau horaire'|trans }}</label>
+    <select class="form-control" name="session[timezone]" id="session[timezone]">
+        
+    </select>
+    
+</div>

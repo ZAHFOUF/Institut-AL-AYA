@@ -1,0 +1,565 @@
+{% extends '@AgentAgentBundle/main.twig' %}
+
+
+{% block page_title %}
+    {{ include('@AgentThemeBundle/partials/page-title.html.twig', {pagetitle: ' Administration ', title: 'Effectifs'} ) }}
+{% endblock %}
+
+{% block page_content %}
+
+
+<div class="row">
+    <h3 style="color:#1c1b1b;margin-bottom: 25px;">{{ 'As salam aleykoum'|trans }} {{app.user.lastName}} {{app.user.firstName}}</h3>
+    <div class="col-md-6">
+        <div class="card card-animate">
+            <div class="card-body">
+
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <p class="fw-medium text-muted mb-0 ">{{ 'Étudiants'|trans }}</p>
+                        <h2 class="mt-4 ff-secondary fw-semibold"><span class="counter-value" data-target="{{nbStudents}}"></span></h2>
+                      
+                    </div>
+                    <div>
+                        <div class="avatar-sm flex-shrink-0">
+                            <span class="avatar-title bg-soft-info rounded-circle fs-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-users text-info"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- end card body -->
+        </div> <!-- end card-->
+    </div>
+
+    <div class="col-md-6">
+        <div class="card card-animate">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <p class="fw-medium text-muted mb-0">{{ 'Cours prévus'|trans }}</p>
+                        <h2 class="mt-4 ff-secondary fw-semibold"><span class="counter-value" data-target="{{nbSession}}"></span></h2>
+                      
+                    </div>
+                    <div>
+                        <div class="avatar-sm flex-shrink-0">
+                            <span class="avatar-title bg-soft-info rounded-circle fs-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock text-info"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- end card body -->
+        </div> <!-- end card-->
+    </div>
+
+  {#}  <div class="col-md-6">
+        <div class="card card-animate">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <p class="fw-medium text-muted mb-0">Étudiants en liste d’attente</p>
+                        <h2 class="mt-4 ff-secondary fw-semibold"><span class="counter-value" data-target="{{nbRequest}}"></span></h2>
+                      
+                    </div>
+                    <div>
+                        <div class="avatar-sm flex-shrink-0">
+                            <span class="avatar-title bg-soft-info rounded-circle fs-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock text-info"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- end card body -->
+        </div> <!-- end card-->
+    </div> {#}
+
+    
+</div>
+
+<div class="card">
+    <div class="card-header align-items-center d-flex">
+        <h4 class="card-title mb-0 flex-grow-1">{{ 'Personnel'|trans }}</h4>
+        <div class="d-flex gap-1 flex-wrap">
+            <button class="btn btn-secondary " type="button" class="btn btn-secondary" data-bs-toggle="offcanvas" href="#offcanvasExample"><i class="ri-filter-2-line me-1 align-bottom"></i> {{ 'Filtrer'|trans }}</button>
+            <button class="btn btn-info add-btn  " data-bs-toggle="modal" data-bs-target="#showModal"><i class="ri-add-fill me-1 align-bottom"></i> {{ 'Ajouter'|trans }}</button>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive table-card">
+
+            <ul class="nav nav-tabs nav-tabs-custom nav-success mb-3" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <a id="linkAll" class="nav-link All py-3"  href="{{path('back_agent_index')}}"  aria-selected="true">
+                        {{ 'Tout'|trans }}
+                    </a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link py-3 Delivered" id="link2" href="{{path('back_agent_index',{type:2})}}"  aria-selected="false" tabindex="-1" aria-labelledby="#Delivered">
+                      {{ 'Professeurs'|trans }}
+                    </a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link py-3 Pickups" id="link1" href="{{path('back_agent_index',{type:1})}}"  aria-selected="false" tabindex="-1" aria-labelledby="#Pickups">
+                        {{ 'Administrateurs'|trans }}
+                    </a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link py-3 Returns" id="link3" href="{{path('back_agent_index',{type:3})}}"  aria-selected="false" tabindex="-1" aria-labelledby="#Returns">
+                      {{ 'Utilisateurs'|trans }}
+                    </a>
+                </li>
+            </ul>
+
+
+            <table class="table table-borderless table-centered align-middle table-nowrap mb-0" id="customersTable">
+                <thead class="table-light">
+                    <tr>
+                        <th  scope="col">{{ 'Identifiant'|trans }}</th>
+                        <th scope="col">{{ 'Nom'|trans }}</th>
+                        <th  scope="col">{{ 'Prénom'|trans }}</th>
+                        <th scope="col">{{ 'Email'|trans }}</th>
+                        <th scope="col">{{ 'Profile'|trans }}</th>
+                        <th>{{ 'Prix par heure'|trans }}</th>
+                        <th  scope="col">{{ 'Statut'|trans }}</th>
+                        <th scope="col">{{ 'Action'|trans }}</th>
+                    </tr>
+                </thead>
+                <tbody class="list form-check-all">
+                    
+
+                        {% for agent in agents %}
+                    <tr>
+
+
+                        <td class="name"><div class="d-flex align-items-center">            <div class="flex-grow-1 ms-2 name">{{agent.username}}</div>            </div></td>
+                        <td class="company_name">{{agent.lastname}}</td>
+                        <td class="email_id">{{agent.firstname}}</td>
+                        <td class="phone">{{agent.email}}</td>
+                        <td>{{agent.type.name}}</td>
+                        <td>{{agent.price}}</td>
+                        <td class="tags">
+
+                            {% if agent.enabled %}
+
+                            <span class="badge text-bg-success">{{ 'Activé'|trans }}</span>
+                            
+                            {% else %}
+
+                            <span class="badge text-bg-danger">{{ 'Désactivé'|trans }}</span>
+
+                            {% endif %}
+                            
+
+
+                        </td>
+                        <td>
+                            <ul class="list-inline hstack gap-2 mb-0">
+                                <li class="list-inline-item edit" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Call">
+                                    <a href="{{path('back_agent_edit',{'id':agent.id})}}" class="text-muted d-inline-block">
+                                        <i class="ri-pencil-fill fs-16"></i>
+                                    </a>
+                                </li>
+                       
+                            </ul>
+                        </td>
+
+                    </tr>
+
+                            
+                        {% endfor %}
+
+                    
+                    
+            </tbody>
+            </table>
+        
+            <div class="card-footer">
+
+                <div class="d-flex justify-content-end ">
+                    <div class="pagination-wrap hstack " style="display: flex;margin-bottom: -14px;">
+                          {{knp_pagination_render(agents)}}
+                    </div>
+                </div>
+
+            </div>
+
+          
+        </div>
+    </div>
+</div> <!-- .card-->
+
+
+<div class="card">
+    <div class="card-header align-items-center d-flex">
+        <h4 class="card-title mb-0 flex-grow-1">{{ 'Paramètres'|trans }}</h4>
+        <div class="d-flex gap-1 flex-wrap">
+           
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-3">
+                <div style="padding-right: -2rem;" class="form-check form-switch form-switch-lg" dir="ltr">
+                    <input {{method_paypal ? 'checked' : ''}} type="checkbox" class="form-check-input setting" id="method_paypal" >
+                    <label class="form-check-label" for="customSwitchsizelg">{{ 'PAIEMENT AVEC PAYPAL'|trans }}</label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="showModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content border-0">
+            <div class="modal-header bg-soft-info p-3">
+                <h5 class="modal-title" id="exampleModalLabel">{{ 'Ajouter un agent'|trans }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"></button>
+            </div>
+                <div class="modal-body"> 
+                   {{form_start(form , {'attr' : {'id' : 'add' , 'enctype' :"multipart/form-data"  }})}}
+
+                   <div class="row">
+
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                          <label class="form-label">{{ 'Identifiant'|trans }} <span class="text-danger">*</span></label>
+                          {{ form_row(form.username) }}
+                          <div class="invalid-feedback text-danger">
+                            {{ form_errors(form.username) }}
+                        </div>
+                        </div>                    
+                      </div>
+    
+
+                      <div class="col-md-6">
+                        <div class="mb-3">
+                          <label class="form-label">{{ 'Email'|trans }} <span class="text-danger">*</span></label>
+                          {{ form_row(form.email) }}
+                          <div class="invalid-feedback text-danger">
+                            {{ form_errors(form.email) }}
+                        </div>
+                        </div>                    
+                      </div>
+    
+
+                    
+
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                          <label class="form-label">{{ 'Nom'|trans }} <span class="text-danger">*</span></label>
+                          {{ form_row(form.lastname) }}
+                          <div class="invalid-feedback text-danger">
+                            {{ form_errors(form.lastname) }}
+                        </div>
+                        </div>                    
+                      </div>
+    
+                      <div class="col-md-6">
+                        <div class="mb-3">
+                          <label class="form-label">{{ 'Prénom'|trans }} <span class="text-danger">*</span></label>
+                          {{ form_row(form.firstname) }}
+                          <div class="invalid-feedback text-danger">
+                            {{ form_errors(form.firstname) }}
+                        </div>
+                        </div>                    
+                      </div>
+
+                      <div class="col-md-6">
+                        <div class="mb-3">
+                          <label class="form-label">{{ 'Sexe'|trans }} <span class="text-danger">*</span></label>
+                          {{ form_row(form.gender) }}
+                          <div class="invalid-feedback text-danger">
+                            {{ form_errors(form.gender) }}
+                        </div>
+                        </div>                    
+                      </div>
+
+
+                      <div class="col-md-6">
+                        <div class="mb-3">
+                          <label class="form-label">{{ 'Modules'|trans }} <span class="text-danger">*</span></label>
+                          {{ form_row(form.module) }}
+                          <div class="invalid-feedback text-danger">
+                            {{ form_errors(form.module) }}
+                        </div>
+                        </div>                    
+                      </div>
+
+                      
+
+                      <div class="col-md-6">
+                        <div class="mb-3">
+                      {{ form_row(form.maxHours) }}
+                    </div>                    
+                </div>
+
+                      <div class="col-md-6">
+                        <div class="mb-3">
+                          <label class="form-label">{{ 'Prix par heure'|trans }}  <span class="text-danger">*</span></label>
+                          {{ form_row(form.price) }}
+                          <div class="invalid-feedback text-danger">
+                            {{ form_errors(form.price) }}
+                        </div>
+                        </div>                    
+                      </div>
+
+                   </div>
+
+
+                   <div class="col-md-12">
+                    <div class="mb-3">
+                      <label class="form-label">{{ 'Type utilisateur'|trans }} <span class="text-danger">*</span></label>
+                      {{ form_row(form.type) }}
+                      <div class="invalid-feedback text-danger">
+                        {{ form_errors(form.type) }}
+                    </div>
+                    </div>                    
+                  </div>
+
+
+                  {% include "@CommonTemplate/Sessions/index.twig" %}
+
+
+                   <div class="col-md-12">
+                    <div class="mb-3">
+                      {{ form_row(form.password.first , {'attr': {'class': 'form-control mb-3 ' }}) }}
+                      <div class="invalid-feedback text-danger">
+                        {{ form_errors(form.password.first) }}
+                    </div>
+                    </div>                    
+                  </div>
+
+                 
+
+                  <div class="col-md-12">
+                    <div class="mb-3">
+                      {{ form_row(form.password.second , {'attr': {'class': 'form-control mb-3 ' }}) }}
+                      <div class="invalid-feedback text-danger">
+                        {{ form_errors(form.password.second) }}
+                    </div>
+                    </div>    
+
+
+
+
+                
+                    
+                    <div class="col-md-12">
+                        <div class="mb-3 d-flex">
+  
+                          {{ form_row(form.enabled , { 'attr' : { 'style' : 'cursor:pointer;'} }) }}
+  
+                          <span style="margin-left: 10px;">{{ 'Utilisateur Activé'|trans }}</span>
+                          
+                         
+                        </div>                    
+                      </div>
+
+                      <div class="col-md-12 mt-2">
+                        <div class="mb-3 d-flex">
+            
+                          {{ form_row(form.dispo , { 'attr' : { 'style' : 'cursor:pointer;'} }) }}
+            
+                          <span style="margin-left: 10px;">{{ 'Disponible'|trans }}</span>
+                          
+                         
+                        </div>                    
+                      </div>
+
+                      
+                  </div>
+
+
+
+                   
+
+
+                   
+                </div>
+                <div class="modal-footer">
+                    <div class="hstack gap-2 justify-content-end">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">{{ 'Annuler'|trans }}</button>
+                        <button type="submit" class="btn btn-success" id="add-btn">{{ 'Ajouter'|trans }}</button>
+                        <!-- <button type="button" class="btn btn-success" id="edit-btn">Update</button> -->
+                    </div>
+                </div>
+                {{form_end(form)}}
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+    <div class="offcanvas-header bg-light">
+        <h5 class="offcanvas-title" id="offcanvasExampleLabel">Filtrer les utilisateurs</h5>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <!--end offcanvas-header-->
+    <form action="" class="d-flex flex-column justify-content-end " style="height: 90%;">
+        <div class="offcanvas-body">
+            <div class="mb-4">
+                <label class="form-label">Identifiant</label>
+                <input  value="{{ app.request.get('username')}}"  type="text" name="username" class="form-control">
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label">Nom</label>
+                <input value="{{ app.request.get('lastName')}}"  type="text" name="lastName" class="form-control">
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label">Prénom</label>
+                <input value="{{ app.request.get('firstName')}}" type="text" name="firstName" class="form-control">
+            </div>
+
+            
+            <div class="mb-4">
+                <label class="form-label">Email</label>
+                <input value="{{ app.request.get('email')}}" type="text" name="email" class="form-control">
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label">Statut</label>
+                <select name="enabled" aria-label="" class="form-select">
+                    <option selected  value="">Tout</option>
+                     <option {{ app.request.get('enabled') == '1' ? 'selected' : "" }} value="1"> Activé </option>
+                     <option {{ app.request.get('enabled') == '0' ? 'selected' : "" }} value="0"> Désactivé </option>
+                </select>
+            </div>
+
+
+        </div>
+        <!--end offcanvas-body-->
+        <div class="offcanvas-footer border-top p-3 text-center hstack gap-2">
+            <a href="{{path('back_agent_index')}}" class="btn btn-light w-100">Réinitialiser</a>
+            <button type="submit" name="action" value="filter" class="btn btn-success w-100">Rechercher</button>
+        </div>
+        <!--end offcanvas-footer-->
+    </form>
+</div>
+
+    
+{% endblock %}
+
+{% block pages_scripts %}
+
+<script>
+      // password addon
+Array.from(document.querySelectorAll(".modal-body form")).forEach(function (item) {
+    Array.from(item.querySelectorAll(".password-addon")).forEach(function (subitem) {
+        
+            subitem.addEventListener("click", function (event) {
+                var passwordInput = subitem.parentElement.parentElement.querySelector("input")
+               
+                if (passwordInput.type === "password") {
+                    passwordInput.type = "text";
+                } else {
+                    passwordInput.type = "password";
+                }
+            });
+        });
+    });
+
+</script>
+
+{% if app.request.query.has("type") %}
+       <script>
+             document.querySelector("a#link{{app.request.get('type')}}").classList.add("active");
+       </script>
+{% else %}
+
+<script>
+    document.querySelector("a#linkAll").classList.add("active");
+</script>
+
+<script>
+    async function getTimeZones() {
+
+        try {
+    
+            const response = await fetch("https://api.timezonedb.com/v2.1/list-time-zone?key=JH7ZZEK2X9RJ&format=json&");
+    
+            const data = await response.json();
+    
+            if (data.status === 'OK') {
+    
+                data.zones.forEach(zone => {
+    
+                    const countryName = zone.countryName;
+    
+                    const gmtOffset = zone.gmtOffset / 3600; // Convert seconds to hours
+    
+                    $("#session\\[timezone\\]").append(`<option ${zone.countryName == "France" ? "selected" : ""} value='${countryName} GMT + ${gmtOffset}' > ${countryName} GMT + ${gmtOffset} </option>`)
+    
+                });
+    
+                $("#session\\[timezone\\]").select2({dropdownParent: $('#showModal') });
+                {% if session is defined and session.timezone %}
+                    $("#session\\[timezone\\]").val('{{session.timezone}}').trigger('change');
+                {% endif %}
+    
+            } else {
+    
+                console.error('Error fetching data:', data.message);
+    
+            }
+    
+        } catch (error) {
+    
+            console.error('Error fetching timezones:', error);
+    
+        }
+    
+    }
+    
+    
+    
+    // Call getTimeZones when document is ready
+    
+    $(document).ready(function() {
+    
+        getTimeZones();
+    
+    });
+</script>
+
+<script>
+document.querySelectorAll('.setting').forEach(function (element) {
+    element.addEventListener('change', function () {
+        const key = this.id;
+        const value = this.checked ? 1 : 0;
+        console.log(key)
+
+        fetch('{{ path("back_agent_set_params") }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest',
+            },
+            body: JSON.stringify({ key: key, value: value }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status) {
+                Swal.fire({
+                    title: "Paramètre mis à jour",
+                    text: "Le paramètre a été mis à jour avec succès.",
+                    icon: "success",
+                });
+            } else {
+                console.error('Error updating parameter');
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    });
+});
+</script>
+
+{% endif %}
+
+{% endblock %}
+

@@ -1,0 +1,119 @@
+{{ include('@StudentThemeBundle/partials/main.html.twig') }}
+<head>
+    {{ include('@StudentThemeBundle/partials/title-meta.html.twig') }}
+    {{ include('@StudentThemeBundle/partials/head-css.html.twig') }}
+    {% block stylesheets %}
+    {% endblock %}
+
+   
+</head>
+
+{% if app.request.get('_route') not in ['AgentSecurityBundle_Login','tech_student_login'] %}
+<body>
+
+<div id="layout-wrapper">
+    {{ include('@StudentThemeBundle/partials/menu.html.twig') }}
+    <div class="main-content">
+        <div class="page-content">
+                {% block page_title %}
+
+                {% endblock %}
+
+                {% block page_content %}
+
+                {% endblock %}
+        </div>
+        {{ include('@StudentThemeBundle/partials/footer.html.twig') }}
+    </div>
+
+</div>
+
+
+
+
+
+
+{{ include('@StudentThemeBundle/partials/vendor-scripts.html.twig') }}
+
+<script src="{{asset("bundles/commontheme/libs/sweetalert2/sweetalert2.min.js")}}"></script>
+
+<script >
+
+
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 4000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener('mouseenter', Swal.stopTimer)
+          toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+      })
+    </script>
+
+    {% if app.session.flashBag.has('success') %}
+
+    {% for msg in app.flashes('success') %}
+
+    
+<script>
+Toast.fire({
+    icon: 'success',
+    title: '{{ msg }}'
+  })
+</script>
+         {% endfor %}
+
+</script>
+{% endif %}
+
+
+
+{% if app.session.flashBag.has('error') %}
+
+{% for msg in app.flashes('error') %}
+
+
+<script>
+Toast.fire({
+icon: 'error',
+title: '{{ msg }}'
+})
+</script>
+   {% endfor %}
+
+</script>
+{% endif %} 
+
+<script>
+    {% include "@CommonTemplate/Formules/common.js" %}
+    {% include "@CommonTemplate/Formules/formules.js" with {
+        "sessionModule" : "inputSessionModule" , 
+        "formulaId" : "input[name='session[formula]']" , 
+        "sessionTypeId" : "inputSessionType" ,
+        "addtionnalHoursId" : "#additionalHours",
+        "first" : false
+} %}
+
+document.getElementById('save3').addEventListener('click', function() {
+    const form = document.getElementById('mainForm'); // Assuming the form has an ID of 'formationForm'
+    form.submit();
+});
+</script>
+
+{% block main_scripts %}
+{% endblock %}
+
+{% block pages_scripts %}
+{% endblock %}
+</body>
+{% else %}
+<body class=" border-top-wide border-primary d-flex flex-column">
+    <div class="page page-center">
+        {% block login %}{% endblock %}
+    </div>
+</body>
+{% endif %}
+</html>

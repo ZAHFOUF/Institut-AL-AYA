@@ -1,0 +1,33 @@
+{
+    "Doctrine Repository Access": {
+        "prefix": "repo",
+        "body": [
+            "\\$this->doctrine->getRepository(${1:Entity}::class)->find(${2:\\$id});"
+        ],
+        "description": "Shortcut for accessing Doctrine repositories in Symfony"
+    },
+    "Doctrine FindOneBy": {
+        "prefix": "repoFind",
+        "body": [
+            "$this->doctrine->getRepository(${1:Entity}::class)->findOneBy(['${2:field}' => ${3:\\$value}]);"
+        ],
+        "description": "Shortcut for Doctrine findOneBy"
+    },
+    "Doctrine Save": {
+        "prefix": "save",
+        "body": [
+            "\\$this->doctrine->persist(${1:Entity}::class);" ,
+            "\\$this->doctrine->flush();"
+        ],
+        "description": "Shortcut for accessing Doctrine repositories in Symfony"
+    },
+    "Session Time Query" : {
+        "prefix": "sessionTime",
+        "body": [
+            "FROM   session s" ,
+            "INNER JOIN session_lines sl ON sl.session_id = s.id",
+            "INNER JOIN session_time st ON st.session_line_id = sl.id",
+            "INNER join session_time_lines stl ON stl.session_time_id = st.id",
+        ]
+    }
+}

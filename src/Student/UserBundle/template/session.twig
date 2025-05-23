@@ -1,0 +1,116 @@
+
+{% extends '@StudentThemeBundle/base.html.twig' %}
+
+{% block page_title %}
+    {{ include('@StudentThemeBundle/partials/page-title.html.twig', {pagetitle: 'Sessions', title: 'Sessions'} ) }}
+{% endblock %}
+
+{% block page_content %}
+<link href="{{asset("bundles/commontheme/libs/fullcalendar/main.min.css")}}" rel="stylesheet" type="text/css" />
+<div class="row">
+    <div class="col-6">
+     
+      {% include "@CommonTemplate/Calendar/html.twig" %}
+
+    </div>
+
+    <div class="col-6">
+
+        <div class="card">
+            <div class="card-header align-items-center d-flex">
+                <h4 class="card-title mb-0 flex-grow-1">Sessions</h4>
+                <div class="d-flex gap-1 flex-wrap">
+                 
+                </div>
+            </div>
+            <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-borderless align-middle table-nowrap mb-0">
+                <thead>
+                    <tr>
+                        <th>Session</th>
+                        <th>Mois</th>
+                        <th scope="col">Classe</th>
+                        <th>Type</th>
+                        <th scope="col">Montant à payer</th>
+                        <th scope="col">Situation de paiement</th>
+                        <th>Date rejoindre</th>
+                    </tr>
+                </thead>
+                <tbody>
+        
+                        {% for session in sessions %}
+                            <tr>
+                                <td>{{ session.session.session.designation }}</td>
+                                <td>{{ session.session.session.dateStart|date('F') }}</td>
+                                <td>{{ session.session.group.name }}</td>
+                                <td>{{ session.session.session.type.name }}</td>
+                                <td>{{ session.amount }}€</td>
+                                <td><twig:Status :status="session.payed ? 'Payé' : 'Non payé'"/></td>
+                                <td class="fw-medium">{{session.createdAt|date("d-m-Y")}}</td>
+                            </tr>
+                        {% endfor %}
+                  
+                </tbody>
+            </table>
+        </div>
+        </div>
+
+
+    </div>
+</div>
+
+
+<div class="col-6">
+
+    <div class="card">
+        <div class="card-header align-items-center d-flex">
+            <h4 class="card-title mb-0 flex-grow-1">Classes</h4>
+            <div class="d-flex gap-1 flex-wrap">
+             
+            </div>
+        </div>
+        <div class="card-body">
+    <div class="table-responsive">
+        <table class="table table-borderless align-middle table-nowrap mb-0">
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Capacité</th>
+                    <th scope="col">Type</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+    
+             
+                {% for g in groups %}
+
+                <tr>
+                    <td>{{g.name}}</td>
+                    <td>{{g.max}}</td>
+                    <td>{{g.g}}</td>
+                    <td>
+                        <button class="btn btn-sm btn-primary">Partager</button>
+                    </td>
+           </tr>
+                    
+                {% endfor %}
+             
+              
+            </tbody>
+        </table>
+    </div>
+    </div>
+
+
+</div>
+</div>
+
+
+
+{% endblock %}
+
+{% block pages_scripts %}
+    {% include "@CommonTemplate/Calendar/js.twig" with {link:'student_planing'} %}
+{% endblock %}

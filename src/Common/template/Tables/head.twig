@@ -1,0 +1,10 @@
+<thead class="table-light">
+    {% for key in keys %}
+    <th>{{key}}</th>
+    {#{% if loop.last and additions is defined and addition|length > 0 %}
+    {% for addtionalKey in additions %}
+               <th>{{addtionalKey}}</th>
+    {% endfor %}
+       {% endif %} {#}
+{% endfor %}
+</thead>

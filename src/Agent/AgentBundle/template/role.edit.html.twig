@@ -1,0 +1,205 @@
+{% extends '@AgentAgentBundle/main.twig' %}
+
+
+{% block page_title %}
+    {{ include('@AgentThemeBundle/partials/page-title.html.twig', {pagetitle: ' Administration ', title: 'Modifier un Role'} ) }}
+{% endblock %}
+
+{% block page_content %}
+
+
+<!-- multi.js css -->
+<link rel="stylesheet" type="text/css" href="{{asset('bundles/commontheme/libs/multi.js/multi.min.css')}}" />
+<!-- autocomplete css -->
+<link rel="stylesheet" href="{{asset('bundles/commontheme/libs/@tarekraafat/autocomplete.js/css/autoComplete.css')}}">
+
+
+<style>
+    span.group-label{
+        color: #009a00 !important;
+        font-weight: 600 !important;
+    }
+</style>
+
+<div class="row">
+    <div class="col-md-12">
+
+        <div class="card">
+            <div class="card-body">
+
+                {{form_start(form)}}
+
+                <div class="row">
+
+
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                          <label class="form-label">{{ 'Nom'|trans }} <span class="text-danger">*</span></label>
+                          {{ form_row(form.name) }}
+                          <div class="invalid-feedback text-danger">
+                            {{ form_errors(form.name) }}
+                        </div>
+                        </div>                    
+                      </div>
+                
+                
+                      <div class="col-md-6">
+                        <div class="mb-3">
+                          <label class="form-label">{{ 'Libellé'|trans }}<span class="text-danger">*</span></label>
+                          {{ form_row(form.label) }}
+                          <div class="invalid-feedback text-danger">
+                            {{ form_errors(form.label) }}
+                        </div>
+                        </div>                    
+                      </div>
+                
+                
+                    
+                
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                          <label class="form-label">{{ 'Description'|trans }} <span class="text-danger">*</span></label>
+                          {{ form_row(form.description) }}
+                          <div class="invalid-feedback text-danger">
+                            {{ form_errors(form.description) }}
+                        </div>
+                        </div>                    
+                      </div>
+                
+
+                      <div class="col-lg-6 col-md-6">
+
+                     
+
+                    </div>
+
+
+
+                    <div class="col-lg-8 ">
+                        <div class="mt-4 mb-3">
+                            <h5 class="fs-13 mb-1">{{ 'Autorisations'|trans }}</h5>
+                            <p class="text-muted">{{ 'Sélectionner les permissions de ce rôle :'|trans }}</p>
+                          
+                                <select name="permissions[]" multiple="multiple"  id="multiselect-optiongroup">
+
+                                    {% for m in repo.findModules() %}
+                                    <optgroup label=" - {{ m["module"]|trans }}">
+
+                                        {% for p in repo.findByModule(m["module"]) %}
+
+
+                                        <option {% if p.id in [...usp] %} selected {% endif %}  value="{{p.id}}">{{p.label}}</option>
+                                            
+                                        {% endfor %}
+
+                                    </optgroup>
+                                    {% endfor %}
+                                  
+                                </select>
+                        </div>
+                    </div>
+                 
+
+
+
+                </div>
+
+         
+             
+            
+                      <button type="submit" class="btn btn-success" id="add-btn">{{ 'Modifier'|trans }}</button>
+        
+                      {{form_end(form)}}
+
+            </div>
+        </div>
+
+    
+
+        
+    </div>
+
+
+   
+   
+
+
+
+   </div>
+
+
+
+{% endblock %}
+
+{% block pages_scripts %}
+
+
+<script type="text/javascript" src="{{asset('bundles/commontheme/libs/prismjs/prism.js')}}"></script>
+<script type="text/javascript">
+
+    var choicesExamples = document.querySelectorAll("[data-choices]");
+    console.log(choicesExamples)
+    Array.from(choicesExamples).forEach(function (item) {
+        var choiceData = {};
+        var isChoicesVal = item.attributes;
+        if (isChoicesVal["data-choices-groups"]) {
+            choiceData.placeholderValue = "This is a placeholder set in the config";
+        }
+        if (isChoicesVal["data-choices-search-false"]) {
+            choiceData.searchEnabled = false;
+        }
+        if (isChoicesVal["data-choices-search-true"]) {
+            choiceData.searchEnabled = true;
+        }
+        if (isChoicesVal["data-choices-removeItem"]) {
+            choiceData.removeItemButton = true;
+        }
+        if (isChoicesVal["data-choices-sorting-false"]) {
+            choiceData.shouldSort = false;
+        }
+        if (isChoicesVal["data-choices-sorting-true"]) {
+            choiceData.shouldSort = true;
+        }
+        if (isChoicesVal["data-choices-multiple-remove"]) {
+            choiceData.removeItemButton = true;
+        }
+        if (isChoicesVal["data-choices-limit"]) {
+            choiceData.maxItemCount = isChoicesVal["data-choices-limit"].value.toString();
+        }
+        if (isChoicesVal["data-choices-limit"]) {
+            choiceData.maxItemCount = isChoicesVal["data-choices-limit"].value.toString();
+        }
+        if (isChoicesVal["data-choices-editItem-true"]) {
+            choiceData.maxItemCount = true;
+        }
+        if (isChoicesVal["data-choices-editItem-false"]) {
+            choiceData.maxItemCount = false;
+        }
+        if (isChoicesVal["data-choices-text-unique-true"]) {
+            choiceData.duplicateItemsAllowed = false;
+        }
+        if (isChoicesVal["data-choices-text-disabled-true"]) {
+            choiceData.addItems = false;
+        }
+        isChoicesVal["data-choices-text-disabled-true"] ? new Choices(item, choiceData).disable() : new Choices(item, choiceData);
+    }); 
+</script>
+
+
+  <!-- multi.js -->
+  <script src="{{asset('bundles/commontheme/libs/multi.js/multi.min.js')}}"></script>
+  <!-- autocomplete js -->
+  <script src="{{asset('bundles/commontheme/libs/@tarekraafat/autocomplete.js/autoComplete.min.js')}}"></script>
+
+  <!-- init js -->
+  <script src="{{asset('bundles/commontheme/js/pages/form-advanced.init.js')}}"></script>
+  <!-- input spin init -->
+  <script src="{{asset('bundles/commontheme/js/pages/form-input-spin.init.js')}}"></script>
+  <!-- input flag init -->
+  <script src="{{asset('bundles/commontheme/js/pages/flag-input.init.js')}}"></script>
+
+  <script>
+    document.querySelector(".search-input").placeholder = "{{ 'Rechercher ...'|trans }}"
+  </script>
+
+{% endblock %}

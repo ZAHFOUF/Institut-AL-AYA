@@ -1,0 +1,18 @@
+{% if userCan("back_session_index",app.user) %} 
+
+
+
+<a class="nav-link menu-link" href="{{path('back_programme_index')}}" role="button" aria-expanded="false" aria-controls="sidebarDashboards">
+    <i class="ri-book-mark-fill"></i> {{ 'Programmes'|trans }} <span data-key="t-dashboards"></span>
+</a>
+
+<a class="nav-link menu-link" href="{{path('back_session_index')}}" role="button" aria-expanded="false" aria-controls="sidebarDashboards">
+    <i class="ri-quill-pen-fill"></i> {{ 'Prestations'|trans }} <span data-key="t-dashboards"></span>
+</a>
+
+
+{% endif %}
+
+
+
+

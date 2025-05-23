@@ -1,0 +1,37 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Deploy production",
+            "type": "shell",
+            "command": "php bin/console auto:deploy --env=dev",
+            "icon": {
+                "color": "terminal.ansiGreen",
+                "id": "plug"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Make bundle",
+            "type": "shell",
+            "command": "php bin/console make:bundle",
+            "icon": {
+                "color": "terminal.ansiGreen",
+                "id": "plus"
+            },
+            "problemMatcher": []
+        },
+        {
+            "type": "shell",
+            "label": "Excecute remote sql",
+            "command": "php bin/console auto:remoteSql",
+            "icon": {
+                "color": "terminal.ansiMagenta",
+                "id": "remote"
+            },
+            "problemMatcher": []
+        }
+    ]
+}

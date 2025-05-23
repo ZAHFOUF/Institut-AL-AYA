@@ -1,0 +1,11 @@
+twig:
+    file_name_pattern: '*.twig'
+    paths:
+        '%kernel.project_dir%/src/Student/SecurityBundle/template': StudentSecurityBundle
+        '%kernel.project_dir%/src/Student/ThemeBundle/': StudentThemeBundle
+        '%kernel.project_dir%/src/Student/UserBundle/template': StudentUserBundle
+
+                
+when@test:
+    twig:
+        strict_variables: true

@@ -1,0 +1,25 @@
+{% extends '@AgentStudentBundle/main.twig' %}
+
+{% block page_title %}
+    {{ include('@AgentThemeBundle/partials/page-title.html.twig', {pagetitle: 'Administration'|trans, title: 'Ajouter étudiant'|trans } ) }}
+{% endblock %}
+
+{% block page_content %}
+
+<form action="" method="post">
+    {% include "@MERKEZStudentSecurityBundle/steps/step4.twig" %}
+    <h4 class="card-title mb-0 flex-grow-1">{{ 'Ajouter un étudiant'|trans }}</h4>
+    <label class="form-label">{{ 'Nom'|trans }} <span class="text-danger">*</span></label>
+    <label class="form-label">{{ 'Prénom'|trans }} <span class="text-danger">*</span></label>
+    <label class="form-label">{{ 'Email'|trans }} <span class="text-danger">*</span></label>
+    <label class="form-label">{{ 'Pays'|trans }} <span class="text-danger">*</span></label>
+    <button type="submit" class="btn btn-success" id="add-btn">{{ 'Ajouter'|trans }}</button>
+</form>
+
+{% endblock %}
+
+{% block pages_scripts %}
+  <script>
+     $("#step4").removeClass("fade")
+  </script>
+{% endblock %}

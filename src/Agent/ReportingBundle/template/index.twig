@@ -1,0 +1,91 @@
+{% extends '@AgentReportingBundle/main.twig' %}
+
+
+{% block page_title %}
+    {{ include('@AgentThemeBundle/partials/page-title.html.twig', {pagetitle: 'Reporting'|trans, title: 'Rémunérations des professeurs'|trans } ) }}
+{% endblock %}
+
+{% block page_content %}
+    
+
+    <form  method="get">
+
+        <div class="row">
+            <div class="col-xl-10 col-lg-10">
+                <div class="card">  
+                    <div class="card-header align-items-center d-flex">
+                        <h4 class="card-title mb-0 flex-grow-1">{{ 'Reporting rémunérations des professeurs'|trans }}</h4>
+                        <div class="card-header align-items-center d-flex">
+                            {# Vous avez {{ catalogs.getTotalItemCount }} catalogue(s) #}
+                        </div>
+                    </div>
+                    <div class="card-body">
+                           {% include "@CommonTemplate/Tables/index.twig" with {data:results} %}
+                    </div>
+                </div>
+            </div>
+    
+            <div class="col-xl-2 col-lg-2">
+                <button style="width: 100%; font-size: 15px;" type="submit" name="export" value="1" class="text-white btn btn-success d-inline-block edit-item-bt">
+                    {{ 'Exporter'|trans }} <i style="font-size: 15px;" class="mdi mdi-download"></i>
+                </button>
+                <div class="card mt-4">
+                    <div class="card-header">
+                        <div class="d-flex">
+                            <div class="flex-grow-1">
+                                <h5 class="fs-16">{{ 'Filtrer'|trans }}</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+
+                    <div class="mb-2">
+                        <label class="form-label">{{ 'Année'|trans }}</label>
+                        <input value="{{ app.request.get('year')}}" type="text" name="year" class="form-control" >
+                    </div>
+
+                    <div class="mb-2">
+                        <label class="form-label">{{ 'Mois'|trans }}</label>
+                        {{ include('@CommonTemplate/Filters/month.twig') }}
+                    </div>
+
+                    <div class="mb-2">
+                        <label class="form-label">{{ 'Professeur'|trans }}</label>
+                        <select id="teacher" name="teacher" class="form-control">
+                            <option value="">{{ 'Tous'|trans }}</option>
+                            {% for teacher in teachers %}
+                                <option value="{{ teacher.id }}">{{ teacher.firstName }} {{ teacher.lastName }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                   
+
+                        
+                        <button type="submit" class="btn btn-primary w-100 mt-2">
+                            <i class="ri-filter-2-line me-1 align-bottom"></i>
+                            {{ 'Rechercher'|trans }}
+                        </button>
+                        <a href="{{ path('back_reporting_index') }}" class="btn btn-secondary w-100 mt-3">
+                            <i class="ri-restart-fill label-icon align-middle"></i>                   
+                            {{ 'Réinitialiser'|trans }}
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </form>
+
+   
+{% endblock %}
+
+
+
+{% block pages_scripts %}
+<script type="text/javascript">
+       $("#teacher").select2();
+   
+</script>
+
+{% endblock %}

@@ -1,0 +1,14 @@
+twig:
+    file_name_pattern: '*.twig'
+    paths:
+        '%kernel.project_dir%/src/Agent/DashboardBundle/template': AgentDashboardBundle
+        '%kernel.project_dir%/src/Agent/ThemeBundle/template': AgentThemeBundle
+        '%kernel.project_dir%/src/Agent/SecurityBundle/template': AgentSecurityBundle
+        '%kernel.project_dir%/src/Agent/AgentBundle/template': AgentAgentBundle
+        '%kernel.project_dir%/src/Agent/SessionBundle/template': AgentSessionBundle
+        '%kernel.project_dir%/src/Agent/StudentBundle/template': AgentStudentBundle
+        '%kernel.project_dir%/src/Agent/ReportingBundle/template': AgentReportingBundle
+                
+when@test:
+    twig:
+        strict_variables: true

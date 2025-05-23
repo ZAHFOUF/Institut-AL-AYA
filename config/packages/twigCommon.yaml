@@ -1,0 +1,9 @@
+twig:
+    file_name_pattern: '*.twig'
+    paths:
+        '%kernel.project_dir%/src/Common/template': CommonTemplate
+        '%kernel.project_dir%/src/Common/Twig/Components/templates' : componentsTemplates
+                
+when@test:
+    twig:
+        strict_variables: true

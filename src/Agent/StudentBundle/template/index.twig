@@ -1,0 +1,109 @@
+{% extends '@AgentStudentBundle/main.twig' %}
+
+{% block page_title %}
+    {{ include('@AgentThemeBundle/partials/page-title.html.twig', {pagetitle: ' Administration ', title: 'Étudiants'} ) }}
+{% endblock %}
+
+{% block page_content %}
+
+<div class="card">
+    <div class="card-header align-items-center d-flex">
+        <h4 class="card-title mb-0 flex-grow-1">{{ 'Liste des étudiants'|trans }}</h4>
+        <div class="d-flex gap-1 flex-wrap">
+            <button class="btn btn-secondary" type="button" data-bs-toggle="offcanvas" href="#offcanvasExample">
+                <i class="ri-filter-2-line me-1 align-bottom"></i> {{ 'Filtrer'|trans }}
+            </button>
+            <a href="{{path('back_student_new')}}" class="btn add-btn" style="background-color: #bdab7d;color: #FFF;" >
+                <i class="ri-add-fill me-1 align-bottom"></i> {{ 'Ajouter'|trans }}
+            </a>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive table-card">
+            <table class="table table-borderless table-centered align-middle table-nowrap mb-0" id="studentsTable">
+                <thead class="table-light">
+                    <tr>
+                        <th scope="col">{{ 'Numéro'|trans }}</th>
+                        <th scope="col">{{ 'Nom'|trans }}</th>
+                        <th scope="col">{{ 'Prénom'|trans }}</th>
+                        <th scope="col">{{ 'Email'|trans }}</th>
+                        <th scope="col">{{ 'Pays'|trans }}</th>
+                        <th scope="col">{{ 'Action'|trans }}</th>
+                    </tr>
+                </thead>
+                <tbody class="list form-check-all">
+                    {% for student in students %}
+                        <tr>
+                            <td>{{ student.id }}</td>
+                            <td>{{ student.lastname }}</td>
+                            <td>{{ student.firstname }}</td>
+                            <td>{{ student.email }}</td>
+                            <td>{{ student.country ? student.country.name : "" }}</td>
+                            <td>
+                                <ul class="list-inline hstack gap-2 mb-0">
+                                    <li class="list-inline-item edit" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="{{ 'Modifier'|trans }}">
+                                        <a href="{{path('back_student_edit',{id:student.id})}}" class="text-muted d-inline-block">
+                                            <i class="ri-pencil-fill fs-16"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <div class="card-footer">
+                <div class="d-flex justify-content-end">
+                    <div class="pagination-wrap hstack" style="display: flex; margin-bottom: -14px;">
+                        {{ knp_pagination_render(students) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+    <div class="offcanvas-header bg-light">
+        <h5 class="offcanvas-title" id="offcanvasExampleLabel">{{ 'Filtrer les étudiants'|trans }}</h5>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <!--end offcanvas-header-->
+    <form action="" class="d-flex flex-column justify-content-end " style="height: 90%;">
+        <div class="offcanvas-body">
+            <div class="mb-4">
+                <label class="form-label">{{ 'Numéro'|trans }}</label>
+                <input  value="{{ app.request.get('id')}}"  type="text" name="id" class="form-control">
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label">{{ 'Nom'|trans }}</label>
+               <input name="lastName" value="{{ app.request.get('lastName') }}" class="form-control" type="text" name="" id="">
+            </div>
+
+
+            <div class="mb-4">
+                <label class="form-label">{{ 'Prénom'|trans }}</label>
+               <input name="firstName" value="{{ app.request.get('firstName') }}" class="form-control" type="text" name="" id="">
+            </div>
+
+
+            <div class="mb-4">
+                <label class="form-label">{{ 'Email'|trans }}</label>
+               <input name="email" value="{{ app.request.get('email') }}" class="form-control" type="text" name="" id="">
+            </div>
+
+
+        </div>
+        <!--end offcanvas-body-->
+        <div class="offcanvas-footer border-top p-3 text-center hstack gap-2">
+            <a href="{{path('back_session_index')}}" class="btn btn-light w-100">{{ 'Réinitialiser'|trans }}</a>
+            <button type="submit" name="action" value="filter" class="btn btn-success w-100">{{ 'Rechercher'|trans }}</button>
+        </div>
+        <!--end offcanvas-footer-->
+    </form>
+</div>
+
+{% endblock %}

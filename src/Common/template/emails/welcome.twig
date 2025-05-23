@@ -1,0 +1,7 @@
+<h3>Bienvenue sur Merkezalfahm</h3>
+<p> Connectez-vous maintenant sur la  <a href="app.merkezalfahm.fr">plateforme</a> </p>
+<p> Mot de passe : <b>{{password}}</b> </p>
+{% if link is not null %}
+<p> Vous pouvez également inviter vos collégues via : {{host}}{{path('tech_student_invitation',{inv:link})}} </p>
+{% else %}
+{% endif %}

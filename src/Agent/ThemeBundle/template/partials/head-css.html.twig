@@ -1,0 +1,87 @@
+<!-- Layout config Js -->
+<script src="{{ asset('bundles/commontheme/js/layout.js') }}"></script>
+<!-- Bootstrap Css -->
+<link href="{{ asset('bundles/commontheme/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
+
+<link href="{{ asset('bundles/commontheme/libs/sweetalert2/sweetalert2.min.css') }}" rel="stylesheet" />
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<link href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
+<!-- Icons Css -->
+<link href="{{ asset('bundles/commontheme/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
+<!-- App Css-->
+<link href="{{ asset('bundles/commontheme/css/app.css') }}" rel="stylesheet" type="text/css" />
+<!-- custom Css-->
+<link href="{{ asset('bundles/commontheme/css/custom.css') }}" rel="stylesheet" type="text/css" />
+
+<style>
+    :root{
+        --colors--black: black;
+        --colors--white: white;
+        --colors--gold3: #fcd557;
+        --colors--gold1: #bb8d2d;
+        --colors--gold2: #f7e2a0;
+        --black : #1c1b1b ;
+    }
+    .gold-element{
+    background-color: #46413E;}
+
+    #navbar-nav * {
+        color: #000 !important;
+    }
+
+    {% if app.request.locale != 'ar' %}
+
+    @media (min-width: 768px) {
+      .main-content {
+        margin-left: 265px;
+        margin-right: 0px !important;
+      }
+    }
+
+    .footer { right: 0px; }
+
+    @media (min-width: 768px) {
+      #page-topbar {
+          right: 0px;
+      }
+  } 
+    
+    {% endif %}
+    
+    
+
+    .navbar-menu .navbar-nav .nav-link[data-bs-toggle=collapse]:after { left: 214px !important; }
+   .menu-dropdown .navbar-menu .navbar-nav .nav-link{    margin-left: -10px !important;}
+   .navbar-menu .navbar-nav .nav-link[data-bs-toggle=collapse]{    margin-left: -21px !important;}
+
+
+   .navbar-menu .navbar-nav .nav-sm .nav-link:before {
+    content: "";
+    width: 6px;
+    height: 1.5px;
+    background-color: #FFF !important;
+    position: absolute;
+    right: 0 !important;
+    left: 3px !important;
+    top: 16.5px;
+    transition: all .4s ease-in-out;
+    opacity: .5;
+  }
+
+  .page-title-box {
+    padding: 10px 2.5rem;
+    background-color: #BDAB7D;
+    -webkit-box-shadow: 0 1px 2px rgba(56, 65, 74, 0.15);
+    box-shadow: 0 1px 2px rgba(56, 65, 74, 0.15);
+    border-bottom: 1px solid none;
+    /* color: #FFF; */
+    margin: -24px -1.5rem 1.5rem -2.5rem;
+}
+
+.page-title-box *{
+color: #FFF !important;}
+.btn-alayah{
+    background-color: #bdab7d;color: #FFF;
+    border: none;
+}
+</style>

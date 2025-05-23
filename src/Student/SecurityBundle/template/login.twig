@@ -1,0 +1,172 @@
+{% extends '@AgentThemeBundle/base.html.twig' %}
+
+{% block login %}
+<style>
+    .auth-one-bg_custom{
+        background: url("https://www.merkezalfahm.fr/wp-content/uploads/2024/12/WhatsApp-Image-2024-12-03-a-22.20.00_f2199d8a1.jpg")  no-repeat;
+        background-position: center;
+        background-size: cover;
+    }
+
+    .bg-overlay {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        top: 0;
+        opacity: 0.2 !important;
+        background-color: #000;
+    }
+
+    #mainSection{
+        background-color: #000;
+    }
+
+    #mainSection *:not(input){
+        color: #fff !important;
+    }
+    
+    </style>
+<div class="auth-page-content overflow-hidden pt-lg-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card overflow-hidden">
+                    <div class="row g-0">
+                        <div class="col-lg-6" >
+                            <div class="p-lg-5 p-4 auth-one-bg_custom h-100">
+                                <div class="bg-overlay "></div>
+                                <div class="position-relative h-100 d-flex flex-column">
+                                   
+                                    <div class="mt-auto">
+                                        {# <div class="mb-3">
+                                            <i class="ri-double-quotes-l display-4 text-success"></i>
+                                        </div>
+
+                                        <div id="qoutescarouselIndicators" class="carousel slide" data-bs-ride="carousel">
+                                            <div class="carousel-indicators">
+                                                <button type="button" data-bs-target="#qoutescarouselIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                                                <button type="button" data-bs-target="#qoutescarouselIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                                                <button type="button" data-bs-target="#qoutescarouselIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                                            </div>
+                                            <div class="carousel-inner text-center text-white pb-5">
+                                                <div class="carousel-item active">
+                                                    <p class="fs-15 fst-italic">" Great! Clean code, clean design, easy for customization. Thanks very much! "</p>
+                                                </div>
+                                                <div class="carousel-item">
+                                                    <p class="fs-15 fst-italic">" The theme is really great with an amazing customer support."</p>
+                                                </div>
+                                                <div class="carousel-item">
+                                                    <p class="fs-15 fst-italic">" Great! Clean code, clean design, easy for customization. Thanks very much! "</p>
+                                                </div>
+                                            </div>
+                                        </div> #}
+                                        <!-- end carousel -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end col -->
+
+                        <div class="col-lg-6" id="mainSection" style="background-color: #000;">
+                            <div class="p-lg-5 p-4">
+                            
+<div>
+    <div class="mb-4">
+        <a href="/" class="d-block">
+            <img style="width: 122px;
+    margin-bottom: 11px;
+    margin-top: -14px;;" src="{{asset('bundles/commontheme/images/logo/logo.png')}}" alt="">
+        </a>
+    </div>
+    <h5 class="text-dark">Assalamou ‘alaykoum  </h5>
+    <p class="text-muted">Identifie-toi pour continuer vers MERKEZ ALFAHM.</p>
+</div>
+{% if error %}
+<div class="alert alert-danger alert-top-border alert-dismissible fade show mb-xl-0" role="alert">
+    <i class="ri-error-warning-line me-3 align-middle fs-16 text-danger "></i>
+    {{ error.messageKey  }}
+</div>
+{% endif %}
+
+{% if app.session.flashBag.has('success') %}
+    <div class="alert alert-success alert-dismissible alert-solid alert-label-icon fade show" role="alert">
+        <i class="ri-notification-off-line label-icon"></i>
+        {% for msg in app.flashes('success') %}
+            {{ msg }}
+        {% endfor %}
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+{% endif %}
+
+
+                   {% if app.session.flashBag.has('error') %}
+     <div class="alert alert-danger alert-dismissible alert-solid alert-label-icon fade show mt-3" role="alert">
+        <i class="ri-error-warning-line label-icon"></i>
+        {% for msg in app.flashes('error') %}
+            {{ msg }}
+        {% endfor %}
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+           {% endif %}
+
+<div class="mt-4">
+    <form method="post">
+
+        <div class="mb-3">
+            <label for="username" class="form-label">E-mail</label>
+            <input type="text" class="form-control" id="email" name="email" placeholder="Votre E-Mail" autocomplete="off" value="{{ lastUsername }}">
+        </div>
+
+        <div class="mb-3">
+            <div class="float-end">
+                <a href="" class="text-muted">Mot de passe oublie ?</a>
+            </div>
+            <label class="form-label" for="password-input">Mot de passe</label>
+            <div class="position-relative auth-pass-inputgroup mb-3">
+                <input type="password" class="form-control pe-5 password-input" id="inputPassword" name="password" placeholder="Mot de Passe" autocomplete="off">
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}" >
+                <button class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted password-addon" type="button" id="password-addon"><i class="ri-eye-fill align-middle"></i></button>
+            </div>
+        </div>
+
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="auth-remember-check">
+            <label class="form-check-label" for="auth-remember-check">Se rappeler de moi</label>
+        </div>
+
+        <div class="mt-4">
+            <button class="btn btn-success w-100" type="submit">S'identifier</button>
+        </div>
+
+        {# <div class="mt-4 text-center">
+            <div class="signin-other-title">
+                <h5 class="fs-13 mb-4 title">Sign In with</h5>
+            </div>
+
+            <div>
+                <button type="button" class="btn btn-primary btn-icon waves-effect waves-light"><i class="ri-facebook-fill fs-16"></i></button>
+                <button type="button" class="btn btn-danger btn-icon waves-effect waves-light"><i class="ri-google-fill fs-16"></i></button>
+                <button type="button" class="btn btn-dark btn-icon waves-effect waves-light"><i class="ri-github-fill fs-16"></i></button>
+                <button type="button" class="btn btn-info btn-icon waves-effect waves-light"><i class="ri-twitter-fill fs-16"></i></button>
+            </div>
+        </div> #}
+
+    </form>
+</div>
+
+<div class="mt-5 text-center">
+    <p class="mb-0">Vous n'avez de compte ? <a href="{{ path('tech_student_register') }}" class="fw-semibold text-primary text-decoration-underline"> S'inscrire</a> </p>
+</div>
+</div>
+</div>
+<!-- end col -->
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+{% endblock %}

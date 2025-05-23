@@ -1,0 +1,15 @@
+<select name="month" aria-label="" class="form-select">
+    <option selected  value="">Tout</option>
+    <option {{ app.request.get('month') == '1' ? 'selected' : "" }} value="1">Janvier</option>
+    <option {{ app.request.get('month') == '2' ? 'selected' : "" }} value="2">Février</option>
+    <option {{ app.request.get('month') == '3' ? 'selected' : "" }} value="3">Mars</option>
+    <option {{ app.request.get('month') == '4' ? 'selected' : "" }} value="4">Avril</option>
+    <option {{ app.request.get('month') == '5' ? 'selected' : "" }} value="5">Mai</option>
+    <option {{ app.request.get('month') == '6' ? 'selected' : "" }} value="6">Juin</option>
+    <option {{ app.request.get('month') == '7' ? 'selected' : "" }} value="7">Juillet</option>
+    <option {{ app.request.get('month') == '8' ? 'selected' : "" }} value="8">Août</option>
+    <option {{ app.request.get('month') == '9' ? 'selected' : "" }} value="9">Septembre</option>
+    <option {{ app.request.get('month') == '10' ? 'selected' : "" }} value="10">Octobre</option>
+    <option {{ app.request.get('month') == '11' ? 'selected' : "" }} value="11">Novembre</option>
+    <option {{ app.request.get('month') == '12' ? 'selected' : "" }} value="12">Décembre</option>
+</select>

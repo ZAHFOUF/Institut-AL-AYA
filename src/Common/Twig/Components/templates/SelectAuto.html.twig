@@ -1,0 +1,61 @@
+
+{# {% set id = "search" ~ title %} #}
+<label for="search{{name}}">{{title}}</label>
+<select class="form-select" name="{{name}}" id="{{id}}" >
+    
+ 
+
+
+</select>
+
+<script>
+    $("#{{id}}").select2({
+        placeholder: '{{placeholder}}',
+
+        {% if modal != null %}
+        
+        dropdownParent: $('{{modal}}') ,
+
+        {% endif %}
+        
+        
+        language: {
+            searching: function () {
+                return 'Recherche en cours...';
+            },
+            loadingMore: function () {
+                return 'Charger plus de résultat...';
+            },
+            noResults: function () {
+                return 'Aucun résultat trouvé';
+            }
+        },
+        ajax: {
+            url: '{{api}}',
+            dataType: 'json',
+            delay: 250,
+            data: function (params) {
+                return {
+                    {{term}}: params.term ,
+                    page: params.page || 1 // Include the current page number
+                };
+            },
+            processResults: function (data, params) {
+                params.page = params.page || 1; // Increment the page number for the next request
+    
+                return {
+                    results: $.map(data.results, function (item) {
+                        return {
+                            id: item.id,
+                            text: item.{{term}}
+                        };
+                    }),
+                    pagination: {
+                        more: (params.page * 10) < data.total_count // Adjust based on your API response
+                    }
+                };
+            },
+            cache: true
+        }
+    });
+</script>

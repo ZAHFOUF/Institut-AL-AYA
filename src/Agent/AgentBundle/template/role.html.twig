@@ -1,0 +1,274 @@
+{% extends '@AgentAgentBundle/main.twig' %}
+
+
+{% block page_title %}
+    {{ include('@AgentThemeBundle/partials/page-title.html.twig',  {pagetitle: 'Administration'|trans, title: 'Rôles'|trans} ) }}
+{% endblock %}
+
+{% block page_content %}
+
+<!-- multi.js css -->
+<link rel="stylesheet" type="text/css" href="{{asset('bundles/commontheme/libs/multi.js/multi.min.css')}}" />
+<!-- autocomplete css -->
+<link rel="stylesheet" href="{{asset('bundles/commontheme/libs/@tarekraafat/autocomplete.js/css/autoComplete.css')}}">
+
+<style>
+    span.group-label{
+        color: #009a00 !important;
+        font-weight: 600 !important;
+    }
+</style>
+<div class="row">
+
+    <div class="col-lg-5">
+
+        <div class="card" id="tasksList">
+            <div class="card-header border-0">
+                <div class="d-flex align-items-center">
+                    <h5 class="card-title mb-0 flex-grow-1">{{ 'Liste roles'|trans }}</h5>
+                    <div class="flex-shrink-0">
+                       <div class="d-flex flex-wrap gap-2">
+                           
+                       </div>
+                    </div>
+                </div>
+            </div>
+     
+            <!--end card-body-->
+            <div class="card-body">
+                <div class="table-responsive table-card mb-4">
+                    <table class="table align-middle table-nowrap mb-0" id="tasksTable">
+                        <thead class="table-light text-muted">
+                            <tr>
+                                <th>{{ 'Nom'|trans }}</th>
+                                <th>{{ 'Libellé'|trans }}</th>
+                                <th>{{ 'Description'|trans }}</th>
+                                <th>{{ 'Actions'|trans }}</th>
+                            </tr>
+                        </thead>
+                        <tbody class="list form-check-all"><tr>
+                               
+                                    {% for role in roles %}
+                                    <tr>
+
+                                    <td >{{ role.name }}</td>
+                                    <td >{{ role.label }}</td>
+                                    <td >{{ role.description ? role.description : 'Non renseigné'|trans }}</td>   
+                                    
+                                    <td>
+
+                                        <ul class="list-inline hstack gap-2 mb-0">
+                                            <li class="list-inline-item edit" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Call">
+                                                <a href="{{path('back_role_edit',{'id':role.id})}}" class="text-muted d-inline-block">
+                                                    <i class="ri-pencil-fill fs-16"></i>
+                                                </a>
+                                            </li>
+                                   
+                                        </ul>
+                                        
+                                    </td>
+                                </tr>
+                                        
+                                    {% endfor %}
+                                  
+                                
+                             </tbody>
+                    </table>
+                    <!--end table-->
+                    <div class="noresult" style="display: none">
+                        <div class="text-center">
+                            <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" trigger="loop" colors="primary:#121331,secondary:#08a88a" style="width:75px;height:75px"></lord-icon>
+                            <h5 class="mt-2">{{ 'Sorry! No Result Found'|trans }}</h5>
+                            <p class="text-muted mb-0">{{ "We've searched more than 200k+ tasks We did not find any tasks for you search."|trans }}</p>
+                        </div>
+                    </div>
+                </div>
+               
+            </div>
+            <!--end card-body-->
+        </div>
+
+    </div>
+
+
+    <div class="col-lg-7">
+
+
+        <div class="card">
+            <div class="card-header border-0">
+                <div class="d-flex align-items-center">
+                    <h5 class="card-title mb-0 flex-grow-1">{{ 'Ajouter un role'|trans }}</h5>
+                    <div class="flex-shrink-0">
+                       <div class="d-flex flex-wrap gap-2">
+                           
+                       </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+
+                {{form_start(form)}}
+
+                <div class="row">
+
+
+                    <div class="col-md-12">
+                        <div class="mb-3">
+                          <label class="form-label">{{ 'Nom'|trans }} <span class="text-danger">*</span></label>
+                          {{ form_row(form.name) }}
+                          <div class="invalid-feedback text-danger">
+                            {{ form_errors(form.name) }}
+                        </div>
+                        </div>                    
+                      </div>
+                
+                
+                      <div class="col-md-12">
+                        <div class="mb-3">
+                          <label class="form-label">{{ 'Libellé'|trans }}<span class="text-danger">*</span></label>
+                          {{ form_row(form.label) }}
+                          <div class="invalid-feedback text-danger">
+                            {{ form_errors(form.label) }}
+                        </div>
+                        </div>                    
+                      </div>
+                
+                
+                    
+                
+                    <div class="col-md-12">
+                        <div class="mb-3">
+                          <label class="form-label">{{ 'Description'|trans }} <span class="text-danger">*</span></label>
+                          {{ form_row(form.description) }}
+                          <div class="invalid-feedback text-danger">
+                            {{ form_errors(form.description) }}
+                        </div>
+                        </div>                    
+                      </div>
+            
+
+
+                </div>
+
+
+
+                <div class="col-lg-12 ">
+                    <div class="mt-4 mb-3">
+                        <h5 class="fs-13 mb-1">{{ 'Autorisations'|trans }}</h5>
+                        <p class="text-muted">{{ 'Sélectionner les permissions de ce rôle :'|trans }}</p>
+                      
+                            <select name="permissions[]" multiple="multiple"  id="multiselect-optiongroup">
+
+                                {% for m in repo.findModules() %}
+                                <optgroup label="- {{ m["module"]|trans }}">
+
+                                    {% for p in repo.findByModule(m["module"]) %}
+
+
+                                    <option  value="{{p.id}}">{{ p.label }}</option>
+                                        
+                                    {% endfor %}
+
+                                </optgroup>
+                                {% endfor %}
+                              
+                            </select>
+                    </div>
+                </div>
+             
+
+         
+             
+            
+                      <button type="submit" class="btn btn-success mt-3" id="add-btn">{{ 'Ajouter'|trans }}</button>
+        
+                      {{form_end(form)}}
+
+            </div>
+        </div>
+
+
+    </div>
+
+ 
+</div>
+
+
+
+    
+{% endblock %}
+
+{% block pages_scripts %}
+
+
+<script type="text/javascript" src="{{asset('bundles/commontheme/libs/prismjs/prism.js')}}"></script>
+<script type="text/javascript">
+
+    var choicesExamples = document.querySelectorAll("[data-choices]");
+    console.log(choicesExamples)
+    Array.from(choicesExamples).forEach(function (item) {
+        var choiceData = {};
+        var isChoicesVal = item.attributes;
+        if (isChoicesVal["data-choices-groups"]) {
+            choiceData.placeholderValue = "This is a placeholder set in the config";
+        }
+        if (isChoicesVal["data-choices-search-false"]) {
+            choiceData.searchEnabled = false;
+        }
+        if (isChoicesVal["data-choices-search-true"]) {
+            choiceData.searchEnabled = true;
+        }
+        if (isChoicesVal["data-choices-removeItem"]) {
+            choiceData.removeItemButton = true;
+        }
+        if (isChoicesVal["data-choices-sorting-false"]) {
+            choiceData.shouldSort = false;
+        }
+        if (isChoicesVal["data-choices-sorting-true"]) {
+            choiceData.shouldSort = true;
+        }
+        if (isChoicesVal["data-choices-multiple-remove"]) {
+            choiceData.removeItemButton = true;
+        }
+        if (isChoicesVal["data-choices-limit"]) {
+            choiceData.maxItemCount = isChoicesVal["data-choices-limit"].value.toString();
+        }
+        if (isChoicesVal["data-choices-limit"]) {
+            choiceData.maxItemCount = isChoicesVal["data-choices-limit"].value.toString();
+        }
+        if (isChoicesVal["data-choices-editItem-true"]) {
+            choiceData.maxItemCount = true;
+        }
+        if (isChoicesVal["data-choices-editItem-false"]) {
+            choiceData.maxItemCount = false;
+        }
+        if (isChoicesVal["data-choices-text-unique-true"]) {
+            choiceData.duplicateItemsAllowed = false;
+        }
+        if (isChoicesVal["data-choices-text-disabled-true"]) {
+            choiceData.addItems = false;
+        }
+        isChoicesVal["data-choices-text-disabled-true"] ? new Choices(item, choiceData).disable() : new Choices(item, choiceData);
+    }); 
+</script>
+
+
+<!-- multi.js -->
+<script src="{{asset('bundles/commontheme/libs/multi.js/multi.min.js')}}"></script>
+<!-- autocomplete js -->
+<script src="{{asset('bundles/commontheme/libs/@tarekraafat/autocomplete.js/autoComplete.min.js')}}"></script>
+
+<!-- init js -->
+<script src="{{asset('bundles/commontheme/js/pages/form-advanced.init.js')}}"></script>
+<!-- input spin init -->
+<script src="{{asset('bundles/commontheme/js/pages/form-input-spin.init.js')}}"></script>
+<!-- input flag init -->
+<script src="{{asset('bundles/commontheme/js/pages/flag-input.init.js')}}"></script>
+
+
+<script>
+    document.querySelector(".search-input").placeholder = "{{ 'Rechercher ...'|trans }}"
+</script>
+
+
+{% endblock %}

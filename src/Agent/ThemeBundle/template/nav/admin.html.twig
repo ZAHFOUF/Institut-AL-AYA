@@ -1,0 +1,53 @@
+{% set remove = true %}
+
+
+<li class="nav-item" style="margin-left: 20px;" id="adminNav" >
+
+    <a class="nav-link menu-link" href="#sidebarAuth1" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarAuth1">
+        <i class=" ri-home-2-fill"></i> <span data-key="t-authentication">{{ 'Administration'|trans }}</span>
+    </a>
+    <div class="collapse menu-dropdown" id="sidebarAuth1">
+        <ul class="nav nav-sm flex-column">
+
+            {% if userCan("back_agent_index",app.user) %} 
+
+            {% set remove = false %}
+
+
+            <li class="nav-item">
+                <a class="nav-link menu-link" href="{{path('back_agent_index')}}" role="button" aria-expanded="false" aria-controls="sidebarDashboards">
+                    <i class="bx bx-user-circle"></i>
+                    <span data-key="t-dashboards">{{ 'Effectif'|trans }}</span>
+                </a>
+            </li>
+            {% endif %}
+
+          
+            {% if userCan("back_role_index",app.user) %} 
+
+            {% set remove = false %}
+            
+            
+            <li class="nav-item">
+                <a class="nav-link menu-link" href="{{path('back_role_index')}}" data-key="role">
+                    <i class="bx  ri-shield-keyhole-fill"></i>    {{ 'Role'|trans }}      
+                </a>
+            </li>
+
+            {% endif %}
+           
+        </ul>
+    </div>
+
+
+    
+</li>
+
+{% if remove %}
+
+<script>
+    document.querySelector("#adminNav").remove()
+</script>
+
+{% endif %}
+

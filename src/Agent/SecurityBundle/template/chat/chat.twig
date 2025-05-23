@@ -1,0 +1,20 @@
+{% extends '@gentAgentBundle/main.twig' %}
+
+
+{% block page_title %}
+    {{ include('@AgentThemeBundle/partials/page-title.html.twig', {pagetitle: 'Messageries'|trans, title: 'Messageries'|trans} ) }}
+{% endblock %}
+
+
+{% block page_content %}
+
+          <div class="row">
+             {% include "@CommonTemplate/Chat/html.twig" %}
+          </div>
+     
+
+{% endblock %}
+
+{% block pages_scripts %}
+          {% include "@CommonTemplate/Chat/js.twig" %}
+{% endblock %}

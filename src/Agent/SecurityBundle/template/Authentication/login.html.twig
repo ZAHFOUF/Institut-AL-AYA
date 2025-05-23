@@ -1,0 +1,80 @@
+{% extends '@AgentThemeBundle/base.html.twig' %}
+
+{% block login %}
+<style>
+    .card-body{
+        background-color:#FFF ;
+    }
+    .card-body span,p,label,h5,a {
+        color: #bdab7d !important;
+    }
+</style>
+<div class="auth-page-wrapper pt-5">
+    <div class="auth-one-bg-position auth-one-bg" id="auth-particles" style="background-image: unset">
+        <div class="bg-overlay" style="background: #46413E;"></div>
+        <div class="shape">
+            <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1440 120">
+                <path d="M 0,36 C 144,53.6 432,123.2 720,124 C 1008,124.8 1296,56.8 1440,40L1440 140L0 140z"></path>
+            </svg>
+        </div>
+        <canvas class="particles-js-canvas-el" style="width: 100%; height: 100%;" width="1902" height="421"></canvas>
+    </div>
+
+    <div class="auth-page-content">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-8 col-lg-6 col-xl-5">
+                    <div class="card mt-4">
+                        <div class="card-body p-4">
+                            <div class="text-center intro">
+                                <img style="    width: 75%;" src="{{ asset('bundles/commontheme/images/logo/logo.png') }}" width="160" alt="logo">
+                                <div class="mt-4 text-center">
+                                    <h5 class="fs-13 mb-4 title">{{ 'ESPACE ADMIN'|trans }}</h5>
+                                </div>
+                            </div>
+                            <div class="text-center mt-2">
+                                <h5 >{{ 'Authentification.'|trans }}</h5>
+                                <p style="margin-bottom: -1rem;" >{{ "Connectez-vous avec vos identifiants d'administrateur."|trans }}</p>
+                                {% if error %}
+                                    <div class="alert alert-danger mb-xl-0" role="alert">
+                                        {{ error.messageKey  }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="p-2 mt-4">
+                                <form action="{{ path('AgentSecurityBundle_Login') }}" method="post" autocomplete="off">
+                                    <div class="mb-3">
+                                        <label for="username"  class="form-label">{{ 'Identifiant'|trans }}</label>
+                                        <input type="text" required name="username" class="form-control" id="username" placeholder="{{ 'Entrer identifiant'|trans }}">
+                                    </div>
+                                    <div class="mb-3">
+                                        <div class="float-end">
+                                            <a href="#" >{{ 'Mot de passe oublié?'|trans }}</a>
+                                        </div>
+                                        <label class="form-label" for="password">{{ 'Mot de passe'|trans }}</label>
+                                        <div class="position-relative auth-pass-inputgroup mb-3">
+                                            <input type="password" name="password" required class="form-control pe-5 password" placeholder="{{ 'Entrer mot de passe'|trans }}" id="password" />
+                                            <button class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted password-addon" type="button" id="password-addon">
+                                                <i class="ri-eye-fill align-middle"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div >
+                                        <input class="form-check-input" type="checkbox" name="_remember_me" id="auth-remember-check" />
+                                        <label class="form-check-label" for="auth-remember-check">{{ 'Rester connecté'|trans }}</label>
+                                    </div>
+                                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                                    <div class="mt-4">
+                                        <button style="color: #FFF !important;background-color: #bdab7d;" class="btn gold-element w-100" type="submit">{{ 'Se connecter'|trans }}</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

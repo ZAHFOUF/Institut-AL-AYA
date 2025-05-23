@@ -1,0 +1,20 @@
+parameters:
+    app.env : 
+    app.secret :
+    database.url:
+    project.host: 
+    messenger.transport : 
+    mailer.dsn: 
+    mail.address:
+    from.mail: 
+    MESSENGER_QUEUE: 
+    server.ip:
+    server.user:
+    server.pass:
+    server.path:
+    server.deployCmd:
+    server.composer :
+    paypal.client.id :
+    paypal.secret :
+    paypal.api.url :
+    meet.url :

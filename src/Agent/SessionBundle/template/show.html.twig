@@ -1,0 +1,120 @@
+{% extends '@AgentReportingBundle/main.twig' %}
+
+
+{% block page_content %}
+    
+
+<div class="card">
+  <div class="card-header d-flex justify-content-between align-items-center" style="background-color: #bdab7d;">
+    <h5 class="card-title text-white mb-0">Détail de la prestation</h5>
+    <div>
+      <a href="{{path('facture_pdf',{id:1})}}" class="btn btn-light btn-sm me-2">
+        <i class="ri-download-2-line"></i> Télécharger la facture
+      </a>
+      <a href="{{path('facture_send')}}" class="btn btn-dark btn-sm">
+        <i class="ri-notification-3-line"></i> Notifier le paiement
+      </a>
+    </div>
+  </div>
+  <div class="card-body">
+
+    <!-- Section Élève & Programme -->
+    <div class="mb-4">
+      <h6 class="mb-2">Informations</h6>
+      <p><strong>Élève :</strong> Fatima Zahra</p>
+      <p><strong>Programme :</strong> Tuhfat Al-Atfâl	</p>
+      <p><strong>Type de forfait :</strong> Groupe – 7€/H</p>
+      <p><strong>Professeur(e) référent(e) :</strong> Amina B.</p>
+      <p><strong>Montant total :</strong> 36€</p>
+    </div>
+
+    <!-- Section Cours -->
+    <div class="mb-4">
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <h6 class="mb-0">Cours enregistrés</h6>
+        <button class="btn btn-primary btn-sm">
+          <i class="ri-add-line"></i> Ajouter
+        </button>
+      </div>
+      <table class="table table-sm table-bordered">
+        <thead class="table-light">
+          <tr>
+            <th>Date</th>
+            <th>Durée</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>2025-05-03</td>
+            <td>2H</td>
+          </tr>
+          <tr>
+            <td>2025-05-06</td>
+            <td>2H</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+ 
+
+    <!-- Section Livres achetés -->
+    <div class="mb-2">
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <h6 class="mb-0">Autre prestations supplémentaire</h6>
+        <button class="btn btn-primary btn-sm">
+          <i class="ri-add-line"></i> Ajouter
+        </button>
+      </div>
+      <table class="table table-sm table-bordered">
+        <thead class="table-light">
+          <tr>
+            <th>Nom </th>
+            <th>Montant</th>
+            <th>Date d’achat</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Livre Tuhfat Al-Atfâl (PDF)</td>
+            <td>8 €</td>
+            <td>2025-05-01</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+      <!-- Section Paiements -->
+    <div class="mb-4 mt-2">
+      <h6 class="mb-2">Historique des paiements</h6>
+      <table class="table table-sm table-bordered">
+        <thead class="table-light">
+          <tr>
+            <th>Date</th>
+            <th>Montant</th>
+            <th>Méthode</th>
+            <th>Référence</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>
+
+
+   
+{% endblock %}
+
+
+
+{% block pages_scripts %}
+<script type="text/javascript">
+       $("#teacher").select2();
+   
+</script>
+
+{% endblock %}

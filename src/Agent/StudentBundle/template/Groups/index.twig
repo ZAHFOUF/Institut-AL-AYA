@@ -1,0 +1,118 @@
+{% extends '@AgentStudentBundle/main.twig' %}
+
+{% block page_title %}
+    {{ include('@AgentThemeBundle/partials/page-title.html.twig', {pagetitle: ' Administration ', title: 'Classes'|trans } ) }}
+{% endblock %}
+
+{% block page_content %}
+
+<div class="row">
+    <div class="col-9">
+        <div class="card">
+            <div class="card-header align-items-center d-flex">
+                <h4 class="card-title mb-0 flex-grow-1">{{ 'Liste des classes'|trans }}</h4>
+                <div class="d-flex gap-1 flex-wrap">
+                    <button class="btn btn-secondary" type="button" data-bs-toggle="offcanvas" href="#offcanvasExample">
+                        <i class="ri-filter-2-line me-1 align-bottom"></i> {{ 'Filtrer'|trans }}
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive table-card">
+                    <table class="table table-borderless table-centered align-middle table-nowrap mb-0" id="groupsTable">
+                        <thead class="table-light">
+                            <tr>
+                                <th scope="col">{{ 'Nom'|trans }}</th>
+                                <th scope="col">{{ 'Capacité'|trans }}</th>
+                                <th>{{ 'Formateur référent'|trans }}</th>
+                                <th scope="col">{{ 'Genre'|trans }}</th>
+                                <th>{{ 'Membres actifs'|trans }}</th>
+                                <th>{{ 'Membres abandonnant'|trans }}</th>
+                                <th>{{ 'Total session'|trans }}</th>
+                                <th scope="col">{{ 'Action'|trans }}</th>
+                            </tr>
+                        </thead>
+                        <tbody class="list form-check-all">
+                            {% for group in groups %}
+                                <tr>
+                                    <td>
+                                        {% if group.bySystem %}
+                                             <twig:BySystem :icon="true"/>
+                                        {% endif %}
+                                        
+                                        {{ group.name }}
+                                    </td>
+                                    <td>{{ group.max }}</td>
+                                    <td>{{group.teacher ? (group.teacher.lastName ~ ' ' ~ group.teacher.firstName) : ''}} </td>
+                                    <td>{{ group.gender.name}}</td>
+                                    <td>{{ group.studentsCount()}}</td>
+                                    <td>0</td>
+                                    <td>{{ group.sessionCount() }}</td>
+                                    <td>
+                                        <a href="{{path('back_group_show',{group:group.id})}}" class="btn btn-success"><i class="ri-search-eye-line"></i></a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+        
+                    <div class="card-footer">
+                        <div class="d-flex justify-content-end">
+                            <div class="pagination-wrap hstack" style="display: flex; margin-bottom: -14px;">
+                                {{ knp_pagination_render(groups) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+
+    <div class="col-3">
+        <div class="card">
+            <div class="card-header align-items-center d-flex">
+                <h4 class="card-title mb-0 flex-grow-1">{{ 'Ajouter une classe'|trans }}</h4>
+               
+            </div>
+            <div class="card-body">
+                {{ form_start(form, {'attr': {'id': 'form'}}) }}
+                {{ form_widget(form)}}
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+    <div class="offcanvas-header bg-light">
+        <h5 class="offcanvas-title" id="offcanvasExampleLabel">{{ 'Filtrer les session'|trans }}</h5>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <!--end offcanvas-header-->
+    <form action="" class="d-flex flex-column justify-content-end " style="height: 90%;">
+        <div class="offcanvas-body">
+            <div class="mb-4">
+                <label class="form-label">{{ 'Nom'|trans }}</label>
+                <input  value="{{ app.request.get('name')}}"  type="text" name="name" class="form-control">
+            </div>
+
+      
+
+        </div>
+        <!--end offcanvas-body-->
+        <div class="offcanvas-footer border-top p-3 text-center hstack gap-2">
+            <a href="{{path('back_session_index')}}" class="btn btn-light w-100">{{ 'Réinitialiser'|trans }}</a>
+            <button type="submit" name="action" value="filter" class="btn btn-success w-100">{{ 'Rechercher'|trans }}</button>
+        </div>
+        <!--end offcanvas-footer-->
+    </form>
+</div>
+
+{% endblock %}
+
+
+{% block pages_scripts %}
+   
+{% endblock %}

@@ -1,0 +1,28 @@
+
+	html,.page-center,#main {
+		height: 100%;
+	}
+
+	body {
+		background-color: #FFF !important;
+		overflow-x: hidden;
+		height: 100%;
+	}
+
+	#logo{position: absolute;
+		top: 29px;
+		left: 55px;z-index: 999999;}
+
+	@media(min-width:767.98px) {
+		#d1{height: 100%;display: grid;place-items: center;position: relative;}
+		#d1 div.card {width: 70%;}
+	}
+
+	@media(max-width:767.98px) {
+		#d1{height: 100%;display: grid;place-items: center;}
+		#d2{display: none;}
+		#d1 div.card {width: 100%;}
+		#logo{position: absolute;
+			top: 10%;
+			left: 25%;}
+	}

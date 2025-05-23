@@ -1,0 +1,98 @@
+<!-- JAVASCRIPT -->
+
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+<script src="{{ asset('bundles/commontheme/libs/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+<script src="{{ asset('bundles/commontheme/libs/simplebar/simplebar.min.js') }}"></script>
+<script src="{{ asset('bundles/commontheme/libs/node-waves/waves.min.js') }}"></script>
+<script src="{{ asset('bundles/commontheme/libs/feather-icons/feather.min.js') }}"></script>
+<script src="{{ asset('bundles/commontheme/js/pages/plugins/lord-icon-2.1.0.js') }}"></script>
+
+<script type="text/javascript" src='https://cdn.jsdelivr.net/npm/toastify-js'></script>
+<script type="text/javascript" src="{{ asset('bundles/commontheme/libs/choices.js/public/assets/scripts/choices.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('bundles/commontheme/libs/flatpickr/flatpickr.min.js') }}"></script>
+<script src="{{ asset('bundles/commontheme/js/plugins.js') }}"></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.8/dist/cdn.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+
+<script src="{{ asset('bundles/commontheme/js/app.js') }}"></script>
+
+<script type="text/javascript">
+
+    var choicesExamples = document.querySelectorAll("[data-choices]");
+    var selectChoices = []
+    console.log(choicesExamples)
+    Array.from(choicesExamples).forEach(function (item) {
+        var choiceData = {};
+        var isChoicesVal = item.attributes;
+        if (isChoicesVal["data-choices-groups"]) {
+            choiceData.placeholderValue = "This is a placeholder set in the config";
+        }
+        if (isChoicesVal["data-choices-search-false"]) {
+            choiceData.searchEnabled = false;
+        }
+        if (isChoicesVal["data-choices-search-true"]) {
+            choiceData.searchEnabled = true;
+        }
+        if (isChoicesVal["data-choices-removeItem"]) {
+            choiceData.removeItemButton = true;
+        }
+        if (isChoicesVal["data-choices-sorting-false"]) {
+            choiceData.shouldSort = false;
+        }
+        if (isChoicesVal["data-choices-sorting-true"]) {
+            choiceData.shouldSort = true;
+        }
+        if (isChoicesVal["data-choices-multiple-remove"]) {
+            choiceData.removeItemButton = true;
+        }
+        if (isChoicesVal["data-choices-limit"]) {
+            choiceData.maxItemCount = isChoicesVal["data-choices-limit"].value.toString();
+        }
+        if (isChoicesVal["data-choices-limit"]) {
+            choiceData.maxItemCount = isChoicesVal["data-choices-limit"].value.toString();
+        }
+        if (isChoicesVal["data-choices-editItem-true"]) {
+            choiceData.maxItemCount = true;
+        }
+        if (isChoicesVal["data-choices-editItem-false"]) {
+            choiceData.maxItemCount = false;
+        }
+        if (isChoicesVal["data-choices-text-unique-true"]) {
+            choiceData.duplicateItemsAllowed = false;
+        }
+        if (isChoicesVal["data-choices-text-disabled-true"]) {
+            choiceData.addItems = false;
+        }
+        isChoicesVal["data-choices-text-disabled-true"] ? selectChoices.push(new Choices(item, choiceData).disable()) : selectChoices.push(new Choices(item, choiceData));
+    }); 
+
+
+    
+
+    // password addon
+    var row = 0 ;
+    Array.from(document.querySelectorAll("form")).forEach(function (item) {
+        Array.from(item.querySelectorAll(".password-addon")).forEach(function (subitem) {
+                row++;
+                console.log(row)
+                subitem.addEventListener("click", function (event) {
+                    var passwordInput = subitem.parentElement.querySelector("input")
+                   
+                    if (passwordInput.type === "password") {
+                        passwordInput.type = "text";
+                    } else {
+                        passwordInput.type = "password";
+                    }
+                });
+            });
+        });
+
+        
+
+</script>
+

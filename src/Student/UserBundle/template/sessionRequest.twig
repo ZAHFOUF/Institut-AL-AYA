@@ -1,0 +1,52 @@
+{% extends '@StudentThemeBundle/base.html.twig' %}
+
+{% block page_title %}
+    {{ include('@StudentThemeBundle/partials/page-title.html.twig', {pagetitle: 'Demandes inscriptions', title: 'Demandes inscriptions'} ) }}
+{% endblock %}
+
+{% block page_content %}
+
+<div class="card">
+    <div class="card-header align-items-center d-flex">
+        <h4 class="card-title mb-0 flex-grow-1">Demandes inscriptions</h4>
+        <div class="d-flex gap-1 flex-wrap">
+         
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive table-card">
+            <table class="table table-borderless table-centered align-middle table-nowrap mb-0" id="sessionsTable">
+                <thead class="table-light">
+                    <tr>
+                        <th scope="col">Module</th>
+                        <th scope="col">Type de cours</th>
+                        <th scope="col">Formule souhaitée</th>
+                        <th scope="col">Date d'envoi</th>
+                        <th>Date de disponibilité pour l'intégration</th>
+                        <th scope="col">Heures supplémentaires demandées</th>
+                        <th>Statut</th>
+                    </tr>
+                </thead>
+                <tbody class="list form-check-all">
+                    {% for session in sessions %}
+                        <tr>
+                            <td>{{ session.module.name }}</td>
+                            <td>{{ session.type.name }}</td>
+                            <td> Forfait({{ session.formula.totalHours }}h) {{ session.formula.hoursPerWeek }}h/semaine</td>
+                            <td>{{ session.submittedAt ? session.submittedAt | date('d/m/Y') : '' }}</td>
+                            <td>{{ session.dateStart ? session.dateStart | date('d/m/Y') : '' }}</td>
+                            <td>{{ session.additionalHours }}</td>
+                            <td>
+                                <twig:Status :status="session.status.name" />
+                            </td>
+                           
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,85 @@
+<style>
+    .fc-toolbar-chunk .btn-group .btn {
+        color: #1c1b1b;
+        inset: 0% !important;
+        background-color: #fcd55778;
+        background-image: none !important;
+        border: #000;
+        border: none;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+    }
+    .fc-toolbar-chunk .btn-group .btn:hover {
+        color: #1c1b1b;
+        inset: 0% !important;
+        background-color: #fcd557;
+        background-image: none !important;
+        border: #000;
+        border: none;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+    }
+
+    .fc-toolbar-chunk .fc-today-button {
+        background-color: #fcd557 !important;
+        border: #fcd557;
+        color: #1c1b1b;
+    }
+
+    .fc-toolbar-chunk .btn-group .btn:hover, .fc-toolbar-chunk .btn-group .btn.active {
+        color: #1c1b1b;
+        background-color: #fcd557;
+    }
+
+    .fc-toolbar-title{
+    color: #1c1b1b !important;}
+
+
+
+    .fc-daygrid-day .fc-daygrid-day-frame .fc-daygrid-event-harness .fc-daygrid-event ,table.fc-list-table tbody tr.fc-list-event{
+        background-color: #1c1b1b;
+        color: #fff;
+        padding: 5px !important;
+    }
+
+    
+
+    fc-event.disabled {
+        pointer-events: none; /* Prevent interactions */
+      }   
+      
+
+    .fc-timegrid-col-events div a {
+                width: 150px;
+                overflow: hidden;
+                font-size: 9px;
+                background-color: #1c1b1b;
+                color: #fff;
+                border: none !important;
+    }
+
+    .fc-timegrid-col-events div a div {
+        color: #FFF !important;
+    }
+
+   
+
+</style>
+<div class="card card-h-100">
+    <div class="card-body">
+        <div id="loading2" style="display: grid;place-content: center;">
+           <div style="display: flex;justify-content: space-around;width: 146%;">
+            <div class="spinner-grow text-dark" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+            <div class="spinner-grow text-dark" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+            <div class="spinner-grow text-dark" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+           </div>
+        </div>
+        <div id="calendar"></div>
+    </div>
+</div>

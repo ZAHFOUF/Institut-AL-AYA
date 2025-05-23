@@ -1,0 +1,18 @@
+{% extends '@StudentThemeBundle/base.html.twig' %}
+
+{% block page_title %}
+    {{ include('@StudentThemeBundle/partials/page-title.html.twig', {pagetitle: 'Accueil', title: 'Accueil'} ) }}
+{% endblock %}
+
+{% block page_content %}
+
+          <div class="row">
+             {% include "@CommonTemplate/Chat/html.twig" %}
+          </div>
+     
+
+{% endblock %}
+
+{% block pages_scripts %}
+          {% include "@CommonTemplate/Chat/js.twig" %}
+{% endblock %}

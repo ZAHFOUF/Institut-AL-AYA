@@ -1,0 +1,147 @@
+
+{% extends '@StudentThemeBundle/base.html.twig' %}
+
+{% block page_title %}
+    {{ include('@StudentThemeBundle/partials/page-title.html.twig', {pagetitle: 'Sessions', title: 'Sessions'} ) }}
+{% endblock %}
+
+{% block page_content %}
+<div class="row">
+
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header align-items-center d-flex">
+                <h4 class="card-title mb-0 flex-grow-1">Sessions</h4>
+                <div class="d-flex gap-1 flex-wrap">
+                 
+                </div>
+            </div>
+            <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-borderless align-middle table-nowrap mb-0">
+                <thead>
+                    <tr>
+                        <th>Session</th>
+                        <th>Mois</th>
+                        <th scope="col">Montant à payer</th>
+                        <th scope="col">Situation de paiement</th>
+                        <th>Date paiement</th>
+                        <th>Method paiement</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+        
+                        {% for session in sessions %}
+                            <tr>
+                                <td>{{ session.session.session.designation }}</td>
+                                <td>{{ getMonth(session.session.session.dateStart|date('m')) }}</td>
+                                <td>{{ session.amount }}€</td>
+                                <td><twig:Status :status="session.payed ? 'Payé' : 'Non payé'"/></td>
+                                <td class="fw-medium">{{session.datePay ? session.datePay|date("d-m-Y") : ""}}</td>
+                                <td>
+                                   {% if session.typePay is not null %}
+                                        {{session.typePay.name}}
+                                   {% endif %}
+                                   
+                                </td>
+                                <td>
+                                    {% if session.payed != true %}
+                                        <a href="{{path('student_checkout',{sessionStudent:session.id})}}" type="submit" class="btn btn-success w-sm"> Effectuer le paiement</button>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                  
+                </tbody>
+            </table>
+        </div>
+        </div>
+
+
+    </div>
+    </div>
+
+    {% if method_rib %}
+    
+    <div class="col-6">
+
+        <div class="card">
+            <div class="card-header align-items-center d-flex">
+                <h4 class="card-title mb-0 flex-grow-1">Ajouter un justif de paiement</h4>
+                <div class="d-flex gap-1 flex-wrap">
+                 
+                </div>
+            </div>
+            <div class="card-body">
+                {{form_start(sessionFilesForm, {'attr': {'id': 'sessionFilesForm','enctype':'multipart/form-data'}})}}
+                <div class="mt-3">
+                    <label for="">Justif</label>
+                    <input accept=".pdf,.png,.jpg,.jpge,.webp" class="form-control" type="file" name="justif" >
+                 </div>
+                       {{form_widget(sessionFilesForm)}}
+        </div>
+
+        <div class="card-footer">
+            <button type="submit" class="btn btn-primary btn-label right rounded-pill">
+                <i class=" ri-save-3-fill label-icon align-middle rounded-pill fs-16 ms-2"></i> 
+                Ajouter
+            </button>
+            {{form_end(sessionFilesForm)}}
+        </div>
+                  
+    </div>
+
+    </div>
+
+    <div class="col-6">
+
+        <div class="card">
+            <div class="card-header align-items-center d-flex">
+                <h4 class="card-title mb-0 flex-grow-1">Justificatifs de paiements </h4>
+                <div class="d-flex gap-1 flex-wrap">
+                 
+                </div>
+            </div>
+            <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-borderless align-middle table-nowrap mb-0">
+                <thead >
+                    <tr>
+                        <th scope="col">Date</th>
+                        <th>Session</th>
+                        <th scope="col">Mantant</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+        
+                    {% for sl in files %}
+        
+                    <tr>   
+                        <td class="fw-medium">{{sl.date|date("d-m-Y")}}</td>
+                        <td>{{sl.sessionStudent.session.session.designation}}</td>
+                        <td>{{sl.amount}}</td>
+                        <td>
+                            <a href="{{path('front_session_downloadJustif',{justif:sl.id})}}" class="btn-icon btn btn-primary"  download="" value=""><i class="ri-download-line align-bottom"></i></a>
+                        </td>
+                    </tr>
+                        
+                    {% endfor %}
+                    
+                  
+                </tbody>
+                
+            </table>
+        </div>
+        </div>
+        
+    </div>
+</div>
+
+
+    {% endif %}
+    
+   
+
+{% endblock %}

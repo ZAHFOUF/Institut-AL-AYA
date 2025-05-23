@@ -1,0 +1,32 @@
+{% extends '@AgentThemeBundle/base.html.twig' %}
+
+{% block page_title %}
+    {{ include('@AgentThemeBundle/partials/page-title.html.twig', { title: 'Acceuil'|trans}) }}
+{% endblock %}
+
+{% block page_content %}
+<link href="{{asset("bundles/commontheme/libs/fullcalendar/main.min.css")}}" rel="stylesheet" type="text/css" />
+    <div class="row">
+        <div class="row">
+
+            <h3 style="color:#1c1b1b;margin-bottom: 25px;">{{ 'As salam aleykoum'|trans }} {{app.user.lastName}} {{app.user.firstName}} </h3>
+
+            <div class="col-md-10 col-12">
+                <h5  class=" mb-3 mt-2 pb-3" >{{ 'Votre planning des séances'|trans }}</h5>
+                {% include "@CommonTemplate/Calendar/html.twig" %}
+            </div>
+
+
+        </div>
+     
+
+      
+    </div>
+
+  
+
+{% endblock %}
+
+{% block pages_scripts %}
+{% include "@CommonTemplate/Calendar/js.twig" with {link:'admin_planing'} %}
+{% endblock %}

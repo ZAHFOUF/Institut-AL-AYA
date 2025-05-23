@@ -1,0 +1,5 @@
+twig_component:
+    anonymous_template_directory: '../src/Common/Twig/Components/templates'
+    defaults:
+        # Namespace & directory for components
+        AlAya\Common\Twig\Components\: '/Twig/Components'

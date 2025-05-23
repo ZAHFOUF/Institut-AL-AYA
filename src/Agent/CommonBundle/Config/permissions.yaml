@@ -1,0 +1,106 @@
+#Gestion des Utilisateurs
+back_agent_index : 
+    label : Voir les Utilisateurs
+    module : Gestion des Utilisateurs
+
+back_agent_edit :
+    label : Modifier un Utilisateur
+    module : Gestion des Utilisateurs
+
+back_agent_add :
+    label : Ajouter un Utilisateur
+    module : Gestion des Utilisateurs
+
+#Gestion des roles
+back_role_index :
+    label : Voir les roles
+    module : Gestion des roles
+
+back_role_edit :
+    label : Modifier un role
+    module : Gestion des roles
+
+back_role_add :
+    label :  Ajouter un role
+    module : Gestion des roles
+
+back_session_index:
+  label: Voir les sessions
+  module: Gestion des sessions
+
+back_session_create:
+  label: Créer une session
+  module: Gestion des sessions
+
+back_session_clone:
+  label: Renouveler une session
+  module: Gestion des sessions
+
+back_session_edit:
+  label: Consulter une session
+  module: Gestion des sessions
+
+back_sessionLine_edit:
+  label: Modifier un cours
+  module: Gestion des sessions
+
+back_session_downloadJustif:
+  label: Télécharger un justificatif
+  module: Gestion des sessions
+
+back_session_changeStatus:
+  label: Changer le statut de la session
+  module: Gestion des sessions
+
+back_sessionLine_changeStatus:
+  label: Changer le statut d’un cours
+  module: Gestion des sessions
+
+back_session_pay:
+  label: Paiement de la session
+  module: Gestion des sessions
+
+back_sessionRequest_index:
+  label: Voir les demandes d'inscription
+  module: Gestion des sessions
+
+back_sessionRequest_show:
+  label: Voir une demande d'inscription
+  module: Gestion des sessions
+
+back_sessionRequest_changeStatus:
+  label: Changer le statut d'une demande d'inscription
+  module: Gestion des sessions
+
+back_group_index:
+  label: Voir les groupes
+  module: Gestion des groupes
+
+back_group_show:
+  label: Détails d’un groupe
+  module: Gestion des groupes
+
+back_group_abandon:
+  label: Abandonner un étudiant dans un groupe
+  module: Gestion des groupes
+
+back_student_index:
+  label: Voir les étudiants
+  module: Gestion des étudiants
+
+back_student_new:
+  label: Ajouter un étudiant
+  module: Gestion des étudiants
+
+back_student_edit:
+  label: Modifier un étudiant
+  module: Gestion des étudiants
+
+back_reporting_index:
+  label: Reporting rémunérations
+  module: Reporting
+
+back_agent_set_params :
+    label : Paramétrages
+    module : Gestion des Utilisateurs
+  

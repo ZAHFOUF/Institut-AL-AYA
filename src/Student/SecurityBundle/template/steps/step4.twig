@@ -1,0 +1,188 @@
+  <div class="tab-pane  {% if user is defined %} fade show {% else %} fade {% endif %}  " id="step4" role="tabpanel" aria-labelledby="step4-tab">
+
+    <div id="lastStep">
+
+        <div class="mt-4">
+
+            <input type="hidden" name="student[first]" value="1">
+
+
+            <div class="row mb-3">
+            <div class="col-md-6">
+            <label for="lastname" class="form-label">Nom <span class="text-danger">*</span></label>
+            <input type="text" class="form-control" id="lastname" placeholder="Entrez votre nom" name="student[lastName]" required value="{{ user.lastName is defined ? user.lastName : '' }}">
+            <div class="invalid-feedback">
+            Veuillez entrer votre nom
+            </div>
+            </div>
+            <div class="col-md-6">
+            <label for="firstname" class="form-label">Prénom <span class="text-danger">*</span></label>
+            <input type="text" class="form-control" id="firstname" placeholder="Entrez votre prénom" required name="student[firstName]" value="{{ user.firstName is defined ? user.firstName : '' }}">
+            <div class="invalid-feedback">
+            Veuillez entrer votre prénom
+            </div>
+            </div>
+            </div>
+            
+            <div class="row mb-3">
+            <div class="col-md-6">
+            <label for="age" class="form-label">Âge <span class="text-danger">*</span></label>
+            <input type="number" class="form-control" id="age" placeholder="Entrez votre âge" required name="student[age]" value="{{ user.age is defined ? user.age : '' }}">
+            <div class="invalid-feedback">
+            Veuillez entrer votre âge
+            </div>
+            </div>
+            <div class="col-md-6">
+            <label for="gender" class="form-label">Sexe <span class="text-danger">*</span></label>
+            <select {% if user.gender is defined %} disabled {% endif %} class="form-control" id="gender" required name="student[gender]" >
+            <option value="">Sélectionnez votre sexe</option>
+            {% for g  in genders %}
+                 <option value="{{g.id}}" {% if user.gender is defined and user.gender.id == g.id %}selected{% endif %}>{{g.name}}</option>
+            {% endfor %}
+            </select>
+            <div class="invalid-feedback">
+            Veuillez sélectionner votre sexe
+            </div>
+            </div>
+            </div>
+            
+            <div class="row mb-3">
+            <div class="col-md-6">
+            <label for="country" class="form-label">Pays <span class="text-danger"  >*</span></label>
+            <select class="form-control" id="country" required name="student[country]" >
+                {% for c  in country %}
+                   <option value="{{c.id}}" {% if user.country is defined and user.country.id == c.id %}selected{% endif %}>{{c.name}}</option>
+               {% endfor %}
+            </select>
+            <div class="invalid-feedback">
+            Veuillez sélectionner votre pays
+            </div>
+            </div>
+            <div class="col-md-6">
+            <label for="city" class="form-label">Ville <span class="text-danger" name="student[city]" >*</span></label>
+            <input type="text" class="form-control" id="city" placeholder="Entrez votre ville" required name="student[city]" value="{{ user.city is defined ? user.city : '' }}">
+            <div class="invalid-feedback">
+            Veuillez entrer votre ville
+            </div>
+            </div>
+            </div>
+        
+            <div class="row mb-3">
+            <div class="col-md-6">
+            <label for="languages" class="form-label">Langues <span class="text-danger">*</span></label>
+            <select class="form-control" {% if user is defined %}id="languages2"{% else %} id="languages"{% endif %} data-choices multiple required name="student[langue][]" >
+                        {% for l in langues %}
+                                  <option value="{{l.id}}" {% if user.studentLanguages is defined and user.studentLanguages|map(l2 => l2.language.id)|contains(l.id) %}selected{% endif %}>{{l.name}}</option>
+                        {% endfor %}
+            </select>
+            <div class="invalid-feedback">
+            Veuillez entrer les langues que vous parlez
+            </div>
+            </div>
+            <div class="col-md-6">
+            <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
+            <input type="email" class="form-control" id="email" placeholder="Entrez votre adresse email" required name="student[email]" value="{{ user.email is defined ? user.email : '' }}">
+            <div class="invalid-feedback">
+            Veuillez entrer votre adresse email
+            </div>
+            </div>
+
+            <div class="col-md-6">
+                <label for="whatsapp" class="form-label">Téléphone WhatsApp <span class="text-danger">*(avec indicatif international)</span></label>
+                <input type="tel" class="form-control" id="whatsapp" placeholder="Entrez votre numéro WhatsApp" required name="student[phone]" value="{{ user.phone is defined ? user.phone : '' }}">
+                <div class="invalid-feedback">
+                Veuillez entrer votre numéro WhatsApp
+                </div>
+                </div>
+
+            </div>
+            
+            <div class="row mb-3">
+          
+
+            {% if user is not defined %}
+            <div class="col-md-6 mt-3">
+            <label class="form-label" for="password-input">Mot de passe</label>
+            <div class="position-relative auth-pass-inputgroup"></div>
+            <input type="password" class="form-control pe-5 password-input" onpaste="return false" name="student[password][first]" placeholder="Entrez votre mot de passe" id="password-input" aria-describedby="passwordInput" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required>
+            <button style="    margin-top: 26px;margin-right: 10px;" class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted password-addon" type="button" id="password-addon"><i class="ri-eye-fill align-middle"></i></button>
+            <div class="invalid-feedback">
+            Veuillez entrer votre mot de passe
+            </div>
+            </div>
+
+
+            <div class="col-md-6 mt-3" style="position: relative;">
+                <label class="form-label" for="password-input">Confirmez votre mot de passe</label>
+
+            <input type="password" id="intern_registration_form_password_second " name="student[password][second]" required="required" class="form-control password-input" placeholder="Retapez votre mot de passe">
+            <button  style="    top: 26px; right: 10px;" class="btn btn-link position-absolute text-decoration-none text-muted password-addon" type="button" id="togglePassword2"><i class="ri-eye-fill align-middle"></i></button>
+            <div class="invalid-feedback">
+            </div>
+            </div>
+
+            {% endif %}
+
+            </div>
+
+            {% if user is not defined %}
+
+            <div class="row mb-3">
+
+                <div class="col-md-12 text-danger mt-3 mb-3" style="
+                font-size: 15px;
+            ">
+                                Veuillez lire et accepter le règlement intérieur pour vous inscrire.
+                            </div>
+
+                <div class="col-md-12" style="display: flex;">
+                    <div><input type="checkbox" id="intern_registration_form_acceptTerms" name="student[acceptTerms]" required="required" class="form-check-input" value="1"></div>
+                    <label style="margin-left:10px;" for="terms" class="form-label"><a target="_blank" href="https://www.merkezalfahm.fr/reglement-interieur/" style="font-size: 18px;text-decoration: underline !important;"><b>J’accepte le règlement intérieur de l’Institut</b></a></label>
+                    <div class="invalid-feedback">
+                    </div>
+                </div>
+            </div>
+            <div id="password-contain" class="p-3 bg-light mb-2 rounded">
+                <h5 class="fs-13">Le mot de passe doit contenir :</h5>
+                <p id="pass-length" class="invalid fs-12 mb-2">Minimum <b>8 caractères</b></p>
+                <p id="pass-lower" class="invalid fs-12 mb-2">Au moins une <b>lettre minuscule</b> (a-z)</p>
+                <p id="pass-upper" class="invalid fs-12 mb-2">Au moins une <b>lettre majuscule</b> (A-Z)</p>
+                <p id="pass-number" class="invalid fs-12 mb-0">Au moins un <b>chiffre</b> (0-9)</p>
+            </div>
+            {% endif %}
+        
+        </div>
+
+            <div class="d-flex align-items-start gap-3 mt-4">
+                <button id="submit" type="submit" class="btn btn-success btn-label right ms-auto "><i class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"></i>{% if user is not defined %}S'incrire{% else %}Modifier{% endif %}</button>
+            </div>
+            
+
+    </div>
+
+    {% if user is not defined %}
+      
+            <div class="card mt-4" id="successMessage" style="box-shadow: none !important;display:none;" >
+                <div class="card-body p-4 text-center">
+                    <div class="avatar-lg mx-auto mt-2">
+                        <div class="avatar-title bg-light text-success display-3 rounded-circle">
+                            <i class="ri-checkbox-circle-fill"></i>
+                        </div>
+                    </div>
+                    <div class="mt-4 pt-2">
+                        <h4>Inscription réussie</h4>
+                        <p class="text-muted mx-4">Félicitation votre inscription a été envoyer avec succés.</p>
+                     {#}   <div class="mt-4">
+                            <a href="auth-signin-basic" class="btn btn-success w-100">Back to Dashboard</a>
+                        </div> {#}
+                        <a href="{{ path('tech_student_login') }}" type="button" class="btn btn-success active mt-3" >
+                            <span class="icon-on"><i class=" ri-user-3-line align-bottom me-1"></i>Connectez-vous</span> 
+                        </a>
+                    </div>
+                </div>
+                <!-- end card body -->
+            </div>
+
+
+    {% endif %}
+</div>
