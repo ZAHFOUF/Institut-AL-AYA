@@ -1,0 +1,26 @@
+{# templates/components/Table.html.twig #}
+
+<div class="table-responsive table-card" >
+    <table class="table table-borderless table-centered align-middle table-nowrap mb-0" {{ attributes }}>
+        <thead class="table-light">
+            <tr>
+                {% for col in head %}
+                    <th scope="col">{{ col }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+
+        <tbody class="list form-check-all">
+            {% block body %}{% endblock %}
+        </tbody>
+    </table>
+
+    <div class="card-footer">
+        <div class="d-flex justify-content-end">
+            <div class="pagination-wrap hstack" style="display: flex; margin-bottom: -14px;">
+                {{ block('footer') }}
+            </div>
+        </div>
+    </div>
+
+</div>

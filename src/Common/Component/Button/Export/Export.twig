@@ -1,0 +1,11 @@
+<button 
+{{ attributes }} 
+type="submit" 
+data-export data-repo="{{repo}}" data-action="{{action}}" data-url="{{path('api_export',{entity:repo,action:action,format:format,token:csrf_token(repo)})}}" style="width: 100%; font-size: 15px; " 
+class="text-white btn btn-success  d-inline-block edit-item-bt"> Exporter 
+<i style="font-size: 15px;" class="mdi mdi-download"></i>
+</button>
+
+{% if exlude is defined %}
+     <input type="hidden" name="excludeExport" value='{% for item in  exlude %}{{ item }}{% if not loop.last %},{% endif %}{% endfor %}' />
+{% endif %} 

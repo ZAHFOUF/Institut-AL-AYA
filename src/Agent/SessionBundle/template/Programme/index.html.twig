@@ -27,46 +27,22 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>Alphabétisation</td>
-            <td>Arabe</td>
-            <td>20h</td>
-            <td>
-              <button class="btn btn-sm btn-soft-danger">
-                <i class="ri-delete-bin-line"></i> Supprimer
-              </button>
-            </td>
-          </tr>
-          <tr>
-            <td>Lurat Al-Qur’ân</td>
-            <td>Coran</td>
-            <td>30h</td>
-            <td>
-              <button class="btn btn-sm btn-soft-danger">
-                <i class="ri-delete-bin-line"></i> Supprimer
-              </button>
-            </td>
-          </tr>
-          <tr>
-            <td>Tuhfat Al-Atfâl</td>
-            <td>Coran</td>
-            <td>15h</td>
-            <td>
-              <button class="btn btn-sm btn-soft-danger">
-                <i class="ri-delete-bin-line"></i> Supprimer
-              </button>
-            </td>
-          </tr>
-          <tr>
-            <td>Fluidification</td>
-            <td>Arabe</td>
-            <td>10h</td>
-            <td>
-              <button class="btn btn-sm btn-soft-danger">
-                <i class="ri-delete-bin-line"></i> Supprimer
-              </button>
-            </td>
-          </tr>
+          {% for programme in programmes %}
+            <tr>
+              <td>{{ programme.name }}</td>
+              <td>{{ programme.module.name }}</td>
+              <td>{{ programme.hours }}</td>
+              <td>
+                <!-- Example actions: edit/delete buttons -->
+                <a href="{{path('back_programme_show',{programme:programme.id})}}" class="btn btn-sm btn-warning">Modifier</a>
+                <twig:Link:Delete entity="programme" entityId="{{programme.id}}" data-delete />
+              </td>
+            </tr>
+          {% else %}
+            <tr>
+              <td colspan="4" class="text-center">Aucun programme trouvé.</td>
+            </tr>
+          {% endfor %}
         </tbody>
       </table>
     </div>
@@ -78,29 +54,18 @@
     <div class="modal fade" id="addProgrammeModal" tabindex="-1" aria-labelledby="addProgrammeModalLabel" aria-hidden="true">
       <div class="modal-dialog">
       <div class="modal-content">
-        <form>
         <div class="modal-header">
           <h5 class="modal-title" id="addProgrammeModalLabel">Ajouter un programme</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
         </div>
         <div class="modal-body">
-          <div class="mb-3">
-          <label for="programmeNom" class="form-label">Nom</label>
-          <input type="text" class="form-control" id="programmeNom" required>
-          </div>
-          <div class="mb-3">
-          <label for="programmeModule" class="form-label">Module</label>
-          <input type="text" class="form-control" id="programmeModule" required>
-          </div>
-          <div class="mb-3">
-          <label for="programmeHeures" class="form-label">Heures</label>
-          <input type="number" class="form-control" id="programmeHeures" required>
-          </div>
+               {{form_start(form,{method:'POST'}) }}
+                {{ form_widget(form) }}
         </div>
         <div class="modal-footer">
           <button type="submit" class="btn btn-primary btn-alayah">Enregistrer</button>
         </div>
-        </form>
+            {{ form_end(form) }}
       </div>
       </div>
     </div>
@@ -112,6 +77,25 @@
 {% block pages_scripts %}
 <script type="text/javascript">
        $("#teacher").select2();
+       $("[data-delete]").click(function(e) {
+            e.preventDefault();
+            const href = $(this).attr('href');
+            Swal.fire({
+              title: 'Êtes-vous sûr ?',
+              text: "Cette action est irréversible !",
+              icon: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Oui, supprimer !',
+              cancelButtonText: 'Annuler'
+            }).then((result) => {
+              if (result.isConfirmed && href) {
+              window.location.href = href;
+              }
+            });
+            
+        });
    
 </script>
 

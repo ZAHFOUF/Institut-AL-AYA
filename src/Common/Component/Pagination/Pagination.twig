@@ -1,0 +1,44 @@
+{% set url = path(app.request.attributes.get('_route'),app.request.attributes.get('_route_params')) %}
+<style>
+    .page-element {
+        padding: 0.375rem 0.75rem;
+    }
+</style>
+{% if pagination.nbPage > 0 %}
+    {% set previous = pagination.currentPage - 1 %}
+    {% set next = pagination.currentPage + 1 %}
+<div class="d-flex justify-content-end mt-3">
+    <nav>
+        <ul class="pagination">
+            <li class="page-item {% if pagination.currentPage == 1 %}disabled{% endif %}">
+                <a class="page-link" href="{{ url ~ pagination.stringFilter |raw }}">«&nbsp;Première</a>
+            </li>
+            <li class="page-item {% if pagination.currentPage == 1 %}disabled{% endif %}">
+                <a class="page-link" href="{{ url ~ '?page=' ~ (previous) ~ pagination.stringFilter|raw }}">«&nbsp;Précédent</a>
+            </li>
+
+            {% for page in pagination.range %}
+                {% if page == pagination.currentPage %}
+                    <li class="page-item active">
+                        <span class="page-link" href="{{ url ~ '?page=' ~ page ~ pagination.stringFilter |raw }}">{{ page }}</span>
+                    </li>
+                {% else %}
+                    <li class="page-item {% if page == pagination.currentPage %}active{% endif %}">
+                        <a class="page-link" href="{{ url ~ '?page=' ~ page ~ pagination.stringFilter |raw }}">{{ page }}</a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+
+            <li class="page-item {% if pagination.nbPage == pagination.currentPage %}disabled{% endif %}">
+                <a class="page-link" rel="next"  href="{{ url ~ '?page=' ~ next ~ pagination.stringFilter|raw }}">Suivant&nbsp;»</a>
+            </li>
+            <li class="page-item {% if pagination.nbPage == pagination.currentPage %}disabled{% endif %}">
+                <a class="page-link" rel="next"  href="{{ url ~ '?page=' ~ pagination.nbPage ~ pagination.stringFilter|raw }}">Dernière&nbsp;»</a>
+            </li>
+            <li class="page-element">
+                | Page ({{ pagination.currentPage ~ '/' ~ pagination.nbPage }})
+            </li>
+        </ul>
+    </nav>
+</div>
+{% endif %}

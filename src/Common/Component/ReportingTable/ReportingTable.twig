@@ -1,0 +1,36 @@
+<div class="table-responsive">
+    <table class="table table-striped align-middle table-nowrap mb-0 table-hover searchable">
+
+            <thead class="table-light">
+                {% for key in data|length > 0 ? data[0]|array_keys : [] %}
+                <th>{{key}}</th>
+             
+            {% endfor %}
+            </thead>
+            
+        <tbody>
+
+            {% for nested in data %}
+        <tr>
+        
+            {% for val in nested %}
+                  <td>{{val|raw}}</td>
+            {% endfor %}
+        
+        </tr>
+        
+        {% endfor %}
+        
+        </tbody>
+        
+
+    </table>
+
+
+
+    <div class="navigation d-flex justify-content-center mt-4">
+      
+    </div>
+
+
+</div>

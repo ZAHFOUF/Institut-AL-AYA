@@ -1,0 +1,17 @@
+{% if label %}
+  <div>
+    <label for="{{id is defined ?  id : label}}">{{label}}</label>
+{% endif %}
+
+<select {% if name is defined %}name="{{name}}"{% endif %}
+ {{ attributes }} class="form-control">
+    <option value="">Tout</option>
+    {% for item in data %}
+            <option  {% if item['selected'] == true %}selected{% endif %} value="{{item['id']}}">{{item['name']}}</option>
+    {% endfor %}
+</select>
+
+{% if label %}
+
+</div>
+{% endif %}

@@ -27,5 +27,15 @@ trait deletedFields
         return $this;
     }
 
+     public function softDelete(): void
+    {
+        $this->deleted = true;
+        $this->deletedAt = new \DateTimeImmutable();
+    }
+
+    public function restore(): void
+    {
+        $this->deleted = false;
+    }
    
 }

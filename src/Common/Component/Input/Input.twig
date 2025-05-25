@@ -1,0 +1,12 @@
+{% if label %}
+  <div>
+    <label for="{{id is defined ?  id : label}}">{{label}}</label>
+{% endif %}
+
+
+<input id="{{id is defined ? id : label}}" type="text" class="form-control" {{ attributes }}  >
+
+{% if label %}
+
+</div>
+{% endif %}

@@ -6,6 +6,8 @@ namespace AlAya\Common\EventSubscriber;
 
 use AlAya\Agent\CommonBundle\Attribute\Access;
 use AlAya\Agent\CommonBundle\Service\AuthChecker;
+use AlAya\Common\Controller\BaseController;
+use Doctrine\ORM\EntityManagerInterface;
 use ReflectionClass;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Finder\Exception\AccessDeniedException;
@@ -24,7 +26,7 @@ class LocaleSubscriber implements EventSubscriberInterface
     private $security;
     
 
-    public function __construct(AuthChecker $authChecker,Security $security)
+    public function __construct(AuthChecker $authChecker,Security $security,private EntityManagerInterface $doctrine)
     {
         $this->authChecker = $authChecker ;
         $this->security = $security ;
@@ -43,6 +45,13 @@ class LocaleSubscriber implements EventSubscriberInterface
         
         // When a controller is defined as a service, it's received as an array (service, method)
         if (is_array($controller)) {
+
+            if($controller[0] instanceof BaseController){
+                $object = $controller[0] ;
+                $object->doctrine = $this->doctrine ;
+                $object->request = $event->getRequest() ;
+            }
+
             $controller = new \ReflectionMethod($controller[0], $controller[1]);
             $attributes = $controller->getAttributes(Access::class);
 

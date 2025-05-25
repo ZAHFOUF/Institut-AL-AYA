@@ -1,0 +1,4 @@
+<a style="cursor: pointer;" {% if entity is not null %}href="{{path('api_delete',{entity:entity,id:entityId})}}"{% endif %}
+ {{ attributes }}  class="btn btn-sm btn-danger">
+    Supprimer
+</a>

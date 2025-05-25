@@ -1,0 +1,30 @@
+{% extends '@AgentReportingBundle/main.twig' %}
+
+{% block page_title %}
+    {{ include('@AgentThemeBundle/partials/page-title.html.twig', {pagetitle: 'Programme'|trans, title: 'Détail du programme'|trans } ) }}
+{% endblock %}
+
+{% block page_content %}
+<div class="card">
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <h5 class="card-title mb-0">Détail du programme</h5>
+    <a href="{{ path('back_programme_index') }}" class="btn btn-light btn-sm">
+      <i class="ri-arrow-left-line"></i> Retour à la liste
+    </a>
+  </div>
+  <div class="card-body">
+    {{ form_start(form) }}
+           {{ form_widget(form) }}
+      <button type="submit" class="btn btn-primary">
+        <i class="ri-save-line"></i> Enregistrer
+      </button>
+    {{ form_end(form) }}
+  </div>
+</div>
+{% endblock %}
+
+{% block pages_scripts %}
+<script type="text/javascript">
+    $("#teacher").select2();
+</script>
+{% endblock %}

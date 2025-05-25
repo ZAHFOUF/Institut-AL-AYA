@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        @page { margin-bottom: 20px;}
+        .page-number::before {
+            content: none !important; /* Hide default page counter */
+        }
+        #footer {
+            position: fixed; 
+            left: 0px; 
+            top: 800px; 
+            right: 0px; 
+            /* height: 150px; */
+            font-size: 13px;
+            width: 100%;
+            height: 100px; /* Adjust the height as needed */
+            font-weight: normal;
+            color: #3f3d3d;
+        }
+    </style>
+ 
+    
+</head>
+<body style="font-family: Roboto, system-ui, sans-serif; ">
+    <div id="footer">
+
+        {% block footer %}
+    
+        {% endblock %}
+    
+    </div>
+
+
+    {% block centent %}
+    
+    {% endblock %}
+    
+   
+</body>
+</html>

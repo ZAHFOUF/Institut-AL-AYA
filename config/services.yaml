@@ -55,6 +55,13 @@ services:
         resource: '../src/Common/Repository'
         autowire: true
         autoconfigure: true
+    AlAya\Common\Controller\:
+        resource: '../src/Common/Controller'
+        autowire: true
+        autoconfigure: true
+    AlAya\Common\Service\Encryptor:
+        arguments:
+            $appSecret: '%encryptor.key%'
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

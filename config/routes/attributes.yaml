@@ -28,3 +28,14 @@ alAya_student:
   resource: "../../src/Student/"
   type: attribute
   prefix: "/"
+
+
+#routes for common
+alAya_common:
+  resource: "../../src/Common/Api/"
+  type: attribute
+  prefix: "/admin/{_locale}"
+  requirements:
+    _locale: fr|ar
+  defaults:
+    _locale: fr

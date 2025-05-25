@@ -48,6 +48,12 @@ class Module
     #[ORM\OneToMany(targetEntity: Agent::class, mappedBy: 'module')]
     private Collection $agents;
 
+    /**
+     * @var Collection<int, Programme>
+     */
+    #[ORM\OneToMany(targetEntity: Programme::class, mappedBy: 'module')]
+    private Collection $programmes;
+
     public function __construct()
     {
         $this->sessionModules = new ArrayCollection();
@@ -55,6 +61,7 @@ class Module
         $this->sessions = new ArrayCollection();
         $this->skills = new ArrayCollection();
         $this->agents = new ArrayCollection();
+        $this->programmes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -218,6 +225,36 @@ class Module
             // set the owning side to null (unless already changed)
             if ($agent->getModule() === $this) {
                 $agent->setModule(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Programme>
+     */
+    public function getProgrammes(): Collection
+    {
+        return $this->programmes;
+    }
+
+    public function addProgramme(Programme $programme): static
+    {
+        if (!$this->programmes->contains($programme)) {
+            $this->programmes->add($programme);
+            $programme->setModule($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProgramme(Programme $programme): static
+    {
+        if ($this->programmes->removeElement($programme)) {
+            // set the owning side to null (unless already changed)
+            if ($programme->getModule() === $this) {
+                $programme->setModule(null);
             }
         }
 

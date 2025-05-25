@@ -33,6 +33,10 @@ doctrine:
                 JSON_OVERLAPS: AlAya\Common\Doctrine\JSONOverlapsFunction
                 JSON_CONTAINS : DoctrineExtensions\Query\Mysql\JsonContains
                 JSON_QUOTE: AlAya\Common\Doctrine\JsonQuoteFunction
+        filters:
+            soft_delete:
+                class: AlAya\Common\Doctrine\SoftDeleteFilter
+                enabled: true
 
 when@test:
     doctrine:

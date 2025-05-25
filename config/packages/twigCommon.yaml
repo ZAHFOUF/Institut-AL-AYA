@@ -2,7 +2,7 @@ twig:
     file_name_pattern: '*.twig'
     paths:
         '%kernel.project_dir%/src/Common/template': CommonTemplate
-        '%kernel.project_dir%/src/Common/Twig/Components/templates' : componentsTemplates
+        '%kernel.project_dir%/src/Common/Component' : componentsTemplates
                 
 when@test:
     twig:

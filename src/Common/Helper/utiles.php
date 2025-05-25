@@ -43,4 +43,110 @@ if (!function_exists('getFrenchMonth')) {
         return $months[$monthNumber] ?? null;
     }
 
+    if (!function_exists("path")) {
+       function path(...$args)
+          {
+            return implode('/', $args);
+        }
+
+    }
+
+
+    function concat(...$args)
+    {
+        return implode('', $args);
+    }
+
+    if (!function_exists("dateFormat")) {
+
+         function dateFormat(\DateTimeInterface|string|null $date, string $format = 'd/m/Y') {
+                  if (!$date) return null;
+
+                  if (is_string($date)) {
+                  try {
+                        $date = new \DateTime($date);
+                   } catch (\Exception) {
+                       return null;
+                   }
+                   }
+
+                   return $date->format($format);
+        }
+
+    }
+
+    if (!function_exists("numberToFrenchLetters")) {
+        function numberToFrenchLetters($number) {
+            $units = array('', 'un', 'deux', 'trois', 'quatre', 'cinq', 'six', 'sept', 'huit', 'neuf');
+            $teens = array('dix', 'onze', 'douze', 'treize', 'quatorze', 'quinze', 'seize', 'dix-sept', 'dix-huit', 'dix-neuf');
+            $tens = array('', '', 'vingt', 'trente', 'quarante', 'cinquante', 'soixante', 'soixante', 'quatre-vingt', 'quatre-vingt');
+            $hundreds = array('', 'cent', 'deux-cent', 'trois-cent', 'quatre-cent', 'cinq-cent', 'six-cent', 'sept-cent', 'huit-cent', 'neuf-cent');
+            
+            if ($number < 0 || $number > 2000) {
+                return "Number out of range";
+            }
+        
+            if ($number == 0) {
+                return 'zéro';
+            }
+        
+            $result = '';
+        
+            if ($number >= 1000) {
+                $result .= $units[(int)($number / 1000)] . ' mille ';
+                $number %= 1000;
+            }
+        
+            if ($number >= 100) {
+                $result .= $hundreds[(int)($number / 100)] . ' ';
+                $number %= 100;
+            }
+        
+            if ($number >= 20) {
+                $result .= $tens[(int)($number / 10)] . ' ';            
+                if ($number >= 70 and $number <= 79) {
+                    $result .= $teens[(int)($number % 70  )] . ' ';
+                    $number = 0 ;
+                }elseif  ($number >= 90 and $number <= 99) {
+                    $result .= $teens[(int)($number % 90  )] . ' ';
+                    $number = 0 ;
+                }
+                
+                else{
+                    $number %= 10;
+                }
+               
+            } elseif ($number >= 10) {
+                $result .= $teens[$number - 10];
+                return $result;
+            }
+        
+            if ($number > 0) {
+                $result .= $units[$number];
+            }
+        
+            return $result;
+        }
+    }
+
+
+    if (!function_exists("inscrasePerformance")) {
+
+        ini_set('memory_limit', '-1');
+
+         ini_set("max_execution_time","-1");
+    }
+
+    if (!function_exists("getEntityClass")) {
+        function getEntityClass(string $name, string $namespace = 'AlAya\\Common\\Entity'): ?string
+        {
+            $fqcn = $namespace . '\\' . $name;  
+           return class_exists($fqcn) ? $fqcn : null;
+        }
+
+    }
+     
+    
+    
+
 }
