@@ -5,7 +5,7 @@ twig:
         '%kernel.project_dir%/src/Agent/ThemeBundle/template': AgentThemeBundle
         '%kernel.project_dir%/src/Agent/SecurityBundle/template': AgentSecurityBundle
         '%kernel.project_dir%/src/Agent/AgentBundle/template': AgentAgentBundle
-        '%kernel.project_dir%/src/Agent/SessionBundle/template': AgentSessionBundle
+        '%kernel.project_dir%/src/Agent/PrestationBundle/template': AgentPrestationBundle
         '%kernel.project_dir%/src/Agent/StudentBundle/template': AgentStudentBundle
         '%kernel.project_dir%/src/Agent/ReportingBundle/template': AgentReportingBundle
                 

@@ -1,6 +1,6 @@
 <?php
 
-namespace AlAya\Agent\SessionBundle\Controller;
+namespace AlAya\Agent\PrestationBundle\Controller;
 use AlAya\Agent\CommonBundle\Controller\Controller;
 use AlAya\Common\Entity\Programme;
 use AlAya\Common\Controller\BaseController;
@@ -15,7 +15,7 @@ class ProgrammeController extends BaseController
 {
 
     #[Route("/",name:"back_programme_index")]
-    #[Template("@AgentSessionBundle/Programme/index.html.twig")]
+    #[Template("@AgentPrestationBundle/Programme/index.html.twig")]
     public function index()
     { 
         $programme = new Programme();
@@ -34,7 +34,7 @@ class ProgrammeController extends BaseController
     }
 
     #[Route("/show/{programme}",name:"back_programme_show")]
-    #[Template("@AgentSessionBundle/Programme/show.html.twig")]
+    #[Template("@AgentPrestationBundle/Programme/show.html.twig")]
     public function show(Programme $programme)
     { 
         $formPro = $this->createForm(ProgrammeFormType::class,$programme)->handleRequest($this->request);

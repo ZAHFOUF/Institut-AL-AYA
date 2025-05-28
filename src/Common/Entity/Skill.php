@@ -22,17 +22,6 @@ class Skill
     #[ORM\JoinColumn(nullable: false)]
     private ?Module $module = null;
 
-    /**
-     * @var Collection<int, SessionLine>
-     */
-    #[ORM\OneToMany(targetEntity: SessionLine::class, mappedBy: 'skill')]
-    private Collection $sessionLines;
-
-    public function __construct()
-    {
-        $this->sessionLines = new ArrayCollection();
-    }
-
     public function getId(): ?int
     {
         return $this->id;
@@ -62,33 +51,4 @@ class Skill
         return $this;
     }
 
-    /**
-     * @return Collection<int, SessionLine>
-     */
-    public function getSessionLines(): Collection
-    {
-        return $this->sessionLines;
-    }
-
-    public function addSessionLine(SessionLine $sessionLine): static
-    {
-        if (!$this->sessionLines->contains($sessionLine)) {
-            $this->sessionLines->add($sessionLine);
-            $sessionLine->setSkill($this);
-        }
-
-        return $this;
-    }
-
-    public function removeSessionLine(SessionLine $sessionLine): static
-    {
-        if ($this->sessionLines->removeElement($sessionLine)) {
-            // set the owning side to null (unless already changed)
-            if ($sessionLine->getSkill() === $this) {
-                $sessionLine->setSkill(null);
-            }
-        }
-
-        return $this;
-    }
 }

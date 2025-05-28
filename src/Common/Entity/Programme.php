@@ -4,6 +4,8 @@ namespace AlAya\Common\Entity;
 
 use AlAya\Common\Entity\Trait\deletedFields;
 use AlAya\Common\Repository\ProgrammeRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ProgrammeRepository::class)]
@@ -25,6 +27,17 @@ class Programme
 
     #[ORM\Column(nullable: true)]
     private ?int $hours = null;
+
+    /**
+     * @var Collection<int, Prestation>
+     */
+    #[ORM\OneToMany(targetEntity: Prestation::class, mappedBy: 'programme')]
+    private Collection $prestations;
+
+    public function __construct()
+    {
+        $this->prestations = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -63,6 +76,36 @@ class Programme
     public function setHours(?int $hours): static
     {
         $this->hours = $hours;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Prestation>
+     */
+    public function getPrestations(): Collection
+    {
+        return $this->prestations;
+    }
+
+    public function addPrestation(Prestation $prestation): static
+    {
+        if (!$this->prestations->contains($prestation)) {
+            $this->prestations->add($prestation);
+            $prestation->setProgramme($this);
+        }
+
+        return $this;
+    }
+
+    public function removePrestation(Prestation $prestation): static
+    {
+        if ($this->prestations->removeElement($prestation)) {
+            // set the owning side to null (unless already changed)
+            if ($prestation->getProgramme() === $this) {
+                $prestation->setProgramme(null);
+            }
+        }
 
         return $this;
     }

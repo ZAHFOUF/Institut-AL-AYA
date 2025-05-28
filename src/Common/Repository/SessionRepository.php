@@ -4,6 +4,7 @@ namespace AlAya\Common\Repository;
 
 use AlAya\Common\Entity\Agent;
 use AlAya\Common\Entity\Group;
+use AlAya\Common\Entity\Prestation;
 use AlAya\Common\Entity\Session;
 use AlAya\Common\Service\QueryParser;
 use AlAya\Common\Service\RequestGetter;
@@ -136,6 +137,26 @@ ORDER BY MONTH(s.date_start) DESC ;
     protected function getEntityClass(): string
     {
         return Session::class;
+    }
+
+    public function getSessionOfAgent(): array
+    {
+        return [] ;
+    }
+
+    /**
+     * Retourne les sessions pour une prestation donnée
+     * @param Prestation $prestation
+     * @return Session[]
+     */
+    public function findByPrestation(Prestation $prestation): array
+    {
+        return $this->createQueryBuilder('s')
+            ->andWhere('s.prestation = :prestation')
+            ->setParameter('prestation', $prestation)
+            ->orderBy('s.date', 'ASC')
+            ->getQuery()
+            ->getResult();
     }
 
 //    /**

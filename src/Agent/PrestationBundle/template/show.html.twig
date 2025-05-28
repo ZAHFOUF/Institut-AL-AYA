@@ -1,0 +1,179 @@
+{% extends '@AgentReportingBundle/main.twig' %}
+
+
+{% block page_content %}
+    
+
+<div class="card">
+  <div class="card-header d-flex justify-content-between align-items-center" style="background-color: #bdab7d;">
+    <h5 class="card-title text-white mb-0">Détail de la prestation</h5>
+    <div>
+      <a href="{{path('facture_pdf',{id:1})}}" class="btn btn-light btn-sm me-2">
+        <i class="ri-download-2-line"></i> Télécharger la facture
+      </a>
+      <a href="{{path('facture_send')}}" class="btn btn-dark btn-sm">
+        <i class="ri-notification-3-line"></i> Notifier le paiement
+      </a>
+    </div>
+  </div>
+  <div class="card-body">
+
+    <!-- Section Élève & Programme -->
+    <div class="mb-4">
+      <h6 class="mb-2">Informations</h6>
+      <p><strong>Étudiant / Groupe :</strong> {{prestation.getClientName()}}</p>
+      <p><strong>Programme :</strong> {{ prestation.programme.name }} </p>
+      <p><strong>Type de forfait :</strong> {{ prestation.formula.name }} - {{ prestation.formula.price }}€/H</p>
+      <p><strong>Professeur(e) référent(e) :</strong> {{ prestation.agent.lastName }} {{ prestation.agent.firstName }} </p>
+      <p><strong>Montant total :</strong> 10€</p>
+    </div>
+
+    <!-- Section Cours -->
+    <div class="mb-4">
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <h6 class="mb-0">Cours enregistrés</h6>
+        <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addSessionModal">
+          <i class="ri-add-line"></i> Ajouter
+        </button>
+      </div>
+      <!-- Modal pour ajout de session -->
+      <div class="modal fade" id="addSessionModal" tabindex="-1" aria-labelledby="addSessionModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="addSessionModalLabel">Ajouter un cours</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              {{ form_start(form) }}
+                <div class="mb-3">
+                  {{ form_label(form.date) }}
+                  {{ form_widget(form.date, {'attr': {'class': 'form-control'}}) }}
+                  {{ form_errors(form.date) }}
+                </div>
+                <div class="mb-3">
+                  {{ form_label(form.hours) }}
+                  {{ form_widget(form.hours, {'attr': {'class': 'form-control'}}) }}
+                  {{ form_errors(form.hours) }}
+                </div>
+                <button type="submit" class="btn btn-success">Ajouter</button>
+              {{ form_end(form) }}
+            </div>
+          </div>
+        </div>
+      </div>
+      <table class="table table-sm table-bordered">
+        <thead class="table-light">
+          <tr>
+            <th>Durée</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for session in sessions %}
+                    <tr>
+                        <td>{{ session.hours }}H</td>
+                        <td>{{ session.date|date('Y-m-d') }}</td>
+                    </tr>
+            {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+ 
+
+    <!-- Section Livres achetés -->
+    <div class="mb-2">
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <h6 class="mb-0">Autre prestations / produits supplémentaire</h6>
+        <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addPrestationLineModal">
+          <i class="ri-add-line"></i> Ajouter
+        </button>
+      </div>
+      <!-- Modal pour ajout de prestation supplémentaire -->
+      <div class="modal fade" id="addPrestationLineModal" tabindex="-1" aria-labelledby="addPrestationLineModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="addPrestationLineModalLabel">Ajouter  prestation / produit supplémentaire</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              {{ form_start(formPrestationLine) }}
+                <div class="mb-3">
+                  {{ form_label(formPrestationLine.formula) }}
+                  {{ form_widget(formPrestationLine.formula, {'attr': {'class': 'form-control'}}) }}
+                  {{ form_errors(formPrestationLine.formula) }}
+                </div>
+                <div class="mb-3">
+                  {{ form_label(formPrestationLine.qte) }}
+                  {{ form_widget(formPrestationLine.qte, {'attr': {'class': 'form-control'}}) }}
+                  {{ form_errors(formPrestationLine.qte) }}
+                </div>
+                <div class="mb-3">
+                  {{ form_label(formPrestationLine.date) }}
+                  {{ form_widget(formPrestationLine.date, {'attr': {'class': 'form-control'}}) }}
+                  {{ form_errors(formPrestationLine.date) }}
+                </div>
+                <button type="submit" class="btn btn-success">Ajouter</button>
+              {{ form_end(formPrestationLine) }}
+            </div>
+          </div>
+        </div>
+      </div>
+      <table class="table table-sm table-bordered">
+        <thead class="table-light">
+          <tr>
+            <th>Nom </th>
+            <th>Quantité</th>
+            <th>Montant total</th>
+            <th>Date d’achat</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for pl in prestationLines %}
+            <tr>
+              <td>{{ pl.formula.name }}</td>
+              <td>{{ pl.qte }}</td>
+              <td>8€</td>
+              <td>{{ pl.date|date('Y-m-d') }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+      <!-- Section Paiements -->
+    <div class="mb-4 mt-2">
+      <h6 class="mb-2">Historique des paiements</h6>
+      <table class="table table-sm table-bordered">
+        <thead class="table-light">
+          <tr>
+            <th>Date</th>
+            <th>Montant</th>
+            <th>Méthode</th>
+            <th>Référence</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>
+
+
+   
+{% endblock %}
+
+
+
+{% block pages_scripts %}
+<script type="text/javascript">
+       $("#teacher").select2();
+   
+</script>
+
+{% endblock %}

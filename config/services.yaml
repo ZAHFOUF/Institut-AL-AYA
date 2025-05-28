@@ -46,11 +46,6 @@ services:
             - { name: doctrine.event_listener, event: prePersist }
             - { name: doctrine.event_listener, event: postPersist }
 
-    AlAya\Common\Events\SessionListener:
-        tags:
-            - { name: doctrine.event_listener, event: prePersist }
-            - { name: doctrine.event_listener, event: postPersist }
-
     AlAya\Common\Repository\:
         resource: '../src/Common/Repository'
         autowire: true

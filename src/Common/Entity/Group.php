@@ -37,17 +37,6 @@ class Group
     #[ORM\Column(nullable:true)]
     private ?array $cancelStudents = null;
 
-    /**
-     * @var Collection<int, SessionRequest>
-     */
-    #[ORM\OneToMany(targetEntity: SessionRequest::class, mappedBy: 'classe')]
-    private Collection $sessionRequests;
-
-    /**
-     * @var Collection<int, SessionGroup>
-     */
-    #[ORM\OneToMany(targetEntity: SessionGroup::class, mappedBy: 'group')]
-    private Collection $sessions;
 
     #[ORM\Column(length: 500, nullable: true)]
     private ?string $invitationUuid = null;
@@ -61,12 +50,23 @@ class Group
     #[ORM\OneToMany(targetEntity: Message::class, mappedBy: 'groupe')]
     private Collection $messages;
 
+    /**
+     * @var Collection<int, Prestation>
+     */
+    #[ORM\OneToMany(targetEntity: Prestation::class, mappedBy: 'groupe')]
+    private Collection $prestations;
+
+
+    /**
+     * @var Collection<int, SessionRequest>
+     */
+    private Collection $sessions;
 
     public function __construct()
     {
-        $this->sessionRequests = new ArrayCollection();
-        $this->sessions = new ArrayCollection ;
+        $this->sessions = new ArrayCollection();
         $this->messages = new ArrayCollection();
+        $this->prestations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -138,40 +138,9 @@ class Group
     /**
      * @return Collection<int, SessionRequest>
      */
-    public function getSessionRequests(): Collection
-    {
-        return $this->sessionRequests;
-    }
-
-
-    /**
-     * @return Collection<int, SessionRequest>
-     */
     public function getSessions(): Collection
     {
         return $this->sessions;
-    }
-
-    public function addSessionRequest(SessionRequest $sessionRequest): static
-    {
-        if (!$this->sessionRequests->contains($sessionRequest)) {
-            $this->sessionRequests->add($sessionRequest);
-            $sessionRequest->setClasse($this);
-        }
-
-        return $this;
-    }
-
-    public function removeSessionRequest(SessionRequest $sessionRequest): static
-    {
-        if ($this->sessionRequests->removeElement($sessionRequest)) {
-            // set the owning side to null (unless already changed)
-            if ($sessionRequest->getClasse() === $this) {
-                $sessionRequest->setClasse(null);
-            }
-        }
-
-        return $this;
     }
 
     public function studentsCount()
@@ -248,6 +217,41 @@ class Group
         }
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, Prestation>
+     */
+    public function getPrestations(): Collection
+    {
+        return $this->prestations;
+    }
+
+    public function addPrestation(Prestation $prestation): static
+    {
+        if (!$this->prestations->contains($prestation)) {
+            $this->prestations->add($prestation);
+            $prestation->setGroupe($this);
+        }
+
+        return $this;
+    }
+
+    public function removePrestation(Prestation $prestation): static
+    {
+        if ($this->prestations->removeElement($prestation)) {
+            // set the owning side to null (unless already changed)
+            if ($prestation->getGroupe() === $this) {
+                $prestation->setGroupe(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getFullName(): string
+    {
+        return $this->getName() ;
     }
 
 

@@ -88,10 +88,17 @@ class Agent implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToOne(inversedBy: 'agents')]
     private ?Module $module = null;
 
+    /**
+     * @var Collection<int, Prestation>
+     */
+    #[ORM\OneToMany(targetEntity: Prestation::class, mappedBy: 'agent')]
+    private Collection $prestations;
+
     public function __construct()
     {
         $this->sessions = new ArrayCollection();
         $this->myGroups = new ArrayCollection();
+        $this->prestations = new ArrayCollection();
     }
 
    
@@ -382,6 +389,36 @@ class Agent implements UserInterface, PasswordAuthenticatedUserInterface
     public function setModule(?Module $module): static
     {
         $this->module = $module;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Prestation>
+     */
+    public function getPrestations(): Collection
+    {
+        return $this->prestations;
+    }
+
+    public function addPrestation(Prestation $prestation): static
+    {
+        if (!$this->prestations->contains($prestation)) {
+            $this->prestations->add($prestation);
+            $prestation->setAgent($this);
+        }
+
+        return $this;
+    }
+
+    public function removePrestation(Prestation $prestation): static
+    {
+        if ($this->prestations->removeElement($prestation)) {
+            // set the owning side to null (unless already changed)
+            if ($prestation->getAgent() === $this) {
+                $prestation->setAgent(null);
+            }
+        }
 
         return $this;
     }

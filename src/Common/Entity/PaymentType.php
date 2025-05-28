@@ -18,17 +18,6 @@ class PaymentType
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    /**
-     * @var Collection<int, SessionStudent>
-     */
-    #[ORM\OneToMany(targetEntity: SessionStudent::class, mappedBy: 'typePay')]
-    private Collection $sessionStudents;
-
-    public function __construct()
-    {
-        $this->sessionStudents = new ArrayCollection();
-    }
-
     public function getId(): ?int
     {
         return $this->id;
@@ -46,33 +35,4 @@ class PaymentType
         return $this;
     }
 
-    /**
-     * @return Collection<int, SessionStudent>
-     */
-    public function getSessionStudents(): Collection
-    {
-        return $this->sessionStudents;
-    }
-
-    public function addSessionStudent(SessionStudent $sessionStudent): static
-    {
-        if (!$this->sessionStudents->contains($sessionStudent)) {
-            $this->sessionStudents->add($sessionStudent);
-            $sessionStudent->setTypePay($this);
-        }
-
-        return $this;
-    }
-
-    public function removeSessionStudent(SessionStudent $sessionStudent): static
-    {
-        if ($this->sessionStudents->removeElement($sessionStudent)) {
-            // set the owning side to null (unless already changed)
-            if ($sessionStudent->getTypePay() === $this) {
-                $sessionStudent->setTypePay(null);
-            }
-        }
-
-        return $this;
-    }
 }

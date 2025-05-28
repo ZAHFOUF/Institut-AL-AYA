@@ -5,7 +5,6 @@ namespace AlAya\Common\Entity;
 use AlAya\Common\Repository\FormulaRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: FormulaRepository::class)]
@@ -17,74 +16,42 @@ class Formula
     private ?int $id = null;
 
     #[ORM\Column]
-    private ?int $hoursPerWeek = null;
-
-    #[ORM\Column]
-    private ?int $totalHours = null;
-
-    #[ORM\Column]
-    private ?int $daysPerWeek = null;
-
-    #[ORM\Column]
     private ?int $price = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $name = null;
+
+    /**
+     * @var Collection<int, PrestationLine>
+     */
+    #[ORM\OneToMany(targetEntity: PrestationLine::class, mappedBy: 'formula')]
+    private Collection $prestationLines;
+
     #[ORM\ManyToOne(inversedBy: 'formulas')]
-    #[ORM\JoinColumn(nullable: false)]
     private ?FormulaType $type = null;
-
-    /**
-     * @var Collection<int, Session>
-     */
-    #[ORM\OneToMany(targetEntity: Session::class, mappedBy: 'formula')]
-    private Collection $sessions;
-
-    #[ORM\ManyToOne(inversedBy: 'formulas')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Module $module = null;
-
-    /**
-     * @var Collection<int, FormulaSessionType>
-     */
-    #[ORM\OneToMany(targetEntity: FormulaSessionType::class, mappedBy: 'formula')]
-    private Collection $formulaSessionTypes;
-
-    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
-    private ?string $avgSession = null;
 
     public function __construct()
     {
-        $this->sessions = new ArrayCollection();
-        $this->formulaSessionTypes = new ArrayCollection();
-    }
+        $this->prestationLines = new ArrayCollection();
+    }   
+
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getHoursPerWeek(): ?int
+    public function getName(): ?string
     {
-        return $this->hoursPerWeek;
+        return $this->name;
     }
-
-    public function setHoursPerWeek(int $hoursPerWeek): static
+    public function setName(string $name): static
     {
-        $this->hoursPerWeek = $hoursPerWeek;
+        $this->name = $name;
 
         return $this;
     }
 
-    public function getTotalHours(): ?int
-    {
-        return $this->totalHours;
-    }
-
-    public function setTotalHours(int $totalHours): static
-    {
-        $this->totalHours = $totalHours;
-
-        return $this;
-    }
 
     public function getPrice(): ?int
     {
@@ -94,6 +61,41 @@ class Formula
     public function setPrice(int $price): static
     {
         $this->price = $price;
+
+        return $this;
+    }
+
+    public function getFullName(): string
+    {
+        return $this->name . ' - ' . $this->price . '€/H';
+    }
+
+    /**
+     * @return Collection<int, PrestationLine>
+     */
+    public function getPrestationLines(): Collection
+    {
+        return $this->prestationLines;
+    }
+
+    public function addPrestationLine(PrestationLine $prestationLine): static
+    {
+        if (!$this->prestationLines->contains($prestationLine)) {
+            $this->prestationLines->add($prestationLine);
+            $prestationLine->setFormula($this);
+        }
+
+        return $this;
+    }
+
+    public function removePrestationLine(PrestationLine $prestationLine): static
+    {
+        if ($this->prestationLines->removeElement($prestationLine)) {
+            // set the owning side to null (unless already changed)
+            if ($prestationLine->getFormula() === $this) {
+                $prestationLine->setFormula(null);
+            }
+        }
 
         return $this;
     }
@@ -110,99 +112,5 @@ class Formula
         return $this;
     }
 
-    /**
-     * @return Collection<int, Session>
-     */
-    public function getSessions(): Collection
-    {
-        return $this->sessions;
-    }
-
-    public function addSession(Session $session): static
-    {
-        if (!$this->sessions->contains($session)) {
-            $this->sessions->add($session);
-            $session->setFormula($this);
-        }
-
-        return $this;
-    }
-
-    public function removeSession(Session $session): static
-    {
-        if ($this->sessions->removeElement($session)) {
-            // set the owning side to null (unless already changed)
-            if ($session->getFormula() === $this) {
-                $session->setFormula(null);
-            }
-        }
-
-        return $this;
-    }
-
-    public function getModule(): ?Module
-    {
-        return $this->module;
-    }
-
-    public function setModule(?Module $module): static
-    {
-        $this->module = $module;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, FormulaSessionType>
-     */
-    public function getFormulaSessionTypes(): Collection
-    {
-        return $this->formulaSessionTypes;
-    }
-
-    public function addFormulaSessionType(FormulaSessionType $formulaSessionType): static
-    {
-        if (!$this->formulaSessionTypes->contains($formulaSessionType)) {
-            $this->formulaSessionTypes->add($formulaSessionType);
-            $formulaSessionType->setFormula($this);
-        }
-
-        return $this;
-    }
-
-    public function removeFormulaSessionType(FormulaSessionType $formulaSessionType): static
-    {
-        if ($this->formulaSessionTypes->removeElement($formulaSessionType)) {
-            // set the owning side to null (unless already changed)
-            if ($formulaSessionType->getFormula() === $this) {
-                $formulaSessionType->setFormula(null);
-            }
-        }
-
-        return $this;
-    }
-
-    public function getAvgSession(): ?string
-    {
-        return $this->avgSession;
-    }
-
-    public function setAvgSession(?string $avgSession): static
-    {
-        $this->avgSession = $avgSession;
-
-        return $this;
-    }
-
-    public function getDaysPerWeek(): ?int
-    {
-        return $this->daysPerWeek;
-    }
-
-    public function setDaysPerWeek(int $daysPerWeek): static
-    {
-        $this->daysPerWeek = $daysPerWeek;
-
-        return $this;
-    }
+   
 }

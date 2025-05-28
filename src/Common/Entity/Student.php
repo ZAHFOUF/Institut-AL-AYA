@@ -83,24 +83,6 @@ class Student  implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 500, nullable: true)]
     private ?string $remark = null;
 
-    /**
-     * @var Collection<int, SessionLineStudent>
-     */
-    #[ORM\OneToMany(targetEntity: SessionLineStudent::class, mappedBy: 'student')]
-    private Collection $sessionLineStudents;
-
-    /**
-     * @var Collection<int, SessionRequest>
-     */
-    #[ORM\OneToMany(targetEntity: SessionRequest::class, mappedBy: 'student')]
-    private Collection $sessionRequests;
-
-    /**
-     * @var Collection<int, SessionStudent>
-     */
-    #[ORM\OneToMany(targetEntity: SessionStudent::class, mappedBy: 'student')]
-    private Collection $sessionStudents;
-
     #[ORM\Column(nullable: true)]
     private ?bool $payed = null;
 
@@ -113,6 +95,12 @@ class Student  implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
+    /**
+     * @var Collection<int, Prestation>
+     */
+    #[ORM\OneToMany(targetEntity: Prestation::class, mappedBy: 'student')]
+    private Collection $prestations;
+
 
     public function __construct()
     {
@@ -120,9 +108,7 @@ class Student  implements UserInterface, PasswordAuthenticatedUserInterface
         $this->studentArabeLavels = new ArrayCollection();
         $this->studentCoranLavels = new ArrayCollection();
         $this->studentSpecificNeeds = new ArrayCollection();
-        $this->sessionLineStudents = new ArrayCollection();
-        $this->sessionRequests = new ArrayCollection();
-        $this->sessionStudents = new ArrayCollection();
+        $this->prestations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -394,97 +380,6 @@ class Student  implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-
-    /**
-     * @return Collection<int, SessionLineStudent>
-     */
-    public function getSessionLineStudents(): Collection
-    {
-        return $this->sessionLineStudents;
-    }
-
-    public function addSessionLineStudent(SessionLineStudent $sessionLineStudent): static
-    {
-        if (!$this->sessionLineStudents->contains($sessionLineStudent)) {
-            $this->sessionLineStudents->add($sessionLineStudent);
-            $sessionLineStudent->setStudent($this);
-        }
-
-        return $this;
-    }
-
-    public function removeSessionLineStudent(SessionLineStudent $sessionLineStudent): static
-    {
-        if ($this->sessionLineStudents->removeElement($sessionLineStudent)) {
-            // set the owning side to null (unless already changed)
-            if ($sessionLineStudent->getStudent() === $this) {
-                $sessionLineStudent->setStudent(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, SessionRequest>
-     */
-    public function getSessionRequests(): Collection
-    {
-        return $this->sessionRequests;
-    }
-
-    public function addSessionRequest(SessionRequest $sessionRequest): static
-    {
-        if (!$this->sessionRequests->contains($sessionRequest)) {
-            $this->sessionRequests->add($sessionRequest);
-            $sessionRequest->setStudent($this);
-        }
-
-        return $this;
-    }
-
-    public function removeSessionRequest(SessionRequest $sessionRequest): static
-    {
-        if ($this->sessionRequests->removeElement($sessionRequest)) {
-            // set the owning side to null (unless already changed)
-            if ($sessionRequest->getStudent() === $this) {
-                $sessionRequest->setStudent(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, SessionStudent>
-     */
-    public function getSessionStudents(): Collection
-    {
-        return $this->sessionStudents;
-    }
-
-    public function addSessionStudent(SessionStudent $sessionStudent): static
-    {
-        if (!$this->sessionStudents->contains($sessionStudent)) {
-            $this->sessionStudents->add($sessionStudent);
-            $sessionStudent->setStudent($this);
-        }
-
-        return $this;
-    }
-
-    public function removeSessionStudent(SessionStudent $sessionStudent): static
-    {
-        if ($this->sessionStudents->removeElement($sessionStudent)) {
-            // set the owning side to null (unless already changed)
-            if ($sessionStudent->getStudent() === $this) {
-                $sessionStudent->setStudent(null);
-            }
-        }
-
-        return $this;
-    }
-
     public function isPayed(): ?bool
     {
         return $this->payed;
@@ -548,6 +443,36 @@ class Student  implements UserInterface, PasswordAuthenticatedUserInterface
     public function getFullName(): string
     {
         return $this->firstName . ' ' . $this->lastName;
+    }
+
+    /**
+     * @return Collection<int, Prestation>
+     */
+    public function getPrestations(): Collection
+    {
+        return $this->prestations;
+    }
+
+    public function addPrestation(Prestation $prestation): static
+    {
+        if (!$this->prestations->contains($prestation)) {
+            $this->prestations->add($prestation);
+            $prestation->setStudent($this);
+        }
+
+        return $this;
+    }
+
+    public function removePrestation(Prestation $prestation): static
+    {
+        if ($this->prestations->removeElement($prestation)) {
+            // set the owning side to null (unless already changed)
+            if ($prestation->getStudent() === $this) {
+                $prestation->setStudent(null);
+            }
+        }
+
+        return $this;
     }
 
  

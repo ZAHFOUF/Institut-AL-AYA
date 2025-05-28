@@ -19,12 +19,6 @@ class Module
     private ?string $name = null;
 
     /**
-     * @var Collection<int, SessionModule>
-     */
-    #[ORM\OneToMany(targetEntity: SessionModule::class, mappedBy: 'session')]
-    private Collection $sessionModules;
-
-    /**
      * @var Collection<int, Formula>
      */
     #[ORM\OneToMany(targetEntity: Formula::class, mappedBy: 'module')]
@@ -56,7 +50,6 @@ class Module
 
     public function __construct()
     {
-        $this->sessionModules = new ArrayCollection();
         $this->formulas = new ArrayCollection();
         $this->sessions = new ArrayCollection();
         $this->skills = new ArrayCollection();
@@ -81,35 +74,6 @@ class Module
         return $this;
     }
 
-    /**
-     * @return Collection<int, SessionModule>
-     */
-    public function getSessionModules(): Collection
-    {
-        return $this->sessionModules;
-    }
-
-    public function addSessionModule(SessionModule $sessionModule): static
-    {
-        if (!$this->sessionModules->contains($sessionModule)) {
-            $this->sessionModules->add($sessionModule);
-            $sessionModule->setSession($this);
-        }
-
-        return $this;
-    }
-
-    public function removeSessionModule(SessionModule $sessionModule): static
-    {
-        if ($this->sessionModules->removeElement($sessionModule)) {
-            // set the owning side to null (unless already changed)
-            if ($sessionModule->getSession() === $this) {
-                $sessionModule->setSession(null);
-            }
-        }
-
-        return $this;
-    }
 
     /**
      * @return Collection<int, Formula>
@@ -117,28 +81,6 @@ class Module
     public function getFormulas(): Collection
     {
         return $this->formulas;
-    }
-
-    public function addFormula(Formula $formula): static
-    {
-        if (!$this->formulas->contains($formula)) {
-            $this->formulas->add($formula);
-            $formula->setModule($this);
-        }
-
-        return $this;
-    }
-
-    public function removeFormula(Formula $formula): static
-    {
-        if ($this->formulas->removeElement($formula)) {
-            // set the owning side to null (unless already changed)
-            if ($formula->getModule() === $this) {
-                $formula->setModule(null);
-            }
-        }
-
-        return $this;
     }
 
     /**
@@ -149,27 +91,6 @@ class Module
         return $this->sessions;
     }
 
-    public function addSession(Session $session): static
-    {
-        if (!$this->sessions->contains($session)) {
-            $this->sessions->add($session);
-            $session->setModule($this);
-        }
-
-        return $this;
-    }
-
-    public function removeSession(Session $session): static
-    {
-        if ($this->sessions->removeElement($session)) {
-            // set the owning side to null (unless already changed)
-            if ($session->getModule() === $this) {
-                $session->setModule(null);
-            }
-        }
-
-        return $this;
-    }
 
     /**
      * @return Collection<int, Skill>

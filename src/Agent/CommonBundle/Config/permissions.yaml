@@ -24,51 +24,51 @@ back_role_add :
     label :  Ajouter un role
     module : Gestion des roles
 
-back_session_index:
+back_prestation_index:
   label: Voir les sessions
   module: Gestion des sessions
 
-back_session_create:
+back_prestation_create:
   label: Créer une session
   module: Gestion des sessions
 
-back_session_clone:
+back_prestation_clone:
   label: Renouveler une session
   module: Gestion des sessions
 
-back_session_edit:
+back_prestation_edit:
   label: Consulter une session
   module: Gestion des sessions
 
-back_sessionLine_edit:
+back_prestationLine_edit:
   label: Modifier un cours
   module: Gestion des sessions
 
-back_session_downloadJustif:
+back_prestation_downloadJustif:
   label: Télécharger un justificatif
   module: Gestion des sessions
 
-back_session_changeStatus:
+back_prestation_changeStatus:
   label: Changer le statut de la session
   module: Gestion des sessions
 
-back_sessionLine_changeStatus:
+back_prestationLine_changeStatus:
   label: Changer le statut d’un cours
   module: Gestion des sessions
 
-back_session_pay:
+back_prestation_pay:
   label: Paiement de la session
   module: Gestion des sessions
 
-back_sessionRequest_index:
+back_prestationRequest_index:
   label: Voir les demandes d'inscription
   module: Gestion des sessions
 
-back_sessionRequest_show:
+back_prestationRequest_show:
   label: Voir une demande d'inscription
   module: Gestion des sessions
 
-back_sessionRequest_changeStatus:
+back_prestationRequest_changeStatus:
   label: Changer le statut d'une demande d'inscription
   module: Gestion des sessions
 

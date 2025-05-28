@@ -50,21 +50,7 @@ class AgentController extends Controller
         $data = $agentRepository->search($request->query) ;
 
         $nbStudents = $this->manager->getRepository(Student::class)->count([]);
-
-        /** @var SessionLineRepository $nbSession */
-        $nbSession = $this->manager->getRepository(SessionLine::class);
-        $nbSession->createQueryBuilder("s")->where("s.date >= :now")
-            ->setParameter("now", new \DateTime())->getQuery()->getResult();
-        $nbSession = count($nbSession->getSessionOfAgent());
-
-        
-        
-          /** @var SessionRepository $nbGroup */
-          $nbGroup = $this->manager->getRepository(Session::class);
-          $r = $nbGroup->createQueryBuilder("s")->where("s.teacher is null")->getQuery()->getArrayResult();
-          $nbGroup = count($r) ;
-
-        
+        $nbSession = $this->manager->getRepository(Session::class)->count([]);
 
         // paginate 
        $agents = $this->paginator->paginate(
@@ -105,7 +91,7 @@ class AgentController extends Controller
         'agents' => $agents , 
         'form' => $formAdd->createView()
         ,'nbStudents' => $nbStudents,
-        'nbSession' => $nbSession,'nbGroup' => $nbGroup
+        'nbSession' => $nbSession
         ]);   ;
 
 
