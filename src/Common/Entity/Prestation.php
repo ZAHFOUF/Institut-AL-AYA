@@ -42,9 +42,16 @@ class Prestation
     #[ORM\OneToMany(targetEntity: PrestationLine::class, mappedBy: 'prestation')]
     private Collection $prestationLines;
 
+    /**
+     * @var Collection<int, Session>
+     */
+    #[ORM\OneToMany(targetEntity: Session::class, mappedBy: 'prestation')]
+    private Collection $sessions;
+
     public function __construct()
     {
         $this->prestationLines = new ArrayCollection();
+        $this->sessions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -129,6 +136,11 @@ class Prestation
        } else {
            return null; // ou une valeur par défaut si aucun client n'est défini
        }
+    }
+
+    public function getSessions(): Collection
+    {
+        return $this->sessions;
     }
 
     /**

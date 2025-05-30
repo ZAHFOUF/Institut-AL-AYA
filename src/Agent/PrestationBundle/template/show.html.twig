@@ -8,7 +8,7 @@
   <div class="card-header d-flex justify-content-between align-items-center" style="background-color: #bdab7d;">
     <h5 class="card-title text-white mb-0">Détail de la prestation</h5>
     <div>
-      <a href="{{path('facture_pdf',{id:1})}}" class="btn btn-light btn-sm me-2">
+      <a href="{{path('facture_pdf',{prestation:prestation.id})}}" class="btn btn-light btn-sm me-2">
         <i class="ri-download-2-line"></i> Télécharger la facture
       </a>
       <a href="{{path('facture_send')}}" class="btn btn-dark btn-sm">
@@ -25,7 +25,7 @@
       <p><strong>Programme :</strong> {{ prestation.programme.name }} </p>
       <p><strong>Type de forfait :</strong> {{ prestation.formula.name }} - {{ prestation.formula.price }}€/H</p>
       <p><strong>Professeur(e) référent(e) :</strong> {{ prestation.agent.lastName }} {{ prestation.agent.firstName }} </p>
-      <p><strong>Montant total :</strong> 10€</p>
+      <p><strong>Montant total :</strong> {{total}}€</p>
     </div>
 
     <!-- Section Cours -->
@@ -144,8 +144,45 @@
     </div>
 
       <!-- Section Paiements -->
-    <div class="mb-4 mt-2">
-      <h6 class="mb-2">Historique des paiements</h6>
+    <div class="mb-4 mt-4">
+
+        <div class="d-flex justify-content-between align-items-center mb-2">
+        <h6 class="mb-0">Historique des paiements</h6>
+          <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addPayementModal">
+          <i class="ri-add-line"></i> Ajouter un paiement
+        </button>
+      </div>
+      <!-- Modal pour ajout de paiement -->
+      <div class="modal fade" id="addPayementModal" tabindex="-1" aria-labelledby="addPayementModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="addPayementModalLabel">Ajouter un paiement</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              {{ form_start(formPayement) }}
+                <div class="mb-3">
+                  {{ form_label(formPayement.amount) }}
+                  {{ form_widget(formPayement.amount, {'attr': {'class': 'form-control'}}) }}
+                  {{ form_errors(formPayement.amount) }}
+                </div>
+                <div class="mb-3">
+                  {{ form_label(formPayement.date) }}
+                  {{ form_widget(formPayement.date, {'attr': {'class': 'form-control'}}) }}
+                  {{ form_errors(formPayement.date) }}
+                </div>
+                <div class="mb-3">
+                  {{ form_label(formPayement.type) }}
+                  {{ form_widget(formPayement.type, {'attr': {'class': 'form-control'}}) }}
+                  {{ form_errors(formPayement.type) }}
+                </div>
+                <button type="submit" class="btn btn-success">Ajouter</button>
+              {{ form_end(formPayement) }}
+            </div>
+          </div>
+        </div>
+      </div>
       <table class="table table-sm table-bordered">
         <thead class="table-light">
           <tr>
@@ -156,7 +193,16 @@
           </tr>
         </thead>
         <tbody>
-          
+          {% for payement in payements %}
+            <tr>
+              <td>{{ payement.date|date('Y-m-d') }}</td>
+              <td>{{ payement.amount }}€</td>
+              <td>{{ payement.type.name }}</td>
+              <td>{{ payement.id }}</td>
+            </tr>
+          {% else %}
+            <tr><td colspan="4" class="text-center">Aucun paiement enregistré</td></tr>
+          {% endfor %}
         </tbody>
       </table>
     </div>

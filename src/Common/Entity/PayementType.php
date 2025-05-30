@@ -2,20 +2,17 @@
 
 namespace AlAya\Common\Entity;
 
-use AlAya\Common\Repository\PaymentTypeRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: PaymentTypeRepository::class)]
-class PaymentType
+#[ORM\Entity]
+class PayementType
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(type: 'string', length: 100)]
     private ?string $name = null;
 
     public function getId(): ?int
@@ -28,11 +25,14 @@ class PaymentType
         return $this->name;
     }
 
-    public function setName(string $name): static
+    public function setName(?string $name): self
     {
         $this->name = $name;
-
         return $this;
     }
 
+    public function __toString(): string
+    {
+        return (string) $this->name;
+    }
 }

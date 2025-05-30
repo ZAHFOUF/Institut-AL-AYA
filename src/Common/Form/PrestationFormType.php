@@ -7,6 +7,7 @@ use AlAya\Common\Entity\Programme;
 use AlAya\Common\Entity\Agent;
 use AlAya\Common\Entity\Formula;
 use AlAya\Common\Repository\AgentRepository;
+use AlAya\Common\Repository\FormulaRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\DomCrawler\Form;
 use Symfony\Component\Form\AbstractType;
@@ -47,6 +48,11 @@ class PrestationFormType extends AbstractType
                 'choice_label' => function (Formula $formula) {
                     return $formula->getFullName(); // adapte si besoin
                 }, // adapte si besoin
+                'query_builder' => function (FormulaRepository $qb) {
+                return $qb->createQueryBuilder('f')
+                    ->andWhere("f.type = 1")
+                    ->orderBy('f.name', 'ASC');
+            },
                 'label' => 'Forfait	',
                 'attr' => ['class' => 'form-control'],
                 'row_attr' => ['class' => 'mb-3'],

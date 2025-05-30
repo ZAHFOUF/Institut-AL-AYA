@@ -1,0 +1,108 @@
+{% extends '@AgentReportingBundle/main.twig' %}
+
+
+{% block page_title %}
+    {{ include('@AgentThemeBundle/partials/page-title.html.twig', {pagetitle: 'Programmes'|trans, title: 'Programmes'|trans } ) }}
+{% endblock %}
+
+{% block page_content %}
+    
+
+<div class="card">
+  <div class="card-header d-flex justify-content-between align-items-center" >
+    <h5 class="card-title mb-0">Liste des paiements</h5>
+    <button style="background-color: #bdab7d;color: #FFF;" class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#addProgrammeModal">
+      <i class="ri-add-line"></i> Ajouter un paiement
+    </button>
+  </div>
+  <div class="card-body">
+    <div class="table-responsive">
+      <table class="table table-bordered align-middle table-hover">
+        <thead class="table-light">
+          <tr>
+            <th>ID</th>
+            <th>Prestation</th>
+            <th>Élève/Groupe</th>
+            <th>Montant</th>
+            <th>Date</th>
+            <th>Méthode</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for payement in payements %}
+            <tr>
+            <td>{{ payement.id }}</td>
+            <td>{{ payement.prestation.id }}</td>
+            <td>{{ payement.prestation.getClientName() }}</td>
+            <td>{{ payement.amount }} €</td>
+            <td>{{ payement.date|date('Y-m-d') }}</td>
+            <td>{{ payement.type.name }}</td>
+            <td>
+                <a href="{{ path('facture_pdf', {id: payement.prestation.id}) }}" class="btn btn-sm btn-primary">
+                    Télécharger la facture
+                </a>
+            </td>
+        </tr>
+          {% else %}
+            <tr>
+              <td colspan="4" class="text-center">Aucun programme trouvé.</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+
+  <!-- Modal -->
+    <div class="modal fade" id="addProgrammeModal" tabindex="-1" aria-labelledby="addProgrammeModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addProgrammeModalLabel">Ajouter un paiement</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+        </div>
+        <div class="modal-body">
+               {{form_start(form,{method:'POST'}) }}
+                {{ form_widget(form) }}
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary btn-alayah">Enregistrer</button>
+        </div>
+            {{ form_end(form) }}
+      </div>
+      </div>
+    </div>
+   
+{% endblock %}
+
+
+
+{% block pages_scripts %}
+<script type="text/javascript">
+       $("#teacher").select2();
+       $("[data-delete]").click(function(e) {
+            e.preventDefault();
+            const href = $(this).attr('href');
+            Swal.fire({
+              title: 'Êtes-vous sûr ?',
+              text: "Cette action est irréversible !",
+              icon: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Oui, supprimer !',
+              cancelButtonText: 'Annuler'
+            }).then((result) => {
+              if (result.isConfirmed && href) {
+              window.location.href = href;
+              }
+            });
+            
+        });
+   
+</script>
+
+{% endblock %}

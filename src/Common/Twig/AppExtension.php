@@ -34,7 +34,8 @@ class AppExtension extends AbstractExtension
             new TwigFunction('witchUser', [$this, 'witchUser']),
             new TwigFunction('generateUrl', [$this, 'generateUrl']),
             new TwigFunction('calcPaypalAmount',[$this, 'calcPaypalAmount']),
-            new TwigFunction('unReadMsg',[$this, 'unReadMsg'])
+            new TwigFunction('unReadMsg',[$this, 'unReadMsg']),
+            new TwigFunction("calculerTotalPrestation",[$this,"calculerTotalPrestation"])
         ];
     }
     
@@ -149,5 +150,10 @@ public function witchUser(object $user) {
 
   public function calcPaypalAmount($amount)  {
       return ($amount * 2.9 / 100) + $amount + 0.35;
+  }
+
+  public function calculerTotalPrestation($prestation) : float
+  {
+      return calculerTotalPrestation($prestation);
   }
 }

@@ -11,6 +11,7 @@ use AlAya\Common\Entity\Student;
 use AlAya\Common\Form\PrestationFormType;
 use AlAya\Agent\PrestationBundle\Form\SessionAddType;
 use AlAya\Agent\PrestationBundle\Form\PrestationLineAddType;
+use AlAya\Agent\PrestationBundle\Form\PayementAddType;
 use Doctrine\Persistence\ManagerRegistry;
 use Dompdf\Dompdf;
 use Dompdf\Options;
@@ -75,35 +76,55 @@ class PrestationController extends BaseController
             $this->doctrine->flush();
             return $this->redirectToRoute('back_prestation_show', ['prestation' => $prestation->getId()]);
         }
+        // Formulaire d'ajout de paiement
+        $payement = new \AlAya\Common\Entity\Payement();
+        $payement->setPrestation($prestation);
+        $formPayement = $this->createForm(PayementAddType::class, $payement);
+        $formPayement->handleRequest($request);
+        if ($formPayement->isSubmitted() && $formPayement->isValid()) {
+            $this->doctrine->persist($payement);
+            $this->doctrine->flush();
+            return $this->redirectToRoute('back_prestation_show', ['prestation' => $prestation->getId()]);
+        }
+        // Paiements existants
+        $payements = $this->repo(\AlAya\Common\Entity\Payement::class)->findBy(['prestation' => $prestation]);
         return $this->render('@AgentPrestationBundle/show.html.twig',[
             'prestation' => $prestation,
             'sessions' => $this->repo(Session::class)->findBy(['prestation' => $prestation]),
             'prestationLines' => $this->repo(PrestationLine::class)->findBy(['prestation' => $prestation]),
             'form' => $form->createView(),
             'formPrestationLine' => $formPrestationLine->createView(),
+            'formPayement' => $formPayement->createView(),
+            'payements' => $payements,
+            'total' => calculerTotalPrestation($prestation)
         ]);
     }
 
-    #[Route('/facture/{id}/pdf', name: 'facture_pdf')]
-    public function generatePdf(int $id): Response
+    #[Route('/facture/{prestation}/pdf', name: 'facture_pdf')]
+    public function generatePdf(Prestation $prestation): Response
     {
         // 🔁 Simule des données pour l'exemple (à remplacer par la vraie entité Facture)
         $facture = [
             'numero' => 'FAC2025001',
             'date' => new \DateTime(),
-            'total' => 36,
+            'total' => calculerTotalPrestation($prestation),
             'forfait' => [
-                ['programme' => 'Tuhfat Al-Atfâl', 'type' => 'Groupe', 'quantite' => 4, 'tarif' => 7, 'total' => 28],
+                ['programme' => $prestation->getProgramme()->getName(), 'type' => $prestation->getFormula()->getName(), 
+                'quantite' => calculerHeuresCours($prestation), 'tarif' => prixPrestation($prestation), 'total' => calculerTotalHeuresCours($prestation)],
             ],
-            'extras' => [
-                ['label' => 'PDF Tuhfat Al-Atfal', 'amount' => 8],
-            ],
+            'extras' =>$prestation->getPrestationLines()->map(function(PrestationLine $line) {
+                if (!$line->isPayed()) {
+                    return [
+                    'label' => $line->getFormula()->getName(),
+                    'amount' => $line->getFormula()->getPrice() * $line->getQte()
+                ];
+                }
+            })->toArray(),
         ];
 
         $eleve = [
             'nom' => 'Zahra',
             'prenom' => 'Fatima',
-            'email' => 'zahra@example.com',
         ];
 
         // 📄 Génération HTML via Twig
@@ -122,7 +143,7 @@ class PrestationController extends BaseController
 
         // 📥 Retour en téléchargement
         return new Response(
-            $dompdf->stream('facture_'.$facture['numero'].'.pdf', ["Attachment" => true]),
+            $dompdf->stream('facture_'.$facture['numero'].'.pdf', ["Attachment" => false]),
             Response::HTTP_OK,
             ['Content-Type' => 'application/pdf']
         );

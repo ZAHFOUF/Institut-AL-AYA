@@ -1,5 +1,6 @@
 <?php
 
+use AlAya\Common\Entity\Prestation;
 
 if (!function_exists('imageToBase64')) {
 
@@ -146,7 +147,60 @@ if (!function_exists('getFrenchMonth')) {
 
     }
      
+
+    if (!function_exists("calculerTotalPrestation")) {
+        function calculerTotalPrestation(Prestation $prestation): float
+        {
+            $total = 0.0;
+            $cours = $prestation->getSessions()->filter(function ($session) {
+                return $session->isPayed() != true;
+            });
+            $autresPrestations = $prestation->getPrestationLines()->filter(function ($session) {
+                return $session->isPayed() != true;
+            });
+            $totalCours = 0.0;
+            foreach ($cours as $session) {
+                $totalCours += $session->getHours();
+            }
+            $total += $totalCours * $prestation->getFormula()->getPrice();
+            foreach ($autresPrestations as $prestationLine) {
+                $total += $prestationLine->getQte() * $prestationLine->getFormula()->getPrice();
+            }
+            return $total;
+        }
+       
+
+    }
     
+
+    function calculerHeuresCours(Prestation $prestation): float
+    {
+        $total = 0.0;
+        $cours = $prestation->getSessions()->filter(function ($session) {
+            return $session->isPayed() != true;
+        });
+        foreach ($cours as $session) {
+            $total += $session->getHours();
+        }
+        return $total;
+        
+    }
+
+    function prixPrestation(Prestation $prestation) {
+       return  $prestation->getFormula()->getPrice() ;
+    }
     
+
+    function calculerTotalHeuresCours(Prestation $prestation): float{
+        $total = 0.0;
+        $cours = $prestation->getSessions()->filter(function ($session) {
+            return $session->isPayed() != true;
+        });
+        foreach ($cours as $session) {
+            $total += $session->getHours();
+        }
+        return $total * $prestation->getFormula()->getPrice();
+        
+    }
 
 }
