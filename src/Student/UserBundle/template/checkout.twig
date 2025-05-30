@@ -2,9 +2,23 @@
 
 
 {% block page_content %}
-<script src="https://www.paypal.com/sdk/js?client-id={{ paypal_client_id }}&currency=EUR"></script>
+<script src="https://js.stripe.com/v3/"></script>
+<style>
+ #payment-form {
+        width: 100%;
+    display: grid
+;
+    place-items: center;
+ }
+</style>
 
-
+ <div id="preloader" style="background-color: #0000007a;display:none !important;opacity: 1;visibility: visible !important;">
+        <div id="status">
+            <div class="spinner-border text-primary avatar-sm" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+    </div>
 <div class="container">
 
     
@@ -12,26 +26,32 @@
 
     <div class="col-md-6">
         <div class="card mb-4">
-            <div class="card-header">
+            <div  class="card-header">
                 <h4 class="mb-0">Détails de la prestation</h4>
             </div>
             <div class="card-body">
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item d-flex justify-content-between align-items-center">
                         Programme
-                        <span>Tuhfat Al-Atfâl	(Coran)</span>
+                        <span>{{prestation.programme.name}}</span>
                     </li>
                     <li class="list-group-item d-flex justify-content-between align-items-center">
                         Nombre d'heures
-                        <span>4</span>
+                        <span>{{totalHours}}</span>
                     </li>
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        Livres inclus
-                        <span>Tuhfat Al-Atfâl PDF</span>
-                    </li>
+                    {% if prestationLines|length > 0 %}
+                             <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Services supplémentaires inclus
+                            <ul style="    list-style: none;">
+                           {% for pl in prestationLines %}
+                               <li >{{pl.name}}</li> 
+                           {% endfor %}
+                        </ul>
+                        </li>
+                    {% endif %}
                     <li class="list-group-item d-flex justify-content-between align-items-center font-weight-bold">
                         Total à payer
-                        <span style="color:#13c56b;font-size:18px;">36,00 €</span>
+                        <span style="color:#13c56b;font-size:18px;">{{calculerTotalPrestation(prestation)}} €</span>
                     </li>
                 </ul>
             </div>
@@ -51,15 +71,18 @@
     <div class="col-md-12 animate__fadeInLeft animate__animated" id="s-1">
     
         <div class="card">
-            <div class="card-header">
+            <div style="    padding-left: 6px;" class="card-header">
                 <div class="d-flex">
                     <div class="flex-grow-1">
-                        <h5 class="card-title mb-0">Paiement online (les frais de transaction sont ajoutés)</h5>
+                         <img style="    width: 98px;" src="{{asset('bundles/commontheme/images/stripe_logo_icon_167963.png')}}" alt="">
                     </div>
                 </div>
             </div>
             <div class="card-body">
-                <div id="paypal-button-container"></div>
+            <form id="payment-form">
+                <div id="card-element" style="width: 100%;margin: 20px;"></div>
+                <button style="    width: 300px;" type="submit" class="btn btn-dark mt-3">Payer</button>
+            </form>
             </div>
             <!-- end card body -->
         </div>
@@ -93,31 +116,64 @@
 
 {% block pages_scripts %}
 <script>
-    paypal.Buttons({
-        createOrder: function(data, actions) {
-            return fetch('{{path('paypal_create_order')}}', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ amount: '70' })
-            })
-            .then(response => response.json())
-            .then(data => {
-                return data.id;
-            });
-        },
-        onApprove: function(data, actions) {
-            return actions.order.capture().then(function(orderData) {
-                fetch('{{path('paypal_capture_order')}}', {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify(orderData)
-                })
-                .then(response => response.json())
-                .then(data => {
-                    window.location.href = '{{path('student_payements')}}' })
-                .catch(error => console.error('Error:', error));
-            });
+  const stripe = Stripe('{{stripePublicKey}}');
+
+  fetch("{{path('create_checkout_session',{prestation: prestation.id})}}")
+    .then(res => res.json())
+    .then(data => {
+      clientSecret = data.clientSecret;
+      const elements = stripe.elements({clientSecret});
+      const cardElement = elements.create("payment", {
+        style: {
+          base: {
+            color: "#32325d",
+            fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+            fontSmoothing: "antialiased",
+            fontSize: "16px",
+            '::placeholder': {
+              color: '#aab7c4'
+            }
+          },
+          invalid: {
+            color: '#fa755a',
+            iconColor: '#fa755a'
+          }
         }
-    }).render('#paypal-button-container');
+      });
+      cardElement.mount('#card-element');
+
+      const form = document.getElementById('payment-form');
+      form.addEventListener('submit', async (event) => {
+          event.preventDefault();
+          $("#preloader").show()
+          const { error , paymentIntent } = await stripe.confirmPayment({
+            elements ,confirmParams: {
+    // Tu n’as pas besoin de return_url si tu fais tout en JS
+  },
+  redirect: 'if_required'
+          });
+
+          if (error) {
+          document.getElementById('error-message').textContent = error.message;
+        } else if (paymentIntent.status === 'succeeded') {
+           // 💡 Envoie les infos au backend pour les sauvegarder
+  fetch('{{path("save_payment_intent",{prestation:prestation.id})}}', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      paymentIntentId: paymentIntent.id,
+      amount: paymentIntent.amount,
+      currency: paymentIntent.currency,
+      status: paymentIntent.status
+    })
+  }).then(res => {
+    if (res.ok) {
+        window.open("{{path('student_payment_success')}}", "_self");
+    }
+  });
+          // rediriger ou déclencher la suite de ton flux
+        }
+      });
+    });
 </script>
 {% endblock %}

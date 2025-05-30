@@ -18,3 +18,5 @@ parameters:
     paypal.secret :
     paypal.api.url :
     meet.url :
+    stripe.public.key : 
+    stripe.secret.key :

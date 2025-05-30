@@ -203,4 +203,14 @@ if (!function_exists('getFrenchMonth')) {
         
     }
 
+    function payerPrestation(Prestation $prestation): void
+    {
+        $prestation->getSessions()->map(function ($session) {
+            $session->setPayed(true);
+        });
+        $prestation->getPrestationLines()->map(function ($line) {
+            $line->setPayed(true);
+        });
+    }
+
 }

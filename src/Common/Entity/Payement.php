@@ -26,6 +26,9 @@ class Payement
     #[ORM\JoinColumn(nullable: false)]
     private ?PayementType $type = null;
 
+    #[ORM\Column(length: 255,nullable: true)]
+    private ?string $stripeId = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -72,6 +75,18 @@ class Payement
     public function setType(?PayementType $type): self
     {
         $this->type = $type;
+        return $this;
+    }
+
+    public function getStripeId(): ?string
+    {
+        return $this->stripeId;
+    }
+
+    public function setStripeId(string $stripeId): static
+    {
+        $this->stripeId = $stripeId;
+
         return $this;
     }
 }

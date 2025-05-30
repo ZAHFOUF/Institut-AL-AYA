@@ -7,6 +7,7 @@ use AlAya\Common\Entity\Formula;
 use AlAya\Common\Entity\Group;
 use AlAya\Common\Entity\Language;
 use AlAya\Common\Entity\Module;
+use AlAya\Common\Entity\Prestation;
 use AlAya\Common\Entity\SessionLine;
 use AlAya\Common\Entity\SessionRequest;
 use AlAya\Common\Entity\SessionRequestStatus;
@@ -16,12 +17,14 @@ use AlAya\Common\Entity\SessionType;
 use AlAya\Common\Entity\StudentGender;
 use AlAya\Common\Form\SessionStudentFilesFromType;
 use AlAya\Common\Service\FileManager;
+use AlAya\Common\Service\StripeService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 use AlAya\Common\Service\StudentRefresher;
+use Symfony\Bridge\Twig\Attribute\Template;
 
 class SessionFrontController extends AbstractController
 {
@@ -31,7 +34,7 @@ class SessionFrontController extends AbstractController
         
     }
 
-    #[Route('/', name: 'student_sessions', methods: ['GET'])]
+ /*   #[Route('/', name: 'student_sessions', methods: ['GET'])]
     public function sessions()
     {
         $sessions = $this->entityManager->getRepository(SessionStudent::class)->getSessionOfStudent();
@@ -96,7 +99,7 @@ class SessionFrontController extends AbstractController
 
         if ($sessionFilesForm->isSubmitted() && $sessionFilesForm->isValid()) {
             /** @var SessionStudentFiles $sessionFiles */
-             $sessionFiles = $sessionFilesForm->getData();
+    /*         $sessionFiles = $sessionFilesForm->getData();
              $this->entityManager->persist($sessionFiles);
              $this->entityManager->flush();
              $file = $request->files->get("justif");
@@ -144,9 +147,9 @@ public function newSessionRequest(Request $request)
     $dataSession = $request->request->all("session");
 
      /** Session creation */
-     $formulas = $this->entityManager->getRepository(Formula::class)->find($dataSession["formula"]) ;
+   /*  $formulas = $this->entityManager->getRepository(Formula::class)->find($dataSession["formula"]) ;
      /** @var  SessionRequest $session */
-     $session = new SessionRequest();
+   /*  $session = new SessionRequest();
      $session->setModule($this->entityManager->getRepository(Module::class)->find($dataSession["module"]));
      $session->setType($this->entityManager->getRepository(SessionType::class)->find($dataSession["type"]));
      $session->setFormula($formulas);
@@ -170,21 +173,32 @@ public function newSessionRequest(Request $request)
      public function chat()
      {
              return $this->render('@StudentUserBundle/chat.twig');  
-    }
-
-#[Route("/checkout/1", name: "student_checkout", methods: ["POST", "GET"])]
-public function checkout(Request $request,SessionStudent $sessionStudent)
-{
-/*    if ($sessionStudent->isPayed() == true or $sessionStudent->getStudent() != $this->getUser()) {
-        throw $this->createNotFoundException();
     } */
-    $paypal_client_id = $this->getParameter("paypal.client.id");
+
+#[Route("/checkout/{prestation}", name: "student_checkout", methods: ["POST", "GET"])]
+public function checkout(Request $request,Prestation $prestation)
+{
     return $this->render('@StudentUserBundle/checkout.twig',[
-        'paypal_client_id' => $paypal_client_id,
-        'sessionStudent' => $sessionStudent
+        'prestation' => $prestation,
+        'totalHours' => calculerHeuresCours($prestation),
+        'stripePublicKey' => $this->getParameter('stripe.public.key') ,
+        'prestationLines' => $prestation->getPrestationLines()->map(function($line) {
+            if (!$line->isPayed()) {
+                return [
+                    'name' => $line->getFormula()->getName(),
+                    'quantity' => $line->getQte(),
+                    'amount' => intval($line->getFormula()->getPrice() * 100), // Montant en centimes
+                ];
+            }
+        })->toArray(),
     ]);
 }
 
+#[Route("/payment-success", name: "student_payment_success", methods: ["GET"])]
+#[Template("@StudentUserBundle/payement_success.twig")]
+public function paymentSuccess()
+{
+   
+}
 
-    
 }
