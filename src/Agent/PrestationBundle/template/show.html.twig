@@ -6,14 +6,21 @@
 
 <div class="card">
   <div class="card-header d-flex justify-content-between align-items-center" style="background-color: #bdab7d;">
-    <h5 class="card-title text-white mb-0">Détail de la prestation</h5>
+    <h5 class="card-title text-white mb-0">Détail de la prestation  <twig:Status :state="prestation.status" /></h5>
     <div>
-      <a href="{{path('facture_pdf',{prestation:prestation.id})}}" class="btn btn-light btn-sm me-2">
+    {% for w in workflow(prestation) %}
+                 <a href="{{path('back_prestation_status',{prestation:prestation.id,transition:w.name})}}" class="{{w.color}}">{{w.description}}</a>
+    {% endfor %}
+
+    {% if prestation.status == "en attendant le paiement" %}
+
+     <a href="{{path('facture_pdf',{prestation:prestation.id})}}" class="btn btn-light btn-sm me-2">
         <i class="ri-download-2-line"></i> Télécharger la facture
       </a>
-      <a href="{{path('facture_send')}}" class="btn btn-dark btn-sm">
-        <i class="ri-notification-3-line"></i> Notifier le paiement
-      </a>
+     
+    {% endif %}
+    
+     
     </div>
   </div>
   <div class="card-body">

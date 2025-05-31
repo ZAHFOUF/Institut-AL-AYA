@@ -1,0 +1,45 @@
+framework:
+    workflows:
+        prestation :
+            type: "state_machine"  
+            marking_store:
+                type: "method"
+                property: "status"
+            supports:
+                - AlAya\Common\Entity\Prestation
+            places:
+                - brouillon
+                - en attendant le paiement
+                - en cours
+                - clôturée	
+            transitions:
+                facturer_1 :
+                    from: brouillon
+                    to: en attendant le paiement
+                    metadata: 
+                        description: "Facturer"
+                        color : "btn btn-dark"
+                facturer_2 :
+                    from: en cours
+                    to: en attendant le paiement
+                    metadata: 
+                        description: "Facturer"
+                        color : "btn btn-dark"
+                en_cours :
+                    from: en attendant le paiement
+                    to: en cours
+                    metadata: 
+                        description: "Continuer la prestation"
+                        color : "btn btn-success"
+                cloturer :
+                    from: en attendant le paiement
+                    to : clôturée
+                    metadata: 
+                        description: "Clôturer"
+                        color : "btn btn-info"
+                cloturer_2 :
+                    from: en cours
+                    to : clôturée
+                    metadata: 
+                        description: "Clôturer"
+                        color : "btn btn-success"

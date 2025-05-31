@@ -57,6 +57,10 @@ services:
     AlAya\Common\Service\Encryptor:
         arguments:
             $appSecret: '%encryptor.key%'
+    AlAya\Agent\PrestationBundle\WorkFlow\:
+        resource: '../src/Agent/PrestationBundle/WorkFlow'
+        autowire: true
+        autoconfigure: true
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

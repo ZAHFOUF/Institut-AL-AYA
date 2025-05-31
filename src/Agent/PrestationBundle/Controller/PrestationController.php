@@ -12,6 +12,7 @@ use AlAya\Common\Form\PrestationFormType;
 use AlAya\Agent\PrestationBundle\Form\SessionAddType;
 use AlAya\Agent\PrestationBundle\Form\PrestationLineAddType;
 use AlAya\Agent\PrestationBundle\Form\PayementAddType;
+use AlAya\Agent\PrestationBundle\WorkFlow\WorkFlowPrestation;
 use Doctrine\Persistence\ManagerRegistry;
 use Dompdf\Dompdf;
 use Dompdf\Options;
@@ -222,6 +223,13 @@ public function sendFacture(
             'form' => $form->createView(),
             'prestation' => $prestation
         ]);
+    }
+
+
+    #[Route('/status/{prestation}', name: 'back_prestation_status' )]
+    public function status(Prestation $prestation,WorkFlowPrestation $workFlowPrestation) {
+        $workFlowPrestation->apply($prestation, $this->request->get('transition'));
+        return $this->redirectToRoute('back_prestation_show',['prestation' => $prestation->getId()]);
     }
     
 }

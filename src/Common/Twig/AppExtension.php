@@ -9,6 +9,7 @@ use AlAya\Common\Repository\AgentRepository;
 use Symfony\Component\Asset\Packages;
 use AlAya\Common\Repository\ProjectRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Workflow\Registry;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
@@ -18,7 +19,7 @@ class AppExtension extends AbstractExtension
 
     public array $settings ;
     
-    function __construct(private EntityManagerInterface $manager, private AgentRepository $agentRepository,private Packages $packages)
+    function __construct(private EntityManagerInterface $manager, private AgentRepository $agentRepository,private Packages $packages,private Registry $workflowRegistry)
     {
         
     }
@@ -35,7 +36,8 @@ class AppExtension extends AbstractExtension
             new TwigFunction('generateUrl', [$this, 'generateUrl']),
             new TwigFunction('calcPaypalAmount',[$this, 'calcPaypalAmount']),
             new TwigFunction('unReadMsg',[$this, 'unReadMsg']),
-            new TwigFunction("calculerTotalPrestation",[$this,"calculerTotalPrestation"])
+            new TwigFunction("calculerTotalPrestation",[$this,"calculerTotalPrestation"]),
+            new TwigFunction('workflow', [$this, 'workflow'])
         ];
     }
     
@@ -156,4 +158,17 @@ public function witchUser(object $user) {
   {
       return calculerTotalPrestation($prestation);
   }
+
+  public function workflow (object $entity){
+        $data = [];
+        $trans = $this->workflowRegistry->get($entity)->getEnabledTransitions($entity) ;
+        foreach ($trans as $transition) {
+            $data[] = [
+                "name" => $transition->getName(),
+                ...$this->workflowRegistry->get($entity)->getMetadataStore()->getTransitionMetadata($transition)
+            ];
+        }
+        return $data;
+    }
+
 }

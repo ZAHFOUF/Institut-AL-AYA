@@ -1,0 +1,5 @@
+{% for tr in transitions %}
+      {% set metadata = this.getMetaData(tr) %}
+      <a {% if link is defined %}{{path(link,{{% endif %}
+       class="btn {{metadata.color}}" >{{metadata.description}}</a>
+{% endfor %}
