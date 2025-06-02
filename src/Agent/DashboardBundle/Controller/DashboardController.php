@@ -5,6 +5,7 @@ namespace AlAya\Agent\DashboardBundle\Controller;
 use AlAya\Agent\CommonBundle\Attribute\Access;
 use AlAya\Agent\CommonBundle\Controller\Controller;
 use AlAya\Common\Entity\Agent;
+use AlAya\Common\Entity\Session;
 use AlAya\Common\Entity\SessionLine;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -43,7 +44,8 @@ class DashboardController extends Controller
     #[Route(path:"/planing",name:"admin_planing",methods:["GET","POST"])]
     public function planing()  {
         $sessionLines = [];
-        $sessions = $this->doctrine->getRepository(SessionLine::class)->getSessionOfAgent();
+        /** @var Session[] $sessions */
+        $sessions = $this->doctrine->getRepository(Session::class)->getSessionOfAgent();
         foreach($sessions as $sessionLine){
             $sessionLines[] = [
                 "title" => $sessionLine->getObjective() . " - " . $sessionLine->getTimeStart()?->format("H:i") . "|" . $sessionLine->getTimeEnd()?->format("H:i"),

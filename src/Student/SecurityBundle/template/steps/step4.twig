@@ -125,36 +125,10 @@
 
             </div>
 
-            {% if user is not defined %}
-
-            <div class="row mb-3">
-
-                <div class="col-md-12 text-danger mt-3 mb-3" style="
-                font-size: 15px;
-            ">
-                                Veuillez lire et accepter le règlement intérieur pour vous inscrire.
-                            </div>
-
-                <div class="col-md-12" style="display: flex;">
-                    <div><input type="checkbox" id="intern_registration_form_acceptTerms" name="student[acceptTerms]" required="required" class="form-check-input" value="1"></div>
-                    <label style="margin-left:10px;" for="terms" class="form-label"><a target="_blank" href="https://www.merkezalfahm.fr/reglement-interieur/" style="font-size: 18px;text-decoration: underline !important;"><b>J’accepte le règlement intérieur de l’Institut</b></a></label>
-                    <div class="invalid-feedback">
-                    </div>
-                </div>
-            </div>
-            <div id="password-contain" class="p-3 bg-light mb-2 rounded">
-                <h5 class="fs-13">Le mot de passe doit contenir :</h5>
-                <p id="pass-length" class="invalid fs-12 mb-2">Minimum <b>8 caractères</b></p>
-                <p id="pass-lower" class="invalid fs-12 mb-2">Au moins une <b>lettre minuscule</b> (a-z)</p>
-                <p id="pass-upper" class="invalid fs-12 mb-2">Au moins une <b>lettre majuscule</b> (A-Z)</p>
-                <p id="pass-number" class="invalid fs-12 mb-0">Au moins un <b>chiffre</b> (0-9)</p>
-            </div>
-            {% endif %}
-        
         </div>
 
             <div class="d-flex align-items-start gap-3 mt-4">
-                <button id="submit" type="submit" class="btn btn-success btn-label right ms-auto "><i class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"></i>{% if user is not defined %}S'incrire{% else %}Modifier{% endif %}</button>
+                <button  type="submit" class="btn btn-success btn-label right ms-auto "><i class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"></i>{% if user is not defined %}Ajouter{% else %}Modifier{% endif %}</button>
             </div>
             
 

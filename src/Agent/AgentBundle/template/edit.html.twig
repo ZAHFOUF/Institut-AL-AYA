@@ -70,33 +70,6 @@
               </div>                    
             </div>
 
-
-            <div class="col-md-6">
-              <div class="mb-3">
-                <label class="form-label">{{ 'Modules'|trans }} <span class="text-danger">*</span></label>
-                {{ form_row(form.module) }}
-                <div class="invalid-feedback text-danger">
-                  {{ form_errors(form.module) }}
-              </div>
-              </div>                    
-            </div>
-
-
-
-            {% include "@CommonTemplate/Sessions/index.twig" %}
-
-            {{ form_row(form.maxHours) }}
-            
-            <div class="col-md-6">
-              <div class="mb-3">
-                <label class="form-label">{{ 'Prix par heure'|trans }} <span class="text-danger">*</span></label>
-                {{ form_row(form.price) }}
-                <div class="invalid-feedback text-danger">
-                  {{ form_errors(form.price) }}
-              </div>
-              </div>                    
-            </div>
-
             <div class="col-md-6">
               <div class="mb-3">
                 <label class="form-label">{{ 'Type utilisateur'|trans }} <span class="text-danger">*</span></label>
@@ -140,18 +113,6 @@
                    
                   </div>                    
                 </div>
-
-                <div class="col-md-6 mt-2">
-                  <div class="mb-3 d-flex">
-      
-                    {{ form_row(form.dispo , { 'attr' : { 'style' : 'cursor:pointer;'} }) }}
-      
-                    <span style="margin-left: 10px;">{{ 'Disponible'|trans }}</span>
-                    
-                   
-                  </div>                    
-                </div>
-
                 
 
               <div class="col-md-4 mt-3">

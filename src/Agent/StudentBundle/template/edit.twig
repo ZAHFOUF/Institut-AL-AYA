@@ -1,43 +1,20 @@
 {% extends '@AgentStudentBundle/main.twig' %}
 
 {% block page_title %}
-    {{ include('@AgentThemeBundle/partials/page-title.html.twig', {pagetitle: ' Administration ', title: 'Editer étudiant'} ) }}
+    {{ include('@AgentThemeBundle/partials/page-title.html.twig', {pagetitle: 'Administration'|trans, title: 'Editer étudiant'|trans } ) }}
 {% endblock %}
 
 {% block page_content %}
 
-
-<div class="row">
-    <div class="col-md-8">
-        <form action="" name="profile_form" method="post">
-
-            <div class="card" style="padding: 30px;">
-                <div class="card-header">
-                    <h5 class="card-title">{{ 'Mon profile'|trans }}</h5>
-                </div>
-                <div class="card-body">
-                    {% include "@StudentSecurityBundle/steps/step4.twig" with {user:student} %}
-                </div>
-            </div>
-
-        </form>
-     
-    </div>
-    <div class="col-md-4">
-        <div class="card">
-            <div class="card-header">
-              <h4 class="card-title mb-0 flex-grow-1">{{ 'Modifier le mot de passe'|trans }}</h4>
-            </div>
-            <div class="card-body">
-                     {% include "@MERKEZCommonTemplate/User/password.twig" %}
-            </div>
-          </div>
-    </div>
+<div class="card">
+  <div class="card-body">
+    <form action="" method="post">
+      {% include "@StudentSecurityBundle/steps/step4.twig" with {user:student} %}
+    </form>
+  </div>
 </div>
-    
-  
-{% endblock %}
 
+{% endblock %}
 
 {% block pages_scripts %}
   <script>

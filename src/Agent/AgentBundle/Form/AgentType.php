@@ -31,18 +31,7 @@ class AgentType extends AbstractType
                 'attr' => ['class' => 'form-control'],
                 'label' =>  false
             ])
-            ->add('module', EntityType::class, [
-                'class' => \AlAya\Common\Entity\Module::class,
-                'choice_label' => 'name',
-                'placeholder' => 'Touts les modules',
-                'required' => false,
-                'attr' => ['class' => 'form-control'],
-                'label' => false
-            ])
             ->add('email' , EmailType::class , ['required' => true , 'attr' => [ 'class' => 'form-control'] , 'label' => false ])
-            ->add('maxHours' , NumberType::class , ['required' => true , 'attr' => [ 'class' => 'form-control'] , 'label' => "Heures de travail par jour" ])
-            ->add("price",NumberType::class, ['required' => true, 'attr' => ['class' => 'form-control'], 'label' => false])
-            ->add("dispo", CheckboxType::class, ['required' => false, 'attr' => ['class' => 'form-check-input'], 'label' => false])
             ->add('type', EntityType::class, [
                 'class' => EntityAgentType::class,
                 'choice_label' => 'name',

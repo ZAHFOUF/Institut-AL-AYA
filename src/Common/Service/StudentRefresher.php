@@ -27,7 +27,9 @@ class StudentRefresher
         $student->isAcceptTerms(boolval($data["acceptTerms"]));
         $student->setCountry($this->entityManager->getRepository(Country::class)->find($data["country"]));
         $student->setCity($data["city"]);
-        $student->setGender($this->entityManager->getRepository(StudentGender::class)->find($data["gender"]));
+        if (isset(($data["gender"]))) {
+            $student->setGender($this->entityManager->getRepository(StudentGender::class)->find($data["gender"]));
+        }
         $student->setTimezone($data["timezone"] ?? "");
         $student->setFirst(boolval($data["first"]));
         foreach ($student->getStudentLanguages()->toArray() as $studentLangue) {

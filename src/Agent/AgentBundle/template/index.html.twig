@@ -202,7 +202,7 @@
             <div class="col-3">
                 <div style="padding-right: -2rem;" class="form-check form-switch form-switch-lg" dir="ltr">
                     <input {{method_paypal ? 'checked' : ''}} type="checkbox" class="form-check-input setting" id="method_paypal" >
-                    <label class="form-check-label" for="customSwitchsizelg">{{ 'PAIEMENT AVEC PAYPAL'|trans }}</label>
+                    <label class="form-check-label" for="customSwitchsizelg">{{ 'PAIEMENT AVEC STRIPE'|trans }}</label>
                 </div>
             </div>
         </div>
@@ -275,36 +275,7 @@
                         </div>
                         </div>                    
                       </div>
-
-
-                      <div class="col-md-6">
-                        <div class="mb-3">
-                          <label class="form-label">{{ 'Modules'|trans }} <span class="text-danger">*</span></label>
-                          {{ form_row(form.module) }}
-                          <div class="invalid-feedback text-danger">
-                            {{ form_errors(form.module) }}
-                        </div>
-                        </div>                    
-                      </div>
-
-                      
-
-                      <div class="col-md-6">
-                        <div class="mb-3">
-                      {{ form_row(form.maxHours) }}
-                    </div>                    
-                </div>
-
-                      <div class="col-md-6">
-                        <div class="mb-3">
-                          <label class="form-label">{{ 'Prix par heure'|trans }}  <span class="text-danger">*</span></label>
-                          {{ form_row(form.price) }}
-                          <div class="invalid-feedback text-danger">
-                            {{ form_errors(form.price) }}
-                        </div>
-                        </div>                    
-                      </div>
-
+            
                    </div>
 
 
@@ -317,10 +288,6 @@
                     </div>
                     </div>                    
                   </div>
-
-
-                  {% include "@CommonTemplate/Sessions/index.twig" %}
-
 
                    <div class="col-md-12">
                     <div class="mb-3">
@@ -352,17 +319,6 @@
                           {{ form_row(form.enabled , { 'attr' : { 'style' : 'cursor:pointer;'} }) }}
   
                           <span style="margin-left: 10px;">{{ 'Utilisateur Activé'|trans }}</span>
-                          
-                         
-                        </div>                    
-                      </div>
-
-                      <div class="col-md-12 mt-2">
-                        <div class="mb-3 d-flex">
-            
-                          {{ form_row(form.dispo , { 'attr' : { 'style' : 'cursor:pointer;'} }) }}
-            
-                          <span style="margin-left: 10px;">{{ 'Disponible'|trans }}</span>
                           
                          
                         </div>                    

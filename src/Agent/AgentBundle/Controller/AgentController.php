@@ -69,11 +69,7 @@ class AgentController extends Controller
         /** @var Agent $agent */
          $agent = $formAdd->getData();
          $agent->setPassword($this->passwordHasher->hashPassword($agent,$agent->getPassword()));
-         $agent->setDeleted(0);
-         $session = $request->request->all("session");
-         $agent->setAvailability($session["availability"]);
-         $agent->setDays($session["days"]);
-         $agent->setTimezone($session["timezone"]);
+         $agent->setDeleted(0);        
          $this->manager->persist($agent);
          $this->manager->flush();
          $this->manager->persist($agent);
@@ -110,10 +106,6 @@ class AgentController extends Controller
      if ($form->isSubmitted() && $form->isValid()) {
 
          $agent = $form->getData();
-         $session = $request->request->all("session");
-         $agent->setAvailability($session["availability"]);
-         $agent->setDays($session["days"]);
-         $agent->setTimezone($session["timezone"]);
          $this->manager->persist($agent);
          $this->manager->flush();
 

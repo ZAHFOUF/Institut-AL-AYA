@@ -69,7 +69,7 @@ class PrestationFormType extends AbstractType
                 'required' => false,
                 'placeholder' => 'Sélectionnez un(e) étudiant(e)',
             ])
-            ->add('groupe', EntityType::class, [
+         /*   ->add('groupe', EntityType::class, [
                 'class' => \AlAya\Common\Entity\Group::class,
                 'choice_label' => function ($group) {
                     return method_exists($group, 'getName') ? $group->getName() : (string)$group;
@@ -79,7 +79,7 @@ class PrestationFormType extends AbstractType
                 'attr' => ['class' => 'form-control'],
                 'row_attr' => ['class' => 'mb-3'],
                 'placeholder' => 'Sélectionnez un groupe',
-            ])
+            ]) */
             ;
     }
 

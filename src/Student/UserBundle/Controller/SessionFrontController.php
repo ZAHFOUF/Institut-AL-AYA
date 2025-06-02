@@ -8,6 +8,7 @@ use AlAya\Common\Entity\Group;
 use AlAya\Common\Entity\Language;
 use AlAya\Common\Entity\Module;
 use AlAya\Common\Entity\Prestation;
+use AlAya\Common\Entity\Session;
 use AlAya\Common\Entity\SessionLine;
 use AlAya\Common\Entity\SessionRequest;
 use AlAya\Common\Entity\SessionRequestStatus;
@@ -34,25 +35,12 @@ class SessionFrontController extends AbstractController
         
     }
 
- /*   #[Route('/', name: 'student_sessions', methods: ['GET'])]
+    #[Route('/', name: 'student_sessions', methods: ['GET'])]
     public function sessions()
     {
-        $sessions = $this->entityManager->getRepository(SessionStudent::class)->getSessionOfStudent();
-        $groups = $this->entityManager->getRepository(Group::class)->groups ();
-        return $this->render('@StudentUserBundle/session.twig',[
-            'sessions' => $sessions,
-            'groups' => $groups
-        ]);
+        return $this->render('@StudentUserBundle/session.twig') ;
     }
 
-    #[Route('/sessions-request', name: 'student_sessions_request', methods: ['GET'])]
-    public function sessionsRequest()
-    {
-        $sessions = $this->entityManager->getRepository(SessionRequest::class)->getSessionRequestOfStudent();
-        return $this->render('@StudentUserBundle/sessionRequest.twig',[
-            'sessions' => $sessions
-        ]);
-    }
 
     #[Route('/profile', name: 'student_profile', methods: ['GET','POST'])]
     public function profile(StudentRefresher $studentRefresher,Request $request)
@@ -89,91 +77,19 @@ class SessionFrontController extends AbstractController
     #[Route('/payements', name: 'student_payements', methods: ["POST",'GET'])]
     public function payements(Request $request,FileManager $fileManager)
     {
-        $sessions = $this->entityManager->getRepository(SessionStudent::class)->getSessionOfStudent();
-        $files = $this->entityManager->getRepository(SessionStudentFiles::class)->justifsOfStudent();
-        $sessionFiles = new SessionStudentFiles ;
-        $sessionFiles->setFile(NULL);
-        $sessionFilesForm = $this->createForm(SessionStudentFilesFromType::class,$sessionFiles,['student' => $this->getUser()->getId()]);
-
-        $sessionFilesForm->handleRequest($request);
-
-        if ($sessionFilesForm->isSubmitted() && $sessionFilesForm->isValid()) {
-            /** @var SessionStudentFiles $sessionFiles */
-    /*         $sessionFiles = $sessionFilesForm->getData();
-             $this->entityManager->persist($sessionFiles);
-             $this->entityManager->flush();
-             $file = $request->files->get("justif");
-             $sessionFiles->setFile($fileManager->upload($file,$this->getParameter("files.justifs") . "/" .  $sessionFiles->getId()));
-             $this->entityManager->persist($sessionFiles);
-             $this->entityManager->flush();
-             return $this->redirect($request->headers->get("referer"));
-        }
-
+        $bills = $this->entityManager->getRepository(Prestation::class)->getUnPaidBills($this->getUser());
         return $this->render('@StudentUserBundle/payements.twig',[
-            'files' => $files ,
-            'sessionFilesForm' => $sessionFilesForm->createView() ,
-            'sessions' => $sessions
+            'bills' => $bills
         ]);
-    }
-
-    #[Route(path:"/justif-download/{justif}",name:"front_session_downloadJustif",methods:["GET","POST"])]
-    public function downloadFunction(SessionStudentFiles $justif,FileManager $fileManager)  {
-        return $fileManager->download($this->getParameter("files.justifs") . "/" . $justif->getId() . "/" . $justif->getFile());
+    
     }
 
     #[Route(path:"/planing",name:"student_planing",methods:["GET","POST"])]
     public function planing()  {
-        $sessionLines = [];
-        $sessions = $this->entityManager->getRepository(SessionStudent::class)->getSessionOfStudent();
-        foreach($sessions as $session){
-            foreach($session->getSession()->getSession()->getSessionLines() as $sessionLine){
-                if ($sessionLine->getStatus()->getId() != 2) {
-                    $sessionLines[] = [
-                        "title" => $sessionLine->getObjective() . " - " . $sessionLine->getTimeStart()?->format("H:i") . "|" . $sessionLine->getTimeEnd()?->format("H:i"),
-                        "date" => $sessionLine->getDate()->format("Y-m-d"),
-                        "allDay" => true,
-                        "link" => $session->isPayed() ? $this->getParameter("meet.url") . $sessionLine->getSession()->getLink() : false,
-                    ];
-                }
-               
-            }
-        }
-        return new JsonResponse($sessionLines); 
+        $cours = $this->entityManager->getRepository(Session::class)->getSessionOfStudent($this->getUser());
+        return new JsonResponse($cours); 
     }
 
-#[Route("/new-session", name: "student_new_session", methods: ["POST", "GET"])]
-public function newSessionRequest(Request $request)
-{
-    $dataSession = $request->request->all("session");
-
-     /** Session creation */
-   /*  $formulas = $this->entityManager->getRepository(Formula::class)->find($dataSession["formula"]) ;
-     /** @var  SessionRequest $session */
-   /*  $session = new SessionRequest();
-     $session->setModule($this->entityManager->getRepository(Module::class)->find($dataSession["module"]));
-     $session->setType($this->entityManager->getRepository(SessionType::class)->find($dataSession["type"]));
-     $session->setFormula($formulas);
-     $session->setAvailability($dataSession["availability"]);
-     $session->setDays($dataSession["days"]);
-     $session->setHours($formulas->getTotalHours() + (int)$dataSession["additionalHours"]);
-     $session->setAdditionalHours((int)$dataSession["additionalHours"]);
-     $session->setTimezone($dataSession["timezone"] ?? "");
-     $session->setDateStart(new \DateTime($dataSession["dateStart"]));
-     $session->setStatus($this->entityManager->getRepository(SessionRequestStatus::class)->find(1));
-     $session->setStudent($this->getUser());
-     $this->entityManager->persist($session);
-
-     $this->entityManager->flush();
-
-     return $this->redirectToRoute("student_sessions_request");
-
-}
-     
-    #[Route("/chat", name: "student_chat", methods: ["GET"])]
-     public function chat()
-     {
-             return $this->render('@StudentUserBundle/chat.twig');  
-    } */
 
 #[Route("/checkout/{prestation}", name: "student_checkout", methods: ["POST", "GET"])]
 public function checkout(Prestation $prestation)

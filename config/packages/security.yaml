@@ -16,6 +16,18 @@ security:
     dev:
       pattern: ^/(_(profiler|wdt)|css|images|js)/
       security: false
+    student:
+      pattern: ^/(?!admin).*
+      lazy: true
+      provider: student_entity
+      form_login:
+        login_path: tech_student_login
+        check_path: tech_student_login
+        username_parameter: email
+        password_parameter: password
+      logout:
+        path: tech_register_logout
+        target: tech_student_login
     admin:
       pattern: ^/admin
       user_checker: AlAya\Agent\SecurityBundle\Security\adminChecker
@@ -30,6 +42,7 @@ security:
       logout:
         path: AgentSecurityBundle_LogOut
         target: AgentSecurityBundle_Login
+    
 
         #target: "/{_locale}/provider"
 
@@ -46,11 +59,7 @@ security:
     #- { host: ^bo\.(%project.host%)$, path: ^/, roles: IS_AUTHENTICATED_FULLY }
     - {  path: ^/admin/.*/login, roles: PUBLIC_ACCESS }
     - {  path: ^/admin/.*/, roles:  [IS_AUTHENTICATED_FULLY] }
-    - {  path: ^/login, roles: PUBLIC_ACCESS }
-    - {  path: ^/register, roles: PUBLIC_ACCESS }
-    - {  path: ^/api/loadFormulats, roles: PUBLIC_ACCESS }
-    - {  path: ^/api/addMessage, roles: PUBLIC_ACCESS }
-    - {  path: ^/invitation, roles: PUBLIC_ACCESS }
+    - {  path: ^/login, roles: PUBLIC_ACCESS }    
     - {  path : ^/checkout/*, roles: PUBLIC_ACCESS }
     - {  path: ^/, roles: [IS_AUTHENTICATED_FULLY] }
     

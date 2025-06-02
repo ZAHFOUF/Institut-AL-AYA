@@ -92,7 +92,7 @@ class StudentController extends Controller
             $this->manager->persist($student);
             $this->manager->flush();
             $this->addFlash("success","Votre mot de passe a été mis à jour avec succès");
-            return $this->redirectToRoute("back_student_index");
+            return $this->redirectToRoute("back_student_edit", ['id' => $student->getId()]);
         }
         $country = $this->manager->getRepository(Country::class)->findAll();
         $genders = $this->manager->getRepository(StudentGender::class)->findAll();

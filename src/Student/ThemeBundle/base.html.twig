@@ -12,8 +12,8 @@
 <body>
 
 <div id="layout-wrapper">
-   {#} {{ include('@StudentThemeBundle/partials/menu.html.twig') }} {#}
-    <div class="main-content">
+    {{ include('@StudentThemeBundle/partials/menu.html.twig') }} 
+    <div class="main-content" style="margin-top: 120px;">
         <div class="page-content">
                 {% block page_title %}
 
@@ -86,22 +86,6 @@ title: '{{ msg }}'
 
 </script>
 {% endif %} 
-
-<script>
-    {% include "@CommonTemplate/Formules/common.js" %}
-    {% include "@CommonTemplate/Formules/formules.js" with {
-        "sessionModule" : "inputSessionModule" , 
-        "formulaId" : "input[name='session[formula]']" , 
-        "sessionTypeId" : "inputSessionType" ,
-        "addtionnalHoursId" : "#additionalHours",
-        "first" : false
-} %}
-
-document.getElementById('save3').addEventListener('click', function() {
-    const form = document.getElementById('mainForm'); // Assuming the form has an ID of 'formationForm'
-    form.submit();
-});
-</script>
 
 {% block main_scripts %}
 {% endblock %}
