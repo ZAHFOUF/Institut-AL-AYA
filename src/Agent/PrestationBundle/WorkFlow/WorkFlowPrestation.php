@@ -44,6 +44,7 @@ class WorkFlowPrestation extends BaseWorkFlow
      // En attendant le paiement
      public function onEnattendantlepaiement(Prestation $entity) {
            // Création de l'email
+           $id = $entity->getId() ;
            if ($entity->getStudent() and $entity->getStudent()->getEmail()) {
                $eleve = $entity->getStudent()->getEmail();
                $bill = $this->billGenerator->generateBill($entity);
@@ -55,8 +56,8 @@ class WorkFlowPrestation extends BaseWorkFlow
                 ->attach($bill->output(), 'facture_'.'pdf', 'application/pdf')
                 ->context([
                     'link' => $this->parameter->get('project.host') . $this->urlGenerator->generate('student_checkout', [
-                        'prestation' => $entity->getId()
-                    ]),
+                        'prestation' => $id
+                    ])
                 ]);
                 $this->mailer->send($mail);
            }

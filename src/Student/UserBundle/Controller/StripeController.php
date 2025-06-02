@@ -2,6 +2,7 @@
 
 namespace AlAya\Student\UserBundle\Controller;
 
+use AlAya\Agent\PrestationBundle\WorkFlow\WorkFlowPrestation;
 use AlAya\Common\Controller\BaseController;
 use AlAya\Common\Entity\Payement;
 use AlAya\Common\Entity\PayementType;
@@ -33,7 +34,7 @@ class StripeController extends BaseController
     }
 
     #[Route('/save-payment-intent/{prestation}', name: 'save_payment_intent', methods: ['POST'])]
-    public function savePaymentIntent(Request $request, Prestation $prestation)
+    public function savePaymentIntent(Request $request, Prestation $prestation,WorkFlowPrestation $workFlowPrestation)
     {
         $data = json_decode($request->getContent(), true);
         $paymentIntentId = $data['paymentIntentId'];
@@ -55,6 +56,7 @@ class StripeController extends BaseController
         payerPrestation($prestation);
         $this->doctrine->persist($prestation);
         $this->doctrine->flush();
+        $workFlowPrestation->apply($prestation,"en_cours");
         return new Response('Transaction validée', 200);
     } else {
         return new Response('Transaction non validée', 400);

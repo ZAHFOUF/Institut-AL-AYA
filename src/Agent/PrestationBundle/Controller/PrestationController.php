@@ -36,6 +36,7 @@ class PrestationController extends BaseController
 
         $prestations = $this->repo(Prestation::class)->findAll();
         $prestation = new Prestation();
+        $prestation->setStatus("brouillon");
         $form = $this->createForm(PrestationFormType::class, $prestation);
 
         $form->handleRequest($request);
@@ -120,7 +121,7 @@ class PrestationController extends BaseController
                     'amount' => $line->getFormula()->getPrice() * $line->getQte()
                 ];
                 }
-            })->toArray(),
+            })->filter(fn($item) => $item !== null)->toArray(),
         ];
 
         $eleve = [

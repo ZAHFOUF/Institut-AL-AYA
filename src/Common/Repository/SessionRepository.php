@@ -51,8 +51,8 @@ class SessionRepository extends BaseRepository
 
             RequestGetter::initialize($inputBag);
 
-            RequestGetter::isNotEmpty('month') ? RequestGetter::whereEqualSave('MONTH(s.date_start)','month') : null;
-            RequestGetter::isNotEmpty('year') ? RequestGetter::whereEqualSave('YEAR(s.date_start)','year') : null;
+            RequestGetter::isNotEmpty('month') ? RequestGetter::whereEqualSave('MONTH(s.date)','month') : null;
+            RequestGetter::isNotEmpty('year') ? RequestGetter::whereEqualSave('YEAR(s.date)','year') : null;
             RequestGetter::isNotEmpty('teacher') ? RequestGetter::whereEqualSave('a.id','teacher') : null;
             $where = RequestGetter::allWhere(false);
 
@@ -63,7 +63,7 @@ SELECT
     CONCAT(IFNULL(a.last_name,''), ' ', IFNULL(a.first_name,'')) AS 'Professeur',
 
     -- Use ANY_VALUE() to avoid ONLY_FULL_GROUP_BY issue
-    CASE MONTH(ANY_VALUE(s.date_start))
+    CASE MONTH(ANY_VALUE(s.date))
         WHEN 1 THEN 'Janvier'
         WHEN 2 THEN 'Février'
         WHEN 3 THEN 'Mars'
@@ -78,49 +78,23 @@ SELECT
         WHEN 12 THEN 'Décembre'
         ELSE 'Inconnu'
     END AS 'Mois',
-    YEAR(ANY_VALUE(s.date_start)) as 'Année' ,
+    YEAR(ANY_VALUE(s.date)) as 'Année' ,
 
-    COUNT(DISTINCT s.id) AS 'Nombre formations',
+    COUNT(DISTINCT s.id) AS 'Nombre cours',
 
-    -- Separate subquery to ensure correct total across all sessions in the same month
-    (
-        SELECT COUNT(st.student_id) 
-        FROM session_student st 
-        INNER JOIN session_group sg ON sg.id = st.session_id 
-        INNER JOIN session s3 ON sg.session_id = s3.id 
-        WHERE s3.status_id > 1 
-        AND MONTH(s3.date_start) = MONTH(ANY_VALUE(s.date_start)) 
-        AND st.payed = 1
-    ) AS 'Total élèves payés',
-
-    SUM(s.hours) AS 'Total d\'heures prévues' ,
-    SUM( (SELECT SUM(IFNULL(sl.hours,0)) from session_line sl WHERE sl.session_id = s.id) ) AS 'Total d\'heures réalisées' ,
-    
-    CONCAT((
-        SELECT COUNT(st.student_id) 
-        FROM session_student st 
-        INNER JOIN session_group sg ON sg.id = st.session_id 
-        INNER JOIN session s3 ON sg.session_id = s3.id 
-        WHERE s3.status_id > 1 
-        AND MONTH(s3.date_start) = MONTH(ANY_VALUE(s.date_start)) 
-        AND st.payed = 1
-    ) + a.price,' €') AS  'Prix par heure' ,
-    
-    CONCAT(SUM( (SELECT SUM(IFNULL(sl.hours,0)) from session_line sl WHERE sl.session_id = s.id) ) *  ((
-        SELECT COUNT(st.student_id) 
-        FROM session_student st 
-        INNER JOIN session_group sg ON sg.id = st.session_id 
-        INNER JOIN session s3 ON sg.session_id = s3.id 
-        WHERE s3.status_id > 1 
-        AND MONTH(s3.date_start) = MONTH(ANY_VALUE(s.date_start)) 
-        AND st.payed = 1
-    ) + a.price),' €') as 'Total Rémunération'
+SUM(s.hours) AS 'Total d\'heures réalisées' ,
+/*Cours individuel : 7€/H 
+○ Binôme : 6€/H 
+○ Groupe : 5€/H
+*/
+SUM(s.hours * (CASE WHEN p.formula_id = 1 THEN 7 WHEN p.formula_id = 2 THEN 6 WHEN p.formula_id = 3 THEN 7 ELSE 0 END )) as 'Total Rémunération'
 
 FROM session s 
-INNER JOIN agent a ON a.id = s.teacher_id
-WHERE s.status_id > 1 $where -- Only include valid sessions
-GROUP BY a.id, MONTH(s.date_start)
-ORDER BY MONTH(s.date_start) DESC ;
+INNER JOIN prestation p ON p.id = s.prestation_id
+INNER JOIN agent a ON a.id = p.agent_id
+WHERE s.date IS NOT NULL $where
+GROUP BY a.id, MONTH(s.date)
+ORDER BY MONTH(s.date) DESC ;
 " ;
 
 

@@ -176,7 +176,7 @@ public function newSessionRequest(Request $request)
     } */
 
 #[Route("/checkout/{prestation}", name: "student_checkout", methods: ["POST", "GET"])]
-public function checkout(Request $request,Prestation $prestation)
+public function checkout(Prestation $prestation)
 {
     return $this->render('@StudentUserBundle/checkout.twig',[
         'prestation' => $prestation,
@@ -190,7 +190,7 @@ public function checkout(Request $request,Prestation $prestation)
                     'amount' => intval($line->getFormula()->getPrice() * 100), // Montant en centimes
                 ];
             }
-        })->toArray(),
+        })->filter(fn($item) => $item !== null)->toArray(),
     ]);
 }
 
