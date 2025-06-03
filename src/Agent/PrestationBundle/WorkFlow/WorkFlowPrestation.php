@@ -49,7 +49,7 @@ class WorkFlowPrestation extends BaseWorkFlow
                $eleve = $entity->getStudent()->getEmail();
                $bill = $this->billGenerator->generateBill($entity);
                $mail =  (new TemplatedEmail())
-                ->from('no-reply@institut-al-aya.com')
+                ->from($this->parameter->get('from.mail'))
                 ->to($eleve)
                 ->subject('Votre facture ')
                 ->htmlTemplate('@AgentPrestationBundle/mail.twig')
