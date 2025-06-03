@@ -1,77 +1,34 @@
 #Gestion des Utilisateurs
-back_agent_index : 
-    label : Voir les Utilisateurs
-    module : Gestion des Utilisateurs
+back_agent_index:
+  label: Voir les utilisateurs
+  module: Gestion des Utilisateurs
 
-back_agent_edit :
-    label : Modifier un Utilisateur
-    module : Gestion des Utilisateurs
+back_agent_edit:
+  label: Modifier un utilisateur
+  module: Gestion des Utilisateurs
 
-back_agent_add :
-    label : Ajouter un Utilisateur
-    module : Gestion des Utilisateurs
+back_agent_add:
+  label: Ajouter un utilisateur
+  module: Gestion des Utilisateurs
 
-#Gestion des roles
-back_role_index :
-    label : Voir les roles
-    module : Gestion des roles
+back_agent_set_params:
+  label: Paramétrages
+  module: Gestion des Utilisateurs
 
-back_role_edit :
-    label : Modifier un role
-    module : Gestion des roles
+#Gestion des rôles
+back_role_index:
+  label: Voir les rôles
+  module: Gestion des rôles
 
-back_role_add :
-    label :  Ajouter un role
-    module : Gestion des roles
+back_role_edit:
+  label: Modifier un rôle
+  module: Gestion des rôles
 
-back_prestation_index:
-  label: Voir les sessions
-  module: Gestion des sessions
+back_role_add:
+  label: Ajouter un rôle
+  module: Gestion des rôles
 
-back_prestation_create:
-  label: Créer une session
-  module: Gestion des sessions
-
-back_prestation_clone:
-  label: Renouveler une session
-  module: Gestion des sessions
-
-back_prestation_edit:
-  label: Consulter une session
-  module: Gestion des sessions
-
-back_prestationLine_edit:
-  label: Modifier un cours
-  module: Gestion des sessions
-
-back_prestation_downloadJustif:
-  label: Télécharger un justificatif
-  module: Gestion des sessions
-
-back_prestation_changeStatus:
-  label: Changer le statut de la session
-  module: Gestion des sessions
-
-back_prestationLine_changeStatus:
-  label: Changer le statut d’un cours
-  module: Gestion des sessions
-
-back_prestation_pay:
-  label: Paiement de la session
-  module: Gestion des sessions
-
-back_prestationRequest_index:
-  label: Voir les demandes d'inscription
-  module: Gestion des sessions
-
-back_prestationRequest_show:
-  label: Voir une demande d'inscription
-  module: Gestion des sessions
-
-back_prestationRequest_changeStatus:
-  label: Changer le statut d'une demande d'inscription
-  module: Gestion des sessions
-
+#Gestion des groupes
 back_group_index:
   label: Voir les groupes
   module: Gestion des groupes
@@ -80,10 +37,7 @@ back_group_show:
   label: Détails d’un groupe
   module: Gestion des groupes
 
-back_group_abandon:
-  label: Abandonner un étudiant dans un groupe
-  module: Gestion des groupes
-
+#Gestion des étudiants
 back_student_index:
   label: Voir les étudiants
   module: Gestion des étudiants
@@ -96,11 +50,37 @@ back_student_edit:
   label: Modifier un étudiant
   module: Gestion des étudiants
 
+#Gestion des sessions (prestations)
+back_prestation_index:
+  label: Voir les prestations
+  module: Gestion des prestation
+
+back_prestation_create:
+  label: Créer une prestation
+  module: Gestion des prestation
+
+back_prestation_edit:
+  label: Modifier une prestation
+  module: Gestion des prestation
+
+back_prestation_pay:
+  label: Paiement de la prestation
+  module: Gestion des prestation
+
+#Gestion des paiements
+back_payement_index:
+  label: Voir les paiements
+  module: Gestion des paiements
+
+back_payement_add:
+  label: Ajouter un paiement
+  module: Gestion des paiements
+
+back_payement_download_invoice:
+  label: Télécharger la facture
+  module: Gestion des paiements
+
+#Reporting
 back_reporting_index:
   label: Reporting rémunérations
   module: Reporting
-
-back_agent_set_params :
-    label : Paramétrages
-    module : Gestion des Utilisateurs
-  

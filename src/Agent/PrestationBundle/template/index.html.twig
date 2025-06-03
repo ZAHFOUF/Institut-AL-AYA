@@ -37,8 +37,8 @@
             <td>{{ prestation.programme.name }}</td>
             <td>{{ prestation.agent.lastName }} {{ prestation.agent.firstName }}</td>
             <td>{{ prestation.formula.name }} - {{ prestation.formula.price }}€/H</td>
+             <td>{{calculerTotalPrestation(prestation)}}€</td>
             <td><twig:Status :state="prestation.status" /></td>
-            <td>{{calculerTotalPrestation(prestation)}}€</td>
             <td>
               <a href="{{path('back_prestation_show',{prestation:prestation.id})}}" class="btn btn-sm btn-soft-primary">
                 <i class="ri-eye-line"></i> Consulter

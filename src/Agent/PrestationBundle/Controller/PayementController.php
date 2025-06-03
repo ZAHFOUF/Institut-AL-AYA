@@ -2,12 +2,13 @@
 
 namespace AlAya\Agent\PrestationBundle\Controller;
 
+use AlAya\Agent\CommonBundle\Attribute\Access;
 use AlAya\Agent\PrestationBundle\Form\PayementAddType as FormPayementAddType;
 use AlAya\Common\Controller\BaseController;
 use AlAya\Common\Entity\Payement;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\Routing\Annotation\Route;
-
+#[Access()]
 class PayementController extends BaseController
 {
     #[Route('/payements', name: 'payement_index')]

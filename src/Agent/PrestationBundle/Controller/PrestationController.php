@@ -1,6 +1,8 @@
 <?php
 
 namespace AlAya\Agent\PrestationBundle\Controller;
+
+use AlAya\Agent\CommonBundle\Attribute\Access;
 use AlAya\Agent\CommonBundle\Controller\Controller;
 use AlAya\Common\Controller\BaseController;
 use AlAya\Common\Entity\Group;
@@ -23,6 +25,7 @@ use Symfony\Component\Mime\Email;
 use Symfony\Component\HttpFoundation\Request;
 
 #[Route("/prestations")]
+#[Access()]
 class PrestationController extends BaseController
 {
 

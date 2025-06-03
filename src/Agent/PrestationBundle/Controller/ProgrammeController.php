@@ -1,6 +1,8 @@
 <?php
 
 namespace AlAya\Agent\PrestationBundle\Controller;
+
+use AlAya\Agent\CommonBundle\Attribute\Access;
 use AlAya\Agent\CommonBundle\Controller\Controller;
 use AlAya\Common\Entity\Programme;
 use AlAya\Common\Controller\BaseController;
@@ -11,6 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[Route("/programmes")]
+#[Access()]
 class ProgrammeController extends BaseController
 {
 

@@ -1,7 +1,7 @@
 {% extends '@AgentStudentBundle/main.twig' %}
 
 {% block page_title %}
-    {{ include('@AgentThemeBundle/partials/page-title.html.twig', {pagetitle: ' Administration ', title: 'Classes'|trans } ) }}
+    {{ include('@AgentThemeBundle/partials/page-title.html.twig', {pagetitle: ' Administration ', title: 'Groupes'|trans } ) }}
 {% endblock %}
 
 {% block page_content %}
@@ -10,7 +10,7 @@
     <div class="col-9">
         <div class="card">
             <div class="card-header align-items-center d-flex">
-                <h4 class="card-title mb-0 flex-grow-1">{{ 'Liste des classes'|trans }}</h4>
+                <h4 class="card-title mb-0 flex-grow-1">{{ 'Liste des Groupes'|trans }}</h4>
                 <div class="d-flex gap-1 flex-wrap">
                     <button class="btn btn-secondary" type="button" data-bs-toggle="offcanvas" href="#offcanvasExample">
                         <i class="ri-filter-2-line me-1 align-bottom"></i> {{ 'Filtrer'|trans }}

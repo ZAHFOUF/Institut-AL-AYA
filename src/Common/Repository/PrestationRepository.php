@@ -21,7 +21,7 @@ class PrestationRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('p')
              ->innerJoin('p.student', 's')
              ->andWhere("s.id = :studentId")
-             ->andWhere("s.status = :status ")
+             ->andWhere("p.status = :status ")
              ->setParameter('status','en attendant le paiement')
              ->setParameter('studentId', $student->getId())
              ->orderBy('p.id', 'DESC')
