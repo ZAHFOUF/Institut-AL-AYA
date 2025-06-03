@@ -59,7 +59,7 @@ back_prestation_create:
   label: Créer une prestation
   module: Gestion des prestation
 
-back_prestation_edit:
+back_prestation_show:
   label: Modifier une prestation
   module: Gestion des prestation
 
@@ -68,7 +68,7 @@ back_prestation_pay:
   module: Gestion des prestation
 
 #Gestion des paiements
-back_payement_index:
+payement_index:
   label: Voir les paiements
   module: Gestion des paiements
 
@@ -84,3 +84,7 @@ back_payement_download_invoice:
 back_reporting_index:
   label: Reporting rémunérations
   module: Reporting
+
+back_programme_index :
+  label: Consulter les programmes
+  module: Gestion des programmes
