@@ -9,12 +9,9 @@ use Doctrine\Persistence\ManagerRegistry;
 /**
  * @extends ServiceEntityRepository<Prestation>
  */
-class PrestationRepository extends ServiceEntityRepository
+class PrestationRepository extends BaseRepository
 {
-    public function __construct(ManagerRegistry $registry)
-    {
-        parent::__construct($registry, Prestation::class);
-    }
+  
 
     public function getUnPaidBills($student): array
     {
@@ -27,6 +24,24 @@ class PrestationRepository extends ServiceEntityRepository
              ->orderBy('p.id', 'DESC')
              ->getQuery()
              ->getResult();
+    }
+
+    public function all()  {
+        $user = $this->getUser();
+        if ($user->getType()->getId() == 1) {
+            return $this->createQueryBuilder('p')
+                ->orderBy('p.id', 'DESC')
+                ->getQuery()
+                ->getResult();
+        }
+
+        return $this->createQueryBuilder('p')
+            ->where("p.agent = :agent")
+            ->setParameter('agent', $user)
+            ->orderBy('p.id', 'DESC')
+            ->getQuery()
+            ->getResult();
+        
     }
 
 //    /**
@@ -53,4 +68,10 @@ class PrestationRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+  protected function getEntityClass(): string
+    {
+        return Prestation::class;
+    
+    }
 }

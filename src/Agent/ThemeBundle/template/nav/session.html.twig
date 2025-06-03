@@ -1,20 +1,31 @@
-{% if userCan("back_prestation_index",app.user) %} 
 
 
+{% if userCan("back_programme_index",app.user) %} 
 
 <a class="nav-link menu-link" href="{{path('back_programme_index')}}" role="button" aria-expanded="false" aria-controls="sidebarDashboards">
     <i class="ri-book-mark-fill"></i> {{ 'Programmes'|trans }} <span data-key="t-dashboards"></span>
 </a>
 
+{% endif %}
+
+{% if userCan("back_prestation_index",app.user) %} 
+
 <a class="nav-link menu-link" href="{{path('back_prestation_index')}}" role="button" aria-expanded="false" aria-controls="sidebarDashboards">
     <i class="ri-quill-pen-fill"></i> {{ 'Prestations'|trans }} <span data-key="t-dashboards"></span>
 </a>
+
+{% endif %}
+
+
+{% if userCan("payement_index",app.user) %} 
 
 <a class="nav-link menu-link" href="{{path('payement_index')}}" role="button" aria-expanded="false" aria-controls="sidebarDashboards">
     <i class="ri-bank-card-fill"></i> {{ 'Paiements'|trans }} <span data-key="t-dashboards"></span>
 </a>
 
 {% endif %}
+
+
 
 
 

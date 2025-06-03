@@ -37,7 +37,7 @@ class PrestationController extends BaseController
         // use AlAya\Agent\PrestationBundle\Form\PrestationFormType;
         // use AlAya\Agent\PrestationBundle\Entity\Prestation;
 
-        $prestations = $this->repo(Prestation::class)->findAll();
+        $prestations = $this->repo(Prestation::class)->all();
         $prestation = new Prestation();
         $prestation->setStatus("brouillon");
         $form = $this->createForm(PrestationFormType::class, $prestation);
