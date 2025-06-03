@@ -25,12 +25,12 @@ use Symfony\Component\Mime\Email;
 use Symfony\Component\HttpFoundation\Request;
 
 #[Route("/prestations")]
-#[Access()]
 class PrestationController extends BaseController
 {
 
 
     #[Route("/", name: "back_prestation_index")]
+    #[Access()]
     public function index(Request $request): Response
     {
         // Assurez-vous d'importer PrestationFormType et l'entité Prestation
@@ -59,6 +59,7 @@ class PrestationController extends BaseController
     }
 
     #[Route("/show/{prestation}",name:"back_prestation_show")]
+    #[Access()]
     public function show(Request $request, Prestation $prestation): Response
     { 
         // Formulaire d'ajout de session
