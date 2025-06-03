@@ -62,23 +62,23 @@ SELECT
 
     CONCAT(IFNULL(a.last_name,''), ' ', IFNULL(a.first_name,'')) AS 'Professeur',
 
-    -- Use ANY_VALUE() to avoid ONLY_FULL_GROUP_BY issue
-    CASE MONTH(ANY_VALUE(s.date))
-        WHEN 1 THEN 'Janvier'
-        WHEN 2 THEN 'Février'
-        WHEN 3 THEN 'Mars'
-        WHEN 4 THEN 'Avril'
-        WHEN 5 THEN 'Mai'
-        WHEN 6 THEN 'Juin'
-        WHEN 7 THEN 'Juillet'
-        WHEN 8 THEN 'Août'
-        WHEN 9 THEN 'Septembre'
-        WHEN 10 THEN 'Octobre'
-        WHEN 11 THEN 'Novembre'
-        WHEN 12 THEN 'Décembre'
-        ELSE 'Inconnu'
-    END AS 'Mois',
-    YEAR(ANY_VALUE(s.date)) as 'Année' ,
+    CASE MONTH(MIN(s.date))
+    WHEN 1 THEN 'Janvier'
+    WHEN 2 THEN 'Février'
+    WHEN 3 THEN 'Mars'
+    WHEN 4 THEN 'Avril'
+    WHEN 5 THEN 'Mai'
+    WHEN 6 THEN 'Juin'
+    WHEN 7 THEN 'Juillet'
+    WHEN 8 THEN 'Août'
+    WHEN 9 THEN 'Septembre'
+    WHEN 10 THEN 'Octobre'
+    WHEN 11 THEN 'Novembre'
+    WHEN 12 THEN 'Décembre'
+    ELSE 'Inconnu'
+END AS 'Mois',
+YEAR(MIN(s.date)) AS 'Année',
+
 
     COUNT(DISTINCT s.id) AS 'Nombre cours',
 
