@@ -13,12 +13,12 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[Route("/programmes")]
-#[Access()]
 class ProgrammeController extends BaseController
 {
 
     #[Route("/",name:"back_programme_index")]
     #[Template("@AgentPrestationBundle/Programme/index.html.twig")]
+    #[Access()]
     public function index()
     { 
         $programme = new Programme();

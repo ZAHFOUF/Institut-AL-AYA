@@ -21,11 +21,6 @@ class GroupRepository extends BaseRepository
     {
         $query = $this->createQueryBuilder('s') ;
 
-        if ($this->getUser() instanceof Agent and $this->getUser()->getType()->getId() == 2) {
-            $query->andWhere('s.teacher = :teacher')
-                ->setParameter('teacher', $this->getUser()->getId());
-        }
-
         return $this->queryParser->filter($query,$inputBag)
             ->orderBy("s.id","DESC")
             ->getQuery()
