@@ -43,17 +43,7 @@ class DashboardController extends Controller
     // The api
     #[Route(path:"/planing",name:"admin_planing",methods:["GET","POST"])]
     public function planing()  {
-        $sessionLines = [];
-        /** @var Session[] $sessions */
-        $sessions = $this->doctrine->getRepository(Session::class)->getSessionOfAgent();
-        foreach($sessions as $sessionLine){
-            $sessionLines[] = [
-                "title" => $sessionLine->getObjective() . " - " . $sessionLine->getTimeStart()?->format("H:i") . "|" . $sessionLine->getTimeEnd()?->format("H:i"),
-                "date" => $sessionLine->getDate()->format("Y-m-d H:i:s"),
-                "allDay" => false,
-                "link" => $this->getParameter("meet.url") . $sessionLine->getSession()->getLink()
-            ];
-        }
-        return new JsonResponse($sessionLines); 
+         $cours = $this->em->getRepository(Session::class)->getSessionOfAgent($this->getUser());
+         return new JsonResponse($cours); 
     }
 }

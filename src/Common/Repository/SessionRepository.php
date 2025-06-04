@@ -113,13 +113,15 @@ ORDER BY MONTH(s.date) DESC ;
         return Session::class;
     }
 
-    public function getSessionOfAgent() 
+    public function getSessionOfAgent($agent) 
     {
-        $user = $this->getUser();
-        $query = $this->createQueryBuilder("s")
-                 ->where("s.teacher = :teacher")
-                 ->setParameter("teacher", $user->getId());
-        return $query->getQuery()->getResult();
+       return $this->addParam('agent', $agent->getId())
+        ->executeQuery("
+          SELECT s.date as date , pr.name as title , true as allDay , '' as link FROM `prestation` p
+          INNER JOIN session s on s.prestation_id = p.id
+          INNER JOIN programme pr ON pr.id = p.programme_id
+          WHERE p.agent_id = :agent
+        ");
 
     }
 

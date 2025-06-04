@@ -24,11 +24,7 @@
                             <tr>
                                 <th scope="col">{{ 'Nom'|trans }}</th>
                                 <th scope="col">{{ 'Capacité'|trans }}</th>
-                                <th>{{ 'Formateur référent'|trans }}</th>
-                                <th scope="col">{{ 'Genre'|trans }}</th>
                                 <th>{{ 'Membres actifs'|trans }}</th>
-                                <th>{{ 'Membres abandonnant'|trans }}</th>
-                                <th>{{ 'Total session'|trans }}</th>
                                 <th scope="col">{{ 'Action'|trans }}</th>
                             </tr>
                         </thead>
@@ -43,11 +39,7 @@
                                         {{ group.name }}
                                     </td>
                                     <td>{{ group.max }}</td>
-                                    <td>{{group.teacher ? (group.teacher.lastName ~ ' ' ~ group.teacher.firstName) : ''}} </td>
-                                    <td>{{ group.gender.name}}</td>
-                                    <td>{{ group.studentsCount()}}</td>
-                                    <td>0</td>
-                                    <td>{{ group.sessionCount() }}</td>
+                                   <td>{{ group.studentsCount()}}</td>
                                     <td>
                                         <a href="{{path('back_group_show',{group:group.id})}}" class="btn btn-success"><i class="ri-search-eye-line"></i></a>
                                     </td>

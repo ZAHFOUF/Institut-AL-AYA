@@ -11,8 +11,12 @@
 
             <h3 style="color:#1c1b1b;margin-bottom: 25px;">{{ 'As salam aleykoum'|trans }} {{app.user.lastName}} {{app.user.firstName}} </h3>
 
+            <div class="col-md-10">
+                {% include "@CommonTemplate/Calendar/html.twig" %}
+            </div>
         </div>
      
+        
 
       
     </div>

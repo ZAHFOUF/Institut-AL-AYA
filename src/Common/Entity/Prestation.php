@@ -12,6 +12,8 @@ use Doctrine\ORM\Mapping as ORM;
 class Prestation
 {
 
+    const ACTIVE = 'en cours';
+
     use createdFields ;
 
     #[ORM\Id]

@@ -83,4 +83,13 @@
    
 </script>
 
+{% if app.request.get("action") == "openModal" %}
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#addProgrammeModal').modal('show');
+    });
+</script>
+{% endif %}
+
+
 {% endblock %}

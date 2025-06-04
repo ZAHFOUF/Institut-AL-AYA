@@ -104,24 +104,12 @@ class GroupController extends Controller
         }
       
 
-       
-        $sessions = $paginatorInterface->paginate($this->manager->getRepository(SessionGroup::class)->findBy(['group' => $group]),$request->query->get("page",1),10) ;
-
-        $lien = false ;
-
-        if (!is_null($group->getInvitationUuid()) and !empty($group->getInvitationUuid())) {
-           $lien =  $this->getParameter("project.host") . $this->generateUrl("tech_student_invitation",['inv' => $group->getInvitationUuid()]);
-        }
-
-
         return $this->render('@AgentStudentBundle/Groups/show.twig',[
             'group' => $group ,
             'form' => $form->createView() ,
             'activeStudents' => $activeStudents ,
             'canceledStudents' => $canceledStudents ,
-            'students' => $repo->studentsGroup($group->getGender()),
-            "sessions" => $sessions,
-             "lien" => $lien
+            'students' => $repo->studentsGroup()
         ]);
     }
 

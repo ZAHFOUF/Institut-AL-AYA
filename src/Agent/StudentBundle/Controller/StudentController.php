@@ -63,7 +63,7 @@ class StudentController extends Controller
             $student = $studentRefresher->refreshPassword($student,$data);
             $this->manager->persist($student);
             $this->manager->flush();
-            return $this->redirectToRoute("back_student_index") ;
+            return $this->redirectToRoute("back_prestation_index",['action' => "openModal"]) ;
         }
         return $this->render("@AgentStudentBundle/new.twig",[
             'country' => $country,

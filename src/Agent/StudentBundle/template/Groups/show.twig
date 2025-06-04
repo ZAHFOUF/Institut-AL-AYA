@@ -1,8 +1,8 @@
-{% extends '@MERKEZAdminPrestationBundle/main.twig' %}
+{% extends '@AgentStudentBundle/main.twig' %}
 
 
 {% block page_title %}
-    {{ include('@AgentThemeBundle/partials/page-title.html.twig', {pagetitle: 'Étudiants'|trans, title: 'Consulter une classe'|trans} ) }}
+    {{ include('@AgentThemeBundle/partials/page-title.html.twig', {pagetitle: 'Étudiants'|trans, title: 'Consulter un groupe'|trans} ) }}
 {% endblock %}
 
 {% block page_content %}
@@ -12,7 +12,7 @@
         <div class="card">
 
             <div class="card-header">
-                <h5 class="card-title mb-0">{{ 'Modifer les Informations de la classe'|trans }} {{group.name}} {% if group.bySystem %}
+                <h5 class="card-title mb-0">{{ 'Modifer les Informations de ce groupe'|trans }} {{group.name}} {% if group.bySystem %}
                     <twig:BySystem :icon="false"/>
                 {% endif %}  </h5> 
                 
@@ -38,9 +38,6 @@
             <div class="card-header align-items-center d-flex">
                 <h5 class="card-title mb-0 flex-grow-1">{{ 'Les membres'|trans }}</h5>
                 <div class="d-flex gap-1 flex-wrap">
-                    <button id="abandonButton" type="submit" class="btn btn-danger btn-label rounded-pill" >
-                        <i style="right: -7px;" class=" ri-forbid-2-line  label-icon align-middle rounded-pill fs-16 me-2"></i>{{ 'Abandonner'|trans }}
-                    </button>
                     <button id="sendMailButton" type="button" class="btn btn-primary btn-label rounded-pill"><i style="right: -7px;" class=" ri-mail-send-fill label-icon align-middle rounded-pill fs-16 me-2"></i>{{ 'Notifier'|trans }}</button>
                 </div>
             </div>
@@ -155,60 +152,6 @@
             <!-- end card -->
         
        
-</div>
-
-
-<div class="col-lg-8">
-    <div class="card mt-2">
-        <div class="card-header">
-            <h5 class="card-title mb-0">{{ 'Sessions'|trans }}</h5>
-        </div>
-        
-        <div class="card-body">
-            <div class="table-responsive table-card">
-                <table class="table table-borderless table-centered align-middle table-nowrap mb-0" id="sessionsTable">
-                    <thead class="table-light">
-                        <tr>
-                            <th>{{ 'Numéro'|trans }}</th>
-                            <th scope="col">{{ 'Module'|trans }}</th>
-                            <th scope="col">{{ 'Mois'|trans }}</th>
-                            <th scope="col">{{ 'Date'|trans }}</th>
-                            <th scope="col">{{ 'Statut'|trans }}</th>
-                            <th scope="col">{{ 'Heures prévues'|trans }}</th>
-                            <th>{{ 'Action'|trans }}</th>
-                        </tr>
-                    </thead>
-                    <tbody class="list form-check-all">
-                        {% for s in sessions %}
-                           {% set session = s.session %}
-                            <tr>
-                                <td> <a target="_blank" href="{{path('back_session_edit',{session:session.id})}}">{{session.id}}</a></td>
-                                <td>{{ session.module.name }}</td>
-                                <td>{{getMonth(session.dateStart|date('m'))}}</td>
-                                <td>{{ session.dateStart ? session.dateStart|date('d/m/Y') : '' }}</td>
-                                <td>  <twig:Status :status="session.status.name" /></td>
-                                <td>{{ session.hours ?: '' }}</td>
-                                <td>
-                                    <a href="{{path('back_session_edit',{session:session.id})}}" type="button" class="btn btn-sm btn-primary ">{{ 'Consulter'|trans }}</a>
-                                </td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-    
-                <div class="card-footer">
-                    <div class="d-flex justify-content-end">
-                        <div class="pagination-wrap hstack" style="display: flex; margin-bottom: -14px;">
-                            {{ knp_pagination_render(sessions) }}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- end card body -->
-    </div>
-
 </div>
 
 

@@ -29,7 +29,7 @@ class GroupForm extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        array_map(fn($item)=> $this->students[$item["name"]] = $item["id"] ,$this->repo->studentsGroup($options['data']->getGender()) ) ;
+        array_map(fn($item)=> $this->students[$item["name"]] = $item["id"] ,$this->repo->studentsGroup() ) ;
 
         $builder
             ->add('name', TextType::class, [
@@ -38,36 +38,14 @@ class GroupForm extends AbstractType
                 'attr' => ['class' => 'form-control'] ,
                 'row_attr' => ['class' => 'mt-2']
             ])
+
             ->add('max', IntegerType::class, [
                 'label' => 'Capacité',
                 'required' => true,
                 'attr' => ['class' => 'form-control'] ,
                 'row_attr' => ['class' => 'mt-2']
             ])
-            ->add('gender', EntityType::class, [
-                'class' => StudentGender::class,
-                'choice_label' => 'name',
-                'label' => 'Genre',
-                'placeholder' => 'Sélectionner un genre',
-                'required' => true,
-                'attr' => ['class' => 'form-control'],
-                'row_attr' => ['class' => 'mt-2']
-            ])
-            ->add('teacher', EntityType::class, [
-                'class' => Agent::class,
-                'choice_label' => function (Agent $agent) {
-                    return $agent->getFirstname() . ' ' . $agent->getLastname();
-                },
-                'label'=> "Professeur référent",
-                'placeholder' => 'Sélectionner un professeur',
-                'required' => true,
-                'attr' => ['class' => 'form-control'],
-                'row_attr' => ['class' => 'mt-2'],
-                'mapped' => true,
-                'query_builder' => function (EntityRepository $er) {
-                    return $er
-                    ->createQueryBuilder("p")->join("p.type","t")->andWhere("t.id = 2"); }
-                ]);
+           ;
 
             if (!$options['edit']) {
                 $builder->add('students', ChoiceType::class , [

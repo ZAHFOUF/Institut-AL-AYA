@@ -25,13 +25,13 @@ class StudentRepository extends ServiceEntityRepository
         return $query->getQuery()->getResult();
     }
 
-    public function studentsGroup($gender)  {
+    public function studentsGroup()  {
         return $this->createQueryBuilder("r")
         ->distinct()
         ->select("r.id,CONCAT(r.lastName,' ',r.firstName,' (',g.name,')') as name")
         ->join("r.gender","g")
-        ->andWhere("g.id = :gender")
-        ->setParameter("gender",$gender)
+       /* ->andWhere("g.id = :gender")
+        ->setParameter("gender",$gender) */
         ->getQuery()->getArrayResult();
     }
 

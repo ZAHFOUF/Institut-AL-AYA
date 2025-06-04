@@ -1,7 +1,7 @@
 <!-- ========== App Menu ========== -->
 <div class="app-menu navbar-menu" style="padding-top: 42px;">
     <!-- LOGO -->
-    <div class="navbar-brand-box">
+    <div class="navbar-brand-box" >
         <!-- Dark Logo-->
         <a href="" class="logo logo-dark">
             <span class="logo-sm">
@@ -28,25 +28,28 @@
     <div id="scrollbar">
         <div class="container-fluid">
             <div id="two-column-menu"></div>
-            <ul class="navbar-nav" id="navbar-nav">
+            <ul class="navbar-nav" id="navbar-nav" style="display: flex
+;
+    justify-content: center;
+    gap: 27px;">
                 <li class="menu-title"><span data-key="t-menu">Menu</span></li>
                     <li class="nav-item">
                     <a class="nav-link menu-link" href="{{path('student_sessions')}}" role="button" aria-expanded="false" aria-controls="sidebarDashboards">
-                        <i class="bx bxs-dashboard"></i> 
+                        <i class="ri-timer-flash-line"></i> 
                         <span data-key="t-dashboards">Mes cours</span>
                     </a>
                 </li>
          
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="{{path('student_payements')}}" role="button" aria-expanded="false" aria-controls="sidebarDashboards">
-                        <i class="bx bxs-dashboard"></i> 
+                        <i class=" ri-bank-card-fill"></i> 
                         <span data-key="t-dashboards">Paiements et règlements</span>
                     </a>
                 </li>
 
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="{{path('student_profile')}}" role="button" aria-expanded="false" aria-controls="sidebarDashboards">
-                        <i class="bx bxs-dashboard"></i> 
+                        <i class=" ri-account-circle-fill"></i> 
                         <span data-key="t-dashboards">Mon profil</span>
                     </a>
                 </li>

@@ -27,9 +27,6 @@ class Group
     #[ORM\Column]
     private ?int $max = null;
 
-    #[ORM\ManyToOne(inversedBy: 'groups')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?StudentGender $gender = null;
 
     #[ORM\Column(nullable:true)]
     private ?array $students = null;
@@ -37,12 +34,6 @@ class Group
     #[ORM\Column(nullable:true)]
     private ?array $cancelStudents = null;
 
-
-    #[ORM\Column(length: 500, nullable: true)]
-    private ?string $invitationUuid = null;
-
-    #[ORM\ManyToOne(inversedBy: 'myGroups')]
-    private ?Agent $teacher = null;
 
     /**
      * @var Collection<int, Message>
@@ -97,19 +88,7 @@ class Group
 
         return $this;
     }
-
-    public function getGender(): ?StudentGender
-    {
-        return $this->gender;
-    }
-
-    public function setGender(?StudentGender $gender): static
-    {
-        $this->gender = $gender;
-
-        return $this;
-    }
-
+    
     public function getStudents(): ?array
     {
         return $this->students;
@@ -165,29 +144,6 @@ class Group
         return $this;
     }
 
-    public function getInvitationUuid(): ?string
-    {
-        return $this->invitationUuid;
-    }
-
-    public function setInvitationUuid(?string $invitationUuid): static
-    {
-        $this->invitationUuid = $invitationUuid;
-
-        return $this;
-    }
-
-    public function getTeacher(): ?Agent
-    {
-        return $this->teacher;
-    }
-
-    public function setTeacher(?Agent $teacher): static
-    {
-        $this->teacher = $teacher;
-
-        return $this;
-    }
 
     /**
      * @return Collection<int, Message>

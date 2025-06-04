@@ -11,6 +11,7 @@ use AlAya\Common\Entity\RolePermission;
 use AlAya\Common\Service\FileManager;
 use AlAya\Agent\CommonBundle\Controller\Controller;
 use AlAya\Common\Entity\Group;
+use AlAya\Common\Entity\Prestation;
 use AlAya\Common\Entity\Session;
 use AlAya\Common\Entity\SessionLine;
 use AlAya\Common\Entity\Setting;
@@ -50,7 +51,7 @@ class AgentController extends Controller
         $data = $agentRepository->search($request->query) ;
 
         $nbStudents = $this->manager->getRepository(Student::class)->count([]);
-        $nbSession = $this->manager->getRepository(Session::class)->count([]);
+        $nbSession = $this->manager->getRepository(Prestation::class)->count(["status" => Prestation::ACTIVE]);
 
         // paginate 
        $agents = $this->paginator->paginate(
