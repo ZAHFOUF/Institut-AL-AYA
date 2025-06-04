@@ -26,7 +26,6 @@
             <th>Montant</th>
             <th>Date</th>
             <th>Méthode</th>
-            <th>Action</th>
           </tr>
         </thead>
         <tbody>
@@ -38,11 +37,6 @@
             <td>{{ payement.amount }} €</td>
             <td>{{ payement.date|date('Y-m-d') }}</td>
             <td>{{ payement.type.name }}</td>
-            <td>
-                <a href="" class="btn btn-sm btn-primary">
-                    Télécharger la facture
-                </a>
-            </td>
         </tr>
           {% else %}
             <tr>
