@@ -15,6 +15,8 @@ use AlAya\Agent\PrestationBundle\Form\SessionAddType;
 use AlAya\Agent\PrestationBundle\Form\PrestationLineAddType;
 use AlAya\Agent\PrestationBundle\Form\PayementAddType;
 use AlAya\Agent\PrestationBundle\WorkFlow\WorkFlowPrestation;
+use AlAya\Common\Entity\Bill;
+use AlAya\Common\Entity\Payement;
 use Doctrine\Persistence\ManagerRegistry;
 use Dompdf\Dompdf;
 use Dompdf\Options;
@@ -31,7 +33,7 @@ class PrestationController extends BaseController
 
     #[Route("/", name: "back_prestation_index")]
     #[Access()]
-    public function index(Request $request): Response
+    public function index(Request $request,WorkFlowPrestation $workFlowPrestation): Response
     {
         // Assurez-vous d'importer PrestationFormType et l'entité Prestation
         // use AlAya\Agent\PrestationBundle\Form\PrestationFormType;
@@ -68,6 +70,8 @@ class PrestationController extends BaseController
         $form = $this->createForm(SessionAddType::class, $session);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            debiteHoursCours($prestation, $session->getHours());
+            $this->doctrine->persist($prestation);
             $this->doctrine->persist($session);
             $this->doctrine->flush();
             return $this->redirectToRoute('back_prestation_show', ['prestation' => $prestation->getId()]);
@@ -84,7 +88,6 @@ class PrestationController extends BaseController
         }
         // Formulaire d'ajout de paiement
         $payement = new \AlAya\Common\Entity\Payement();
-        $payement->setPrestation($prestation);
         $formPayement = $this->createForm(PayementAddType::class, $payement);
         $formPayement->handleRequest($request);
         if ($formPayement->isSubmitted() && $formPayement->isValid()) {
@@ -93,7 +96,8 @@ class PrestationController extends BaseController
             return $this->redirectToRoute('back_prestation_show', ['prestation' => $prestation->getId()]);
         }
         // Paiements existants
-        $payements = $this->repo(\AlAya\Common\Entity\Payement::class)->findBy(['prestation' => $prestation]);
+        $payements = $this->repo(Payement::class)->getBills($prestation);
+        $bills = $this->repo(\AlAya\Common\Entity\Bill::class)->findBy(['prestation' => $prestation],['id' => 'DESC']);
         return $this->render('@AgentPrestationBundle/show.html.twig',[
             'prestation' => $prestation,
             'sessions' => $this->repo(Session::class)->findBy(['prestation' => $prestation]),
@@ -102,24 +106,26 @@ class PrestationController extends BaseController
             'formPrestationLine' => $formPrestationLine->createView(),
             'formPayement' => $formPayement->createView(),
             'payements' => $payements,
-            'total' => calculerTotalPrestation($prestation)
+            'total' => calculerTotalPrestation($prestation) ,
+            'bills' => $bills
         ]);
     }
 
-    #[Route('/facture/{prestation}/pdf', name: 'facture_pdf')]
-    public function generatePdf(Prestation $prestation): Response
+    #[Route('/facture/{bill}/pdf', name: 'facture_pdf')]
+    public function generatePdf(Bill $bill): Response
     {
         // 🔁 Simule des données pour l'exemple (à remplacer par la vraie entité Facture)
+        $prestation = $bill->getPrestation();
         $facture = [
-            'numero' => 'FAC2025001',
+            'numero' => 'FACTURE_'. $bill->getId(),
             'date' => new \DateTime(),
-            'total' => calculerTotalPrestation($prestation),
+            'total' => amountBill($bill),
             'forfait' => [
                 ['programme' => $prestation->getProgramme()->getName(), 'type' => $prestation->getFormula()->getName(), 
                 'quantite' => calculerHeuresCours($prestation), 'tarif' => prixPrestation($prestation), 'total' => calculerTotalHeuresCours($prestation)],
             ],
-            'extras' =>$prestation->getPrestationLines()->map(function(PrestationLine $line) {
-                if (!$line->isPayed()) {
+            'extras' =>$prestation->getPrestationLines()->map(function(PrestationLine $line) use ($bill) {
+                if ($line->getBill() == $bill) {
                     return [
                     'label' => $line->getFormula()->getName(),
                     'amount' => $line->getFormula()->getPrice() * $line->getQte()

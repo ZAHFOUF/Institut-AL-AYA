@@ -30,6 +30,9 @@ class PrestationLine
     #[ORM\Column(nullable: true , options: ['default' => false])]
     private ?bool $payed = null;
 
+    #[ORM\ManyToOne(inversedBy: 'prestationLines')]
+    private ?Bill $bill = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -91,6 +94,18 @@ class PrestationLine
     public function setPayed(?bool $payed): static
     {
         $this->payed = $payed;
+
+        return $this;
+    }
+
+    public function getBill(): ?Bill
+    {
+        return $this->bill;
+    }
+
+    public function setBill(?Bill $bill): static
+    {
+        $this->bill = $bill;
 
         return $this;
     }

@@ -16,6 +16,7 @@ class Status
             $this->text = match($state) {
             'brouillon' => 'brouillon',
             'en attendant le paiement' => 'en attente du paiement',
+            'forfait expiré' => 'forfait expiré',
             'en cours' => 'en cours',
             'clôturée' => 'clôturée',
             default => 'Inconnu',
@@ -23,6 +24,7 @@ class Status
             $this->color = match($state) {
             'brouillon' => 'secondary',
             'en attendant le paiement' => 'warning',
+            'forfait expiré' => 'warning',
             'en cours' => 'success',
             'clôturée' => 'info',
             default => 'secondary',

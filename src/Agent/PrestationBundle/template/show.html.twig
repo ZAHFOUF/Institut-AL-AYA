@@ -9,15 +9,10 @@
     <h5 class="card-title text-white mb-0">Détail de la prestation  <twig:Status :state="prestation.status" /></h5>
     <div>
     {% for w in workflow(prestation) %}
-                 <a href="{{path('back_prestation_status',{prestation:prestation.id,transition:w.name})}}" class="{{w.color}}">{{w.description}}</a>
+                 <a id="{{w.name}}" href="{{path('back_prestation_status',{prestation:prestation.id,transition:w.name})}}" class="{{w.color}}">{{w.description}}</a>
     {% endfor %}
 
     {% if prestation.status == "en attendant le paiement" %}
-
-     <a href="{{path('facture_pdf',{prestation:prestation.id})}}" class="btn btn-light btn-sm me-2">
-        <i class="ri-download-2-line"></i> Télécharger la facture
-      </a>
-     
     {% endif %}
     
      
@@ -26,22 +21,29 @@
   <div class="card-body">
 
     <!-- Section Élève & Programme -->
-    <div class="mb-4">
-      <h6 class="mb-2">Informations</h6>
-      <p><strong>Étudiant / Groupe :</strong> {{prestation.getClientName()}}</p>
+    <div class="row mb-4">
+      <div class="col-md-6">
+          <p><strong>Étudiant / Groupe :</strong> {{prestation.getClientName()}}</p>
       <p><strong>Programme :</strong> {{ prestation.programme.name }} </p>
-      <p><strong>Type de forfait :</strong> {{ prestation.formula.name }} - {{ prestation.formula.price }}€/H</p>
       <p><strong>Professeur(e) référent(e) :</strong> {{ prestation.agent.lastName }} {{ prestation.agent.firstName }} </p>
-      <p><strong>Montant total :</strong> {{total}}€</p>
-    </div>
 
+      </div>
+            <div class="col-md-6">
+                      <p><strong>Type de forfait :</strong> {{ prestation.formula.name }} - {{ prestation.formula.price }}€/H</p>
+                      <p><strong> Heures par semaine :</strong> {{prestation.rate}}</p>
+                      <p><strong> Heures restantes :</strong> {{prestation.hours ?? 0}}</p>
+            </div>
+    </div>
+  
     <!-- Section Cours -->
     <div class="mb-4">
       <div class="d-flex justify-content-between align-items-center mb-2">
         <h6 class="mb-0">Cours enregistrés</h6>
-        <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addSessionModal">
+        {% if prestation.hours > 0 %}
+         <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addSessionModal">
           <i class="ri-add-line"></i> Ajouter
         </button>
+        {% endif %}
       </div>
       <!-- Modal pour ajout de session -->
       <div class="modal fade" id="addSessionModal" tabindex="-1" aria-labelledby="addSessionModalLabel" aria-hidden="true">
@@ -84,6 +86,53 @@
                     </tr>
             {% endfor %}
         </tbody>
+      </table>
+    </div>
+
+    <!-- Section Factures -->
+    <div class="mb-4">
+      <div class="d-flex justify-content-between align-items-center mb-2">
+      <h6 class="mb-0">Factures</h6>
+      </div>
+      <table class="table table-sm table-bordered">
+      <thead class="table-light">
+        <tr>
+        <th>Numéro</th>
+        <th>Date</th>
+        <th>Montant</th>
+        <th>Payé</th>
+        <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for bill in bills %}
+        <tr>
+          <td>{{ bill.id }}</td>
+          <td>{{ bill.date|date('Y-m-d') }}</td>        
+          <td>
+                {% set pl_total = 0 %}
+          {% for pl in bill.prestationLines %}
+        {% set pl_total = pl_total + (pl.qte * pl.formula.price) %}
+          {% endfor %}
+          {% set total = bill.amount + pl_total %}
+          <span class="fw-bold">{{ total|number_format(2, '.', ' ') }}€</span>
+          </td>
+          <td  class="text-left">
+            {% if bill.payed %}
+              <span class="badge bg-success">OUI</span>
+            {% else %}
+              <span class="badge bg-warning">NON</span>
+            {% endif %}
+          </td>
+          <td>  <a target="_blank" href="{{path('facture_pdf',{bill:bill.id})}}" class="btn btn-light btn-sm"> <i class="ri-download-2-line"></i> PDF  </a>  </td>
+
+                  </tr>
+        {% else %}
+        <tr>
+          <td colspan="6" class="text-center">Aucune facture enregistrée</td>
+        </tr>
+        {% endfor %}
+      </tbody>
       </table>
     </div>
 
@@ -142,7 +191,7 @@
             <tr>
               <td>{{ pl.formula.name }}</td>
               <td>{{ pl.qte }}</td>
-              <td>8€</td>
+              <td>{{pl.formula.price * pl.qte}}€</td>
               <td>{{ pl.date|date('Y-m-d') }}</td>
             </tr>
           {% endfor %}
@@ -228,5 +277,10 @@
        $("#teacher").select2();
    
 </script>
+{% if prestation.hours > 0 %}
+   <script>
+           $("#facturer_2").hide();
+   </script>
+{% endif %}
 
 {% endblock %}

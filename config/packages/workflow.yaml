@@ -9,6 +9,7 @@ framework:
                 - AlAya\Common\Entity\Prestation
             places:
                 - brouillon
+                - forfait expiré
                 - en attendant le paiement
                 - en cours
                 - clôturée	
@@ -17,19 +18,25 @@ framework:
                     from: brouillon
                     to: en attendant le paiement
                     metadata: 
-                        description: "Facturer"
+                        description: "Rechercher le forfait"
                         color : "btn btn-dark"
                 facturer_2 :
-                    from: en cours
+                    from: forfait expiré
                     to: en attendant le paiement
                     metadata: 
-                        description: "Facturer"
+                        description: "Rechercher le forfait"
                         color : "btn btn-dark"
+                facturer_3 :
+                    from: forfait expiré
+                    to: clôturée
+                    metadata: 
+                        description: "Clôturer"
+                        color : "btn btn-success"
                 en_cours :
                     from: en attendant le paiement
                     to: en cours
                     metadata: 
-                        description: "Continuer la prestation"
+                        description: "Valider le paiement"
                         color : "btn btn-success"
                 cloturer :
                     from: en attendant le paiement

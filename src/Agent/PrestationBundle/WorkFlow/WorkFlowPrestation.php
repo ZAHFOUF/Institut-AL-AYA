@@ -25,7 +25,7 @@ class WorkFlowPrestation extends BaseWorkFlow
         public UrlGeneratorInterface $urlGenerator,
         public Registry $workflowRegistry, 
         public EntityManagerInterface $entityManager, 
-        public TokenStorageInterface $security
+        public TokenStorageInterface $security 
      ) {
           parent::__construct(
                $workflowRegistry, 
@@ -37,14 +37,16 @@ class WorkFlowPrestation extends BaseWorkFlow
       
    
      // Brouillon
-     public function enBrouillon() {
-          
+     public function onBrouillon(Prestation $entity) {
+          $entity->setHours($entity->getRate() * $entity::WEEKS );
      }
 
      // En attendant le paiement
      public function onEnattendantlepaiement(Prestation $entity) {
+          // Génération de la facture
+          $this->billGenerator->createBill($entity);
            // Création de l'email
-           $id = $entity->getId() ;
+        /*   $id = $entity->getId() ;
            if ($entity->getStudent() and $entity->getStudent()->getEmail()) {
                $eleve = $entity->getStudent()->getEmail();
                $bill = $this->billGenerator->generateBill($entity);
@@ -60,12 +62,16 @@ class WorkFlowPrestation extends BaseWorkFlow
                     ])
                 ]);
                 $this->mailer->send($mail);
-           }
+           }*/
      }
 
      // En cours
-     public function OnEncours() {
-          
+     public function OnEncours(Prestation $entity) {
+          $entity->setHours($entity->getRate() * $entity::WEEKS );
+           $entity->getBills()->map(function($bill) {
+               $bill->setPayed(true);
+               $this->entityManager->persist($bill);
+          });
      }
 
      // Clôturée

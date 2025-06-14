@@ -2,15 +2,37 @@
 
 namespace AlAya\Agent\PrestationBundle\Service;
 
+use AlAya\Common\Entity\Bill;
+use AlAya\Common\Entity\Prestation;
 use AlAya\Common\Entity\PrestationLine;
+use Doctrine\ORM\EntityManagerInterface;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 
 class BillGenerator
 {
 
-    public function __construct(private \Twig\Environment $twig)
+    public function __construct(private \Twig\Environment $twig,
+                                private EntityManagerInterface $doctrine)
     {
+    }
+
+    public function createBill(Prestation $prestation) : void {
+                $bill = new Bill ;
+                $bill->setPrestation($prestation);
+                $bill->setDate(new \DateTime());
+                $bill->setHours(calculerHeuresCours($prestation));
+                $bill->setAmount(calculerTotalHeuresCours($prestation));
+                $bill->setRateByHour($prestation->getFormula()->getPrice());
+                $bill->setPayed(false);
+                foreach ($prestation->getPrestationLines()->toArray() as $line) {
+                    if ($line->getBill() === null) {
+                        $line->setBill($bill);
+                        $this->doctrine->persist($line);
+                    }
+                }
+                $this->doctrine->persist($bill);
+                $this->doctrine->flush();
     }
 
     public function generateBill($prestation,$file = true) 

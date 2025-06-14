@@ -21,7 +21,7 @@ class PayementController extends BaseController
 
         $payement = new Payement();
 
-        $form = $this->createForm(FormPayementAddType::class, $payement,['prestation' => true]);
+        $form = $this->createForm(FormPayementAddType::class, $payement,['bill' => true]);
         $form->handleRequest($this->request);
 
         if ($form->isSubmitted() && $form->isValid()) {

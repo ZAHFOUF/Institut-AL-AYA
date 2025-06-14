@@ -13,6 +13,8 @@ class Prestation
 {
 
     const ACTIVE = 'en cours';
+    const WEEKS = 4 ;
+
 
     use createdFields ;
 
@@ -53,10 +55,23 @@ class Prestation
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $status = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $rate = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $hours = null;
+
+    /**
+     * @var Collection<int, Bill>
+     */
+    #[ORM\OneToMany(targetEntity: Bill::class, mappedBy: 'prestation')]
+    private Collection $bills;
+
     public function __construct()
     {
         $this->prestationLines = new ArrayCollection();
         $this->sessions = new ArrayCollection();
+        $this->bills = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -186,6 +201,60 @@ class Prestation
     public function setStatus(?string $status): static
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    public function getRate(): ?int
+    {
+        return $this->rate;
+    }
+
+    public function setRate(?int $rate): static
+    {
+        $this->rate = $rate;
+
+        return $this;
+    }
+
+    public function getHours(): ?int
+    {
+        return $this->hours;
+    }
+
+    public function setHours(?int $hours): static
+    {
+        $this->hours = $hours;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Bill>
+     */
+    public function getBills(): Collection
+    {
+        return $this->bills;
+    }
+
+    public function addBill(Bill $bill): static
+    {
+        if (!$this->bills->contains($bill)) {
+            $this->bills->add($bill);
+            $bill->setPrestation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBill(Bill $bill): static
+    {
+        if ($this->bills->removeElement($bill)) {
+            // set the owning side to null (unless already changed)
+            if ($bill->getPrestation() === $this) {
+                $bill->setPrestation(null);
+            }
+        }
 
         return $this;
     }

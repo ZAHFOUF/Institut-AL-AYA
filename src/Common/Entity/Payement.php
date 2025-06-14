@@ -2,19 +2,16 @@
 
 namespace AlAya\Common\Entity;
 
+use AlAya\Common\Repository\PayementRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity]
+#[ORM\Entity(repositoryClass: PayementRepository::class)]
 class Payement
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
-
-    #[ORM\ManyToOne(targetEntity: Prestation::class)]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Prestation $prestation = null;
 
     #[ORM\Column(type: 'decimal', precision: 10, scale: 2)]
     private ?float $amount = null;
@@ -29,21 +26,14 @@ class Payement
     #[ORM\Column(length: 255,nullable: true)]
     private ?string $stripeId = null;
 
+    #[ORM\ManyToOne(inversedBy: 'payements')]
+    private ?Bill $bill = null;
+
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getPrestation(): ?Prestation
-    {
-        return $this->prestation;
-    }
-
-    public function setPrestation(?Prestation $prestation): self
-    {
-        $this->prestation = $prestation;
-        return $this;
-    }
 
     public function getAmount(): ?float
     {
@@ -86,6 +76,18 @@ class Payement
     public function setStripeId(string $stripeId): static
     {
         $this->stripeId = $stripeId;
+
+        return $this;
+    }
+
+    public function getBill(): ?Bill
+    {
+        return $this->bill;
+    }
+
+    public function setBill(?Bill $bill): static
+    {
+        $this->bill = $bill;
 
         return $this;
     }

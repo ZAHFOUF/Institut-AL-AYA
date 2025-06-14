@@ -8,9 +8,11 @@ use AlAya\Common\Entity\Agent;
 use AlAya\Common\Entity\Formula;
 use AlAya\Common\Repository\AgentRepository;
 use AlAya\Common\Repository\FormulaRepository;
+use phpDocumentor\Reflection\Types\Integer;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\DomCrawler\Form;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -68,6 +70,12 @@ class PrestationFormType extends AbstractType
                 'row_attr' => ['class' => 'mb-3'],
                 'required' => false,
                 'placeholder' => 'Sélectionnez un(e) étudiant(e)',
+            ])
+            ->add('rate',IntegerType::class, [
+                'label' => 'Fréquence d\'heure / Semaine',
+                'attr' => ['class' => 'form-control'],
+                'row_attr' => ['class' => 'mb-3'],
+                'required' => false,
             ])
          /*   ->add('groupe', EntityType::class, [
                 'class' => \AlAya\Common\Entity\Group::class,

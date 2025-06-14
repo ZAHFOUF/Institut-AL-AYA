@@ -1,5 +1,6 @@
 <?php
 
+use AlAya\Common\Entity\Bill;
 use AlAya\Common\Entity\Prestation;
 
 if (!function_exists('imageToBase64')) {
@@ -152,17 +153,11 @@ if (!function_exists('getFrenchMonth')) {
         function calculerTotalPrestation(Prestation $prestation): float
         {
             $total = 0.0;
-            $cours = $prestation->getSessions()->filter(function ($session) {
-                return $session->isPayed() != true;
-            });
+           
+            $total += $prestation->getFormula()->getPrice() * calculerHeuresCours($prestation);
             $autresPrestations = $prestation->getPrestationLines()->filter(function ($session) {
-                return $session->isPayed() != true;
+                return  is_null($session->getBill()) ;
             });
-            $totalCours = 0.0;
-            foreach ($cours as $session) {
-                $totalCours += $session->getHours();
-            }
-            $total += $totalCours * $prestation->getFormula()->getPrice();
             foreach ($autresPrestations as $prestationLine) {
                 $total += $prestationLine->getQte() * $prestationLine->getFormula()->getPrice();
             }
@@ -175,13 +170,7 @@ if (!function_exists('getFrenchMonth')) {
 
     function calculerHeuresCours(Prestation $prestation): float
     {
-        $total = 0.0;
-        $cours = $prestation->getSessions()->filter(function ($session) {
-            return $session->isPayed() != true;
-        });
-        foreach ($cours as $session) {
-            $total += $session->getHours();
-        }
+        $total = $prestation::WEEKS * $prestation->getRate();
         return $total;
         
     }
@@ -192,14 +181,7 @@ if (!function_exists('getFrenchMonth')) {
     
 
     function calculerTotalHeuresCours(Prestation $prestation): float{
-        $total = 0.0;
-        $cours = $prestation->getSessions()->filter(function ($session) {
-            return $session->isPayed() != true;
-        });
-        foreach ($cours as $session) {
-            $total += $session->getHours();
-        }
-        return $total * $prestation->getFormula()->getPrice();
+        return calculerHeuresCours($prestation) * prixPrestation($prestation);
         
     }
 
@@ -211,6 +193,26 @@ if (!function_exists('getFrenchMonth')) {
         $prestation->getPrestationLines()->map(function ($line) {
             $line->setPayed(true);
         });
+    }
+
+    function debiteHoursCours(Prestation $prestation,$hours): void
+    {
+        $prestation->setHours(
+            $prestation->getHours() - $hours < 0 ? 0 : $prestation->getHours() - $hours
+        );
+        if ($prestation->getHours() <= 0) {
+            $prestation->setStatus('forfait expiré');
+        }
+    }
+
+    function amountBill(Bill $bill) {
+        $total = $bill->getAmount();
+        $bill->getPrestationLines()->map(function ($line) use (&$total, $bill) {
+            if ($line->getBill() === $bill) {
+                $total += $line->getFormula()->getPrice() * $line->getQte();
+            }
+        });
+        return $total;
     }
 
 }
