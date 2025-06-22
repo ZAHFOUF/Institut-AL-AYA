@@ -61,6 +61,8 @@ $sql = "
 SELECT  
 
     CONCAT(IFNULL(a.last_name,''), ' ', IFNULL(a.first_name,'')) AS 'Professeur',
+    a.id as profId ,
+    LPAD(MONTH(MIN(s.date)), 2, '0') as 'MoisNum',
 
     CASE MONTH(MIN(s.date))
     WHEN 1 THEN 'Janvier'
@@ -80,9 +82,9 @@ END AS 'Mois',
 YEAR(MIN(s.date)) AS 'Année',
 
 
-    SUM(CASE f.per WHEN 'H' THEN 1 ELSE 0 END ) AS 'Nombre d\'H en direct/semaine',
+    SUM(CASE f.per WHEN 'H' THEN s.hours ELSE 0 END ) AS 'Nombre d\'H en direct/semaine',
 
-    SUM(CASE f.per WHEN 'M' THEN 1 ELSE 0 END ) AS 'Nombre de cours/audios en différé/semaine',
+    SUM(CASE f.per WHEN 'M' THEN s.hours ELSE 0 END ) AS 'Nombre de cours/audios en différé/semaine',
     
     COUNT(DISTINCT p.student_id) as 'Nombre d\'élèves' ,
 

@@ -2,7 +2,7 @@
 
 
 {% block page_title %}
-    {{ include('@AgentThemeBundle/partials/page-title.html.twig', {pagetitle: 'Reporting'|trans, title: 'Rémunérations des professeurs'|trans } ) }}
+    {{ include('@AgentThemeBundle/partials/page-title.html.twig', {pagetitle: 'Reporting'|trans, title: 'Reporting professeurs'|trans } ) }}
 {% endblock %}
 
 {% block page_content %}
@@ -12,15 +12,91 @@
 
         <div class="row">
             <div class="col-xl-10 col-lg-10">
+
+                
                 <div class="card">  
                     <div class="card-header align-items-center d-flex">
-                        <h4 class="card-title mb-0 flex-grow-1">{{ 'Reporting rémunérations des professeurs'|trans }} de {{getMonth(month)}}</h4>
+                        <h4 class="card-title mb-0 flex-grow-1">{{ 'Reporting professeurs'|trans }} de {{getMonth(month)}}</h4>
                         <div class="card-header align-items-center d-flex">
                             {# Vous avez {{ catalogs.getTotalItemCount }} catalogue(s) #}
                         </div>
                     </div>
                     <div class="card-body">
-                           {% include "@CommonTemplate/Tables/index.twig" with {data:results} %}
+
+                              <div class="table-responsive">
+    <table class="table table-striped align-middle table-nowrap mb-0 table-hover searchable">
+        <thead class="table-light">
+             </thead><thead class="table-light">
+        <tr><th>Professeur</th>
+    
+    <th>Mois</th>
+    
+    <th>Année</th>
+    
+    <th>Nombre d'H en direct/semaine</th>
+    
+    <th>Nombre de cours/audios en différé/semaine</th>
+    
+    <th>Nombre d'élèves</th>
+    
+    <th>Total Rémunération</th>
+
+    <th>Action</th>
+    
+
+
+</tr></thead>
+        
+       <tbody>
+
+
+
+        {% for r in results %}
+    <tr>
+
+        <td>{{ r['Professeur'] }}</td>
+        <td>{{ r['Mois'] }}</td>
+        <td>{{ r['Année'] }}</td>
+        <td>{{ r["Nombre d'H en direct/semaine"] }}</td>
+        <td>{{ r['Nombre de cours/audios en différé/semaine'] }}</td>
+        <td>{{ r["Nombre d'élèves"] }}</td>
+        <td>{{ r['Total Rémunération'] }}</td>
+        <td>
+            <a href="{{path('back_reporting_prof',{agent:r['profId'],month:r['MoisNum'],year:r['Année']})}}" class="btn btn-sm btn-soft-primary">
+                <i class="ri-eye-line"></i> Consulter
+              </a>
+        </td>
+            
+        </tr>
+
+        {% endfor %}
+             
+         
+          
+          
+          
+    
+
+   
+
+
+
+</tbody>
+          
+        
+
+    </table>
+
+
+
+    <div class="navigation d-flex justify-content-center mt-4">
+        
+    </div>
+
+
+</div>
+                        
+                  
                     </div>
                 </div>
             </div>

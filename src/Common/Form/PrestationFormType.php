@@ -72,7 +72,7 @@ class PrestationFormType extends AbstractType
                 'placeholder' => 'Sélectionnez un(e) étudiant(e)',
             ])
             ->add('rate',IntegerType::class, [
-                'label' => 'Fréquence d\'heure / Semaine',
+                'label' => 'Fréquence  Cours/Audio/d\'heure par Semaine',
                 'attr' => ['class' => 'form-control'],
                 'row_attr' => ['class' => 'mb-3'],
                 'required' => false,

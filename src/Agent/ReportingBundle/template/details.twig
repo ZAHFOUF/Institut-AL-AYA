@@ -1,15 +1,16 @@
 {% extends '@AgentThemeBundle/base.html.twig' %}
 
 {% block page_title %}
-    {{ include('@AgentThemeBundle/partials/page-title.html.twig', { title: 'Acceuil'|trans}) }}
+    {{ include('@AgentThemeBundle/partials/page-title.html.twig', { title: 'Reporting professeur'|trans}) }}
 {% endblock %}
 
 {% block page_content %}
 <link href="{{asset("bundles/commontheme/libs/fullcalendar/main.min.css")}}" rel="stylesheet" type="text/css" />
+<style>
+    
+</style>
     <div class="row">
         <div class="row">
-
-            <h3 style="color:#1c1b1b;margin-bottom: 25px;">{{ 'As salam aleykoum'|trans }} {{app.user.lastName}} {{app.user.firstName}} </h3>
 
             <div class="col-md-10">
                 {% include "@CommonTemplate/Calendar/html.twig" %}
@@ -26,5 +27,6 @@
 {% endblock %}
 
 {% block pages_scripts %}
-{% include "@CommonTemplate/Calendar/js.twig" with {link:path('admin_planing')} %}
+{% set customDate = app.request.get("year") ~  "-" ~ app.request.get("month")  ~ "-01" %}
+{% include "@CommonTemplate/Calendar/js.twig" with {link:path('admin_planing',{agent:agent.id}),customDate:customDate} %}
 {% endblock %}

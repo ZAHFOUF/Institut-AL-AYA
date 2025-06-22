@@ -117,7 +117,7 @@ var calendar = new FullCalendar.Calendar(calendarEl, {
 });
 
 $.ajax({
-    url: '{{path(link)}}',
+    url: '{{link}}',
     method: 'POST',
     dataType: 'json',
     success: function (data) {
@@ -144,4 +144,11 @@ function decodeHtml(html) {
     const doc = parser.parseFromString(html, "text/html");
     return doc.documentElement.textContent;
 }
+
+{% if customDate is defined %}
+    calendar.gotoDate("{{customDate}}");
+{% endif %}
 </script>
+
+
+

@@ -4,6 +4,7 @@ namespace AlAya\Agent\ReportingBundle\Controller;
 
 use AlAya\Agent\CommonBundle\Attribute\Access;
 use AlAya\Agent\CommonBundle\Controller\Controller ;
+use AlAya\Common\Entity\Agent;
 use AlAya\Common\Entity\Charge;
 use AlAya\Common\Form\ChargeFormType;
 use AlAya\Common\Repository\AgentRepository;
@@ -18,7 +19,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 
 #[Route("/reporting")]
-#[Access]
 class ReportingController extends AbstractController
 {
 
@@ -26,7 +26,8 @@ class ReportingController extends AbstractController
     {
     }
 
-    #[Route('/rémunérations-professeurs', name: 'back_reporting_index', methods: ['GET','POST'])]
+    #[Route('/reporting-professeurs', name: 'back_reporting_index', methods: ['GET','POST'])]
+    #[Access]
     public function indexAction(AgentRepository $agentRepository,Request $request,Export $export)
     {
 
@@ -49,6 +50,7 @@ class ReportingController extends AbstractController
     }
 
     #[Route('/comptabilité', name: 'back_ca_index', methods: ['GET','POST'])]
+    #[Access]
     public function ca (Request $request,Export $export) {
          // Get the data
         $ca = $this->sessionRepository->ca($request->query);
@@ -93,6 +95,15 @@ class ReportingController extends AbstractController
             $this->addFlash('success', 'Charge supprimée avec succès.');
         }
         return $this->redirectToRoute('back_charge_index');
+    }
+
+    #[Route('/reporting-professeur/{agent}', name: 'back_reporting_prof', methods: ['GET'])]
+    public function showProf(Agent $agent) {
+        return $this->render('@AgentReportingBundle/details.twig',
+            [
+                'agent' => $agent
+            ]
+        );
     }
 
 }

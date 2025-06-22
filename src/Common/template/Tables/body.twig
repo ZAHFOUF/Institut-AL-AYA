@@ -5,16 +5,16 @@
 
     {% for val in nested %}
           <td>{{val|raw}}</td>
-       {#}   {% if loop.last and additionsValues is defined and additionValues|length > 0 %}
+      
 
-          {% for ad in additionsValues %}
-                  <td>{{ad|raw}}</td>
-          {% endfor %}
-
-          {% endif %} {#}
+         
+          
           
           
     {% endfor %}
+
+
+   
 
 </tr>
 

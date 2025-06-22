@@ -42,8 +42,14 @@ class DashboardController extends Controller
 
     // The api
     #[Route(path:"/planing",name:"admin_planing",methods:["GET","POST"])]
-    public function planing()  {
-         $cours = $this->em->getRepository(Session::class)->getSessionOfAgent($this->getUser());
+    public function planing(Request $request) {
+         $agent = $this->getUser() ;
+
+         if ($request->query->has("agent")) {
+            $agent = $this->em->getRepository(Agent::class)->find($request->query->get("agent"));
+         }
+
+         $cours = $this->em->getRepository(Session::class)->getSessionOfAgent($agent);
          return new JsonResponse($cours); 
     }
 }
