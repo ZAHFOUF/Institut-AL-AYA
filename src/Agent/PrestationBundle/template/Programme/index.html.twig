@@ -22,7 +22,6 @@
           <tr>
             <th>Nom</th>
             <th>Module</th>
-            <th>Heures</th>
             <th>Action</th>
           </tr>
         </thead>
@@ -31,7 +30,6 @@
             <tr>
               <td>{{ programme.name }}</td>
               <td>{{ programme.module.name }}</td>
-              <td>{{ programme.hours }}</td>
               <td>
                 <!-- Example actions: edit/delete buttons -->
                 <a href="{{path('back_programme_show',{programme:programme.id})}}" class="btn btn-sm btn-warning">Modifier</a>

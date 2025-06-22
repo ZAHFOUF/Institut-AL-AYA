@@ -24,10 +24,6 @@ class ProgrammeFormType extends AbstractType
             'label' => 'Module',
             'attr' => ['class' => 'form-control'],
             ])
-            ->add('hours', null, [
-            'label' => 'Heures',
-            'attr' => ['class' => 'form-control'],
-            ])
         ;
     }
 

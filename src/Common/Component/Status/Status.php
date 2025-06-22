@@ -19,6 +19,7 @@ class Status
             'forfait expiré' => 'forfait expiré',
             'en cours' => 'en cours',
             'clôturée' => 'clôturée',
+            'pause' => 'en pause',
             default => 'Inconnu',
             };
             $this->color = match($state) {
@@ -27,6 +28,7 @@ class Status
             'forfait expiré' => 'warning',
             'en cours' => 'success',
             'clôturée' => 'info',
+            'pause' => 'primary',
             default => 'secondary',
             };
         }

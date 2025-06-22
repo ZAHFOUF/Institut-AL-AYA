@@ -26,7 +26,7 @@ use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\HttpFoundation\Request;
 
-#[Route("/prestations")]
+#[Route("/sessions")]
 class PrestationController extends BaseController
 {
 
@@ -135,14 +135,17 @@ class PrestationController extends BaseController
         ];
 
         $eleve = [
-            'nom' => 'Zahra',
-            'prenom' => 'Fatima',
+            'nom' => $bill->getPrestation()->getStudent()->getLastName(),
+            'prenom' => $bill->getPrestation()->getStudent()->getFirstName(),
         ];
+
+        $logo = imageToBase64($this->getParameter('kernel.project_dir') . '/public/bundles/commontheme/images/logo/logo.png');
 
         // 📄 Génération HTML via Twig
         $html = $this->renderView('@AgentPrestationBundle/pdf.twig', [
             'facture' => $facture,
-            'eleve' => $eleve
+            'eleve' => $eleve,
+            'logo' => $logo
         ]);
 
         // ⚙️ Configuration DomPDF

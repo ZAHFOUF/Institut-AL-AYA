@@ -25,9 +25,6 @@ class Programme
     #[ORM\ManyToOne(inversedBy: 'programmes')]
     private ?Module $module = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?int $hours = null;
-
     /**
      * @var Collection<int, Prestation>
      */
@@ -64,18 +61,6 @@ class Programme
     public function setModule(?Module $module): static
     {
         $this->module = $module;
-
-        return $this;
-    }
-
-    public function getHours(): ?int
-    {
-        return $this->hours;
-    }
-
-    public function setHours(?int $hours): static
-    {
-        $this->hours = $hours;
 
         return $this;
     }

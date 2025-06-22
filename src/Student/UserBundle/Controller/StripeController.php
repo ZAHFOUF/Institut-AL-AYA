@@ -4,6 +4,7 @@ namespace AlAya\Student\UserBundle\Controller;
 
 use AlAya\Agent\PrestationBundle\WorkFlow\WorkFlowPrestation;
 use AlAya\Common\Controller\BaseController;
+use AlAya\Common\Entity\Bill;
 use AlAya\Common\Entity\Payement;
 use AlAya\Common\Entity\PayementType;
 use AlAya\Common\Entity\Prestation;
@@ -18,12 +19,12 @@ use Symfony\Component\Routing\Annotation\Route;
 class StripeController extends BaseController
 {
 
-    #[Route('/create-checkout-session/{prestation}', name: 'create_checkout_session')]
-    public function createCheckoutSession(Prestation $prestation): JsonResponse
+    #[Route('/create-checkout-session/{bill}', name: 'create_checkout_session')]
+    public function createCheckoutSession(Bill $bill): JsonResponse
     {
         Stripe::setApiKey($this->getParameter('stripe.secret.key'));
         $paymentIntent = PaymentIntent::create([
-            'amount' => intval(calculerTotalPrestation($prestation) * 100), // Montant en centimes (ex. 7€)
+            'amount' => intval(amountBill($bill) * 100), // Montant en centimes (ex. 7€)
             'currency' => 'eur',
              'automatic_payment_methods' => ['enabled' => true]
         ]);
@@ -33,9 +34,10 @@ class StripeController extends BaseController
         ]);
     }
 
-    #[Route('/save-payment-intent/{prestation}', name: 'save_payment_intent', methods: ['POST'])]
-    public function savePaymentIntent(Request $request, Prestation $prestation,WorkFlowPrestation $workFlowPrestation)
+    #[Route('/save-payment-intent/{bill}', name: 'save_payment_intent', methods: ['POST'])]
+    public function savePaymentIntent(Request $request,Bill $bill,WorkFlowPrestation $workFlowPrestation)
     {
+        $prestation = $bill->getPrestation();
         $data = json_decode($request->getContent(), true);
         $paymentIntentId = $data['paymentIntentId'];
         // 🔎 Récupère les vraies infos de Stripe
@@ -49,12 +51,12 @@ class StripeController extends BaseController
         $payment->setDate(new \DateTime());
         $payment->setType($this->repo(PayementType::class)->find(1));
         $payment->setStripeId($paymentIntent->id);
-        $payment->setPrestation($prestation);
+        $payment->setBill($bill);
         $this->doctrine->persist($payment);
         $this->doctrine->flush();
         // 🔄 Met à jour la prestation
-        payerPrestation($prestation);
-        $this->doctrine->persist($prestation);
+        payerBill($bill);
+        $this->doctrine->persist($bill);
         $this->doctrine->flush();
         $workFlowPrestation->apply($prestation,"en_cours");
         return new Response('Transaction validée', 200);

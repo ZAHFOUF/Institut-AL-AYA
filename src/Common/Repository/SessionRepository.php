@@ -82,15 +82,12 @@ YEAR(MIN(s.date)) AS 'Année',
 
     COUNT(DISTINCT s.id) AS 'Nombre cours',
 
-SUM(s.hours) AS 'Total d\'heures réalisées' ,
-/*Cours individuel : 7€/H 
-○ Binôme : 6€/H 
-○ Groupe : 5€/H
-*/
-SUM(s.hours * (CASE WHEN p.formula_id = 1 THEN 7 WHEN p.formula_id = 2 THEN 6 WHEN p.formula_id = 3 THEN 7 ELSE 0 END )) as 'Total Rémunération'
+
+SUM(f.price_prof * s.hours) as 'Total Rémunération'
 
 FROM session s 
 INNER JOIN prestation p ON p.id = s.prestation_id
+INNER JOIN formula f ON f.id = p.formula_id
 INNER JOIN agent a ON a.id = p.agent_id
 WHERE s.date IS NOT NULL $where
 GROUP BY a.id, MONTH(s.date)

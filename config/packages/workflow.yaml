@@ -12,6 +12,7 @@ framework:
                 - forfait expiré
                 - en attendant le paiement
                 - en cours
+                - pause
                 - clôturée	
             transitions:
                 facturer_1 :
@@ -38,6 +39,18 @@ framework:
                     metadata: 
                         description: "Valider le paiement"
                         color : "btn btn-success"
+                en_cours_2 :
+                    from: pause
+                    to: en cours
+                    metadata: 
+                        description: "Reprise"
+                        color : "btn btn-success"
+                pause :
+                    from: en cours
+                    to: pause
+                    metadata: 
+                        description: "Pause"
+                        color : "btn btn-primary"
                 cloturer :
                     from: en attendant le paiement
                     to : clôturée

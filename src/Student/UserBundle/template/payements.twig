@@ -27,10 +27,10 @@
                 <tbody>
                      {% for bill in bills %}
                          <tr>
-                            <td>{{bill.programme.name}}</td>
-                            <td>{{calculerTotalPrestation(bill)}}</td>
+                            <td>{{bill.prestation.programme.name}}</td>
+                            <td>{{amountBill(bill)}}</td>
                             <td>
-                                <a href="{{path('student_checkout', {'prestation': bill.id})}}" class="btn btn-primary btn-sm">Effectuer le paiement</a>
+                                <a href="{{path('student_checkout', {'id': bill.id})}}" class="btn btn-primary btn-sm">Effectuer le paiement</a>
                             </td>
                          </tr>
                      {% endfor %}

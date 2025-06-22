@@ -53,7 +53,7 @@ class PrestationFormType extends AbstractType
                 'query_builder' => function (FormulaRepository $qb) {
                 return $qb->createQueryBuilder('f')
                     ->andWhere("f.type = 1")
-                    ->orderBy('f.name', 'ASC');
+                    ->orderBy('f.id', 'ASC');
             },
                 'label' => 'Forfait	',
                 'attr' => ['class' => 'form-control'],

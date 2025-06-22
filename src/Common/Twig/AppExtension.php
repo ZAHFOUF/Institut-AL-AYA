@@ -4,6 +4,7 @@ namespace AlAya\Common\Twig;
 
 use AlAya\Common\Entity\Agent;
 use AlAya\Common\Entity\Message;
+use AlAya\Common\Entity\Prestation;
 use AlAya\Common\Entity\Setting;
 use AlAya\Common\Repository\AgentRepository;
 use Symfony\Component\Asset\Packages;
@@ -37,7 +38,9 @@ class AppExtension extends AbstractExtension
             new TwigFunction('calcPaypalAmount',[$this, 'calcPaypalAmount']),
             new TwigFunction('unReadMsg',[$this, 'unReadMsg']),
             new TwigFunction("calculerTotalPrestation",[$this,"calculerTotalPrestation"]),
-            new TwigFunction('workflow', [$this, 'workflow'])
+            new TwigFunction("amountBill",[$this,"amountBill"]),
+            new TwigFunction('workflow', [$this, 'workflow']) ,
+            new  TwigFunction('getServiceName', [$this, 'getServiceName'])
         ];
     }
     
@@ -159,6 +162,11 @@ public function witchUser(object $user) {
       return calculerTotalPrestation($prestation);
   }
 
+  public function amountBill($bill) : float
+  {
+      return amountBill($bill);
+  }
+
   public function workflow (object $entity){
         $data = [];
         $trans = $this->workflowRegistry->get($entity)->getEnabledTransitions($entity) ;
@@ -171,4 +179,8 @@ public function witchUser(object $user) {
         return $data;
     }
 
+    public function getServiceName(Prestation $prestation) : string
+    {
+       return getServiceName($prestation);
+    }
 }

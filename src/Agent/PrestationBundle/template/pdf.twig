@@ -2,6 +2,184 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
+  <title> {{ facture.numero }}</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      color: #000;
+      margin: 40px;
+      font-size: 14px;
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 30px;
+    }
+    .title h2 {
+      margin: 0;
+      font-size: 20px;
+    }
+    .title p {
+      margin: 0;
+      font-size: 14px;
+    }
+    .section {
+  margin-bottom: 20px;
+}
+
+.column {
+  width: 100%;
+}
+
+.destinataire {
+  margin-bottom: 20px;
+}
+
+.section-block {
+  margin-bottom: 30px;
+}
+
+.header-table {
+  border: none !important;
+}
+
+.header-table td {
+  vertical-align: top;
+  font-size: 14px;
+  border: none;
+}
+
+    h3 {
+      font-size: 16px;
+      margin-bottom: 8px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 30px;
+    }
+    thead {
+      background-color: #45403d;
+      color: #fff;
+    }
+    th, td {
+      padding: 10px;
+      border: 1px solid #ccc;
+    }
+    tbody tr.total td {
+      border-top: 2px solid #000;
+    }
+    .conditions {
+      border-top: 1px solid #ccc;
+      padding-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+   <table style="border: none;" class="header-table" width="100%">
+    <tr style="border: none;" >
+
+      <td>
+        <div class="title">
+      <h2>{{ facture.numero }}</h2>
+      <p>{{ facture.date|date('d F Y') }}</p>
+    </div>
+      </td>
+      <td class="destinataire" valign="top" width="20%">
+         <div class="logo">
+      <img src="{{logo}}" alt="Logo" height="80">
+    </div>
+      </td>
+     
+    </tr>
+  </table>
+
+<div class="section-block">
+  <table style="border: none;" class="header-table" width="100%">
+    <tr style="border: none;" >
+
+       <td class="emetteur" valign="top" width="50%">
+        <h3>Émetteur</h3>
+        <p><strong>Société :</strong> Institut Al-Ayah LLC<br>
+        <strong>Adresse :</strong> 2006 Louisiana Blvd Ne, Ste A #5559<br>
+        87110 Albuquerque, New Mexico<br>
+        États-Unis<br>
+        <strong>Numéro d'entreprise :</strong> 0080210422<br>
+        <strong>Adresse email :</strong> contact@alayah.fr<br>
+        <strong>Site internet :</strong> alayah.fr</p>
+      </td>
+
+      <td class="destinataire" valign="top" width="50%">
+        <h3>Destinataire</h3>
+        <p><strong>Nom :</strong>  {{ eleve.nom }} {{ eleve.prenom }}</p>
+      </td>
+     
+    </tr>
+  </table>
+</div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Programme</th>
+        <th>Type</th>
+        <th>Heures</th>
+        <th>Tarif unitaire</th>
+        <th>Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for ligne in facture.forfait %}
+      <tr>
+        <td>{{ ligne.programme }}</td>
+        <td>{{ ligne.type }}</td>
+        <td>{{ ligne.quantite }}</td>
+        <td>{{ ligne.tarif }} €</td>
+        <td>{{ ligne.total }} €</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  {% if facture.extras|length > 0 %}
+  
+    <h2 style="margin-top: 10px;">Autres éléments</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Désignation</th>
+        <th>Montant</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for extra in facture.extras %}
+      <tr>
+        <td>{{ extra.label }}</td>
+        <td>{{ extra.amount }} €</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  {% endif %}
+  
+
+  <b class="total"> Montant total : {{ facture.total }} €</b>
+
+  <div style="margin-top: 10px;" class="conditions">
+    <h4>Conditions</h4>
+    <p><strong>Conditions de règlement :</strong> À réception</p>
+  </div>
+</body>
+</html>
+
+
+{#<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
   <style>
     body { font-family: DejaVu Sans, sans-serif; font-size: 12px; }
     .header { background-color: #bdab7d; color: white; padding: 10px; text-align: center; }
@@ -66,4 +244,4 @@
   <p class="total">Montant total : {{ facture.total }} €</p>
 
 </body>
-</html>
+</html> {#}

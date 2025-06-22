@@ -2,6 +2,7 @@
 
 namespace AlAya\Student\UserBundle\Controller;
 
+use AlAya\Common\Entity\Bill;
 use AlAya\Common\Entity\Country;
 use AlAya\Common\Entity\Formula;
 use AlAya\Common\Entity\Group;
@@ -25,6 +26,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 use AlAya\Common\Service\StudentRefresher;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bridge\Twig\Attribute\Template;
 
 class SessionFrontController extends AbstractController
@@ -77,7 +79,7 @@ class SessionFrontController extends AbstractController
     #[Route('/payements', name: 'student_payements', methods: ["POST",'GET'])]
     public function payements(Request $request,FileManager $fileManager)
     {
-        $bills = $this->entityManager->getRepository(Prestation::class)->getUnPaidBills($this->getUser());
+        $bills = $this->entityManager->getRepository(Bill::class)->getUnPaidBills($this->getUser());
         return $this->render('@StudentUserBundle/payements.twig',[
             'bills' => $bills
         ]);
@@ -91,15 +93,17 @@ class SessionFrontController extends AbstractController
     }
 
 
-#[Route("/checkout/{prestation}", name: "student_checkout", methods: ["POST", "GET"])]
-public function checkout(Prestation $prestation)
+#[Route("/checkout/{id}", name: "student_checkout", methods: ["POST", "GET"])]
+public function checkout(#[MapEntity(expr:"repository.findOneBy({'payed' : false,'id':id})")] Bill $bill)
 {
+    $prestation = $bill->getPrestation();
     return $this->render('@StudentUserBundle/checkout.twig',[
+        'bill' => $bill,
         'prestation' => $prestation,
-        'totalHours' => calculerHeuresCours($prestation),
+        'totalHours' => $bill->getHours(),
         'stripePublicKey' => $this->getParameter('stripe.public.key') ,
-        'prestationLines' => $prestation->getPrestationLines()->map(function($line) {
-            if (!$line->isPayed()) {
+        'prestationLines' => $prestation->getPrestationLines()->map(function($line) use ($bill) {
+            if ($line->getBill() == $bill) {
                 return [
                     'name' => $line->getFormula()->getName(),
                     'quantity' => $line->getQte(),

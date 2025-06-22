@@ -32,7 +32,7 @@
           {% for payement in payements %}
             <tr>
             <td>{{ payement.id }}</td>
-            <td>{{ payement.bill ? payement.bill.id : "" }}</td>
+            <td><a target="_blank" href="{{path('facture_pdf',{bill:payement.bill.id})}}" class="btn btn-light btn-sm"> <i class="ri-download-2-line"></i> PDF  </a>  </td>
             <td>{{ payement.bill ? payement.bill.prestation.getClientName() : "" }}</td>
             <td>{{ payement.amount }} €</td>
             <td>{{ payement.date|date('Y-m-d') }}</td>

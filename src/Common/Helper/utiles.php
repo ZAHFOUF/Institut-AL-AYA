@@ -154,7 +154,7 @@ if (!function_exists('getFrenchMonth')) {
         {
             $total = 0.0;
            
-            $total += $prestation->getFormula()->getPrice() * calculerHeuresCours($prestation);
+            $total += calculerTotalHeuresCours($prestation);
             $autresPrestations = $prestation->getPrestationLines()->filter(function ($session) {
                 return  is_null($session->getBill()) ;
             });
@@ -176,13 +176,22 @@ if (!function_exists('getFrenchMonth')) {
     }
 
     function prixPrestation(Prestation $prestation) {
-       return  $prestation->getFormula()->getPrice() ;
+       return   $prestation->getFormula()->getPrice() ;
     }
     
 
     function calculerTotalHeuresCours(Prestation $prestation): float{
-        return calculerHeuresCours($prestation) * prixPrestation($prestation);
-        
+         switch ($prestation->getFormula()->getPer()) {
+            case 'H':
+                return  calculerHeuresCours($prestation) * prixPrestation($prestation) ;
+                break;
+            case 'M':
+                return  prixPrestation($prestation) ;
+                break;
+            default:
+               return 0 ;
+                break;
+        }        
     }
 
     function payerPrestation(Prestation $prestation): void
@@ -215,4 +224,21 @@ if (!function_exists('getFrenchMonth')) {
         return $total;
     }
 
+    function getServiceName(Prestation $prestation): string
+    {
+        switch ($prestation->getFormula()->getPer()) {
+            case 'H':
+                return 'Heures';
+            case 'M':
+                return 'Cours';
+            default:
+                return '';
+        }
+    }
+
+    function payerBill(Bill $bill): void
+    {
+        $bill->setPayed(true);
+    }
+   
 }

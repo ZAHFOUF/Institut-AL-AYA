@@ -16,6 +16,20 @@ class BillRepository extends ServiceEntityRepository
         parent::__construct($registry, Bill::class);
     }
 
+    public function getUnPaidBills($student): array
+    {
+        return $this->createQueryBuilder('b')
+             ->innerJoin('b.prestation', 'p')
+             ->innerJoin('p.student', 's')
+             ->andWhere("s.id = :studentId")
+             ->andWhere("IFNULL(b.payed,0) = 0")
+             ->setParameter('studentId', $student->getId())
+             ->orderBy('p.id', 'DESC')
+             ->getQuery()
+             ->getResult();
+    }
+
+
     //    /**
     //     * @return Bill[] Returns an array of Bill objects
     //     */

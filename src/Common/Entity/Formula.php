@@ -5,6 +5,7 @@ namespace AlAya\Common\Entity;
 use AlAya\Common\Repository\FormulaRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: FormulaRepository::class)]
@@ -29,6 +30,12 @@ class Formula
 
     #[ORM\ManyToOne(inversedBy: 'formulas')]
     private ?FormulaType $type = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $per = null;
+
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 0, nullable: true)]
+    private ?string $priceProf = null;
 
     public function __construct()
     {
@@ -67,7 +74,7 @@ class Formula
 
     public function getFullName(): string
     {
-        return $this->name . ' - ' . $this->price . '€/H';
+        return $this->name . ' - ' . $this->price . '€/' . $this->per;
     }
 
     /**
@@ -108,6 +115,30 @@ class Formula
     public function setType(?FormulaType $type): static
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    public function getPer(): ?string
+    {
+        return $this->per;
+    }
+
+    public function setPer(?string $per): static
+    {
+        $this->per = $per;
+
+        return $this;
+    }
+
+    public function getPriceProf(): ?string
+    {
+        return $this->priceProf;
+    }
+
+    public function setPriceProf(?string $priceProf): static
+    {
+        $this->priceProf = $priceProf;
 
         return $this;
     }

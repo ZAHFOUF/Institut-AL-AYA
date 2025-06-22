@@ -2,6 +2,7 @@
 
 
 {% block page_content %}
+{% set serviceName = getServiceName(bill.prestation) %}    
 <script src="https://js.stripe.com/v3/"></script>
 <style>
  #payment-form {
@@ -36,12 +37,16 @@
                         <span>{{prestation.programme.name}}</span>
                     </li>
                     <li class="list-group-item d-flex justify-content-between align-items-center">
-                        Nombre d'heures
+                        Forfait
+                        <span>{{ prestation.formula.name }} - {{ prestation.formula.price }}€/{{ prestation.formula.per}}</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        {{serviceName}}
                         <span>{{totalHours}}</span>
                     </li>
                     {% if prestationLines|length > 0 %}
                              <li class="list-group-item d-flex justify-content-between align-items-center">
-                            Services supplémentaires inclus
+                            Frais supplémentaires inclus
                             <ul style="    list-style: none;">
                            {% for pl in prestationLines %}
                                <li >{{pl.name}}</li> 
@@ -51,7 +56,7 @@
                     {% endif %}
                     <li class="list-group-item d-flex justify-content-between align-items-center font-weight-bold">
                         Total à payer
-                        <span style="color:#13c56b;font-size:18px;">{{calculerTotalPrestation(prestation)}} €</span>
+                        <span style="color:#13c56b;font-size:18px;">{{amountBill(bill)}} €</span>
                     </li>
                 </ul>
             </div>
@@ -118,7 +123,7 @@
 <script>
   const stripe = Stripe('{{stripePublicKey}}');
 
-  fetch("{{path('create_checkout_session',{prestation: prestation.id})}}")
+  fetch("{{path('create_checkout_session',{bill:bill.id})}}")
     .then(res => res.json())
     .then(data => {
       clientSecret = data.clientSecret;
@@ -157,7 +162,7 @@
           document.getElementById('error-message').textContent = error.message;
         } else if (paymentIntent.status === 'succeeded') {
            // 💡 Envoie les infos au backend pour les sauvegarder
-  fetch('{{path("save_payment_intent",{prestation:prestation.id})}}', {
+  fetch('{{path("save_payment_intent",{bill:bill.id})}}', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({

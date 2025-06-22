@@ -2,6 +2,7 @@
 
 namespace AlAya\Agent\PrestationBundle\Form;
 
+use AlAya\Common\Entity\Prestation;
 use AlAya\Common\Entity\Session;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -13,6 +14,8 @@ class SessionAddType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        /** @var Prestation $prestation */
+        $prestation  = $options['data']->getPrestation();
         $builder
             ->add('date', DateType::class, [
                 'widget' => 'single_text',
@@ -20,8 +23,9 @@ class SessionAddType extends AbstractType
                 'required' => true,
             ])
             ->add('hours', IntegerType::class, [
-                'label' => 'Durée (heures)',
+                'label' => "Nombre " . getServiceName($prestation) ,
                 'required' => true,
+                'data' => $prestation->getRate() ?? 1
             ]);
     }
 
