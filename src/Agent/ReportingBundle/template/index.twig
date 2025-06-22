@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block page_content %}
-    
+{% set month = app.request.get("month") ?? date("now")|date("m") %}    
 
     <form  method="get">
 
@@ -14,7 +14,7 @@
             <div class="col-xl-10 col-lg-10">
                 <div class="card">  
                     <div class="card-header align-items-center d-flex">
-                        <h4 class="card-title mb-0 flex-grow-1">{{ 'Reporting rémunérations des professeurs'|trans }}</h4>
+                        <h4 class="card-title mb-0 flex-grow-1">{{ 'Reporting rémunérations des professeurs'|trans }} de {{getMonth(month)}}</h4>
                         <div class="card-header align-items-center d-flex">
                             {# Vous avez {{ catalogs.getTotalItemCount }} catalogue(s) #}
                         </div>

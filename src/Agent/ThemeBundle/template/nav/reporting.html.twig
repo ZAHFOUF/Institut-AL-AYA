@@ -4,3 +4,13 @@
 </a>
 {% endif %}
 
+{% if userCan('back_ca_index',app.user) %}
+<a class="nav-link menu-link" href="{{path('back_ca_index')}}" aria-expanded="false" aria-controls="sidebarAuth3">
+    <i class="ri-bar-chart-2-fill"></i> <span data-key="t-authentication">{{ "Comptabilité "|trans }}</span>
+</a> 
+{#}
+<a class="nav-link menu-link" href="{{ path('back_purchase_index') }}" aria-expanded="false" aria-controls="sidebarAuth3">
+    <i class="ri-shopping-bag-3-fill"></i> <span data-key="t-authentication">{{ 'Achats'|trans }}</span>
+</a> {#}
+
+{% endif %}

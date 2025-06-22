@@ -12,3 +12,7 @@ UPDATE `formula` SET `price_prof` = '7' WHERE `formula`.`id` = 2;
 UPDATE `formula` SET `price_prof` = '8' WHERE `formula`.`id` = 3;
 UPDATE `formula` SET `price_prof` = '2.5' WHERE `formula`.`id` = 7;
 UPDATE `formula` SET `price_prof` = '1' WHERE `formula`.`id` = 8;
+
+INSERT INTO charge_per (id,name) VALUES
+(1,'Par Mois'),
+(3,'Pas fixe');

@@ -88,3 +88,7 @@ back_reporting_index:
 back_programme_index :
   label: Consulter les programmes
   module: Gestion des programmes
+
+back_ca_index : 
+  label: Comptabilité analytique
+  module: Comptabilité analytique

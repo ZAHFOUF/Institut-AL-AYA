@@ -40,7 +40,10 @@ class AppExtension extends AbstractExtension
             new TwigFunction("calculerTotalPrestation",[$this,"calculerTotalPrestation"]),
             new TwigFunction("amountBill",[$this,"amountBill"]),
             new TwigFunction('workflow', [$this, 'workflow']) ,
-            new  TwigFunction('getServiceName', [$this, 'getServiceName'])
+            new  TwigFunction('getServiceName', [$this, 'getServiceName']),
+            new TwigFunction('toChart', [$this, 'toChart']),
+            new TwigFunction('toChartMonth', [$this, 'toChartMonth']),
+            new TwigFunction('toChartYear', [$this, 'toChartYear'])
         ];
     }
     
@@ -183,4 +186,38 @@ public function witchUser(object $user) {
     {
        return getServiceName($prestation);
     }
+
+     public function toChart (array $data)
+  {
+      $chartData = [];
+      $chartData[] = ["data" => [...array_map(fn($item) => $item["Total recettes cours"] ?? 0, $data)] , "name" => "Total recettes cours" , "type" => "line"];
+    $chartData[] = [
+        "data" => [...array_map(fn($item) => $item["Révenue total"] ?? 0, $data)],
+        "name" => "Révenue total",
+        "type" => "bar"
+    ];
+    $chartData[] = [
+        "data" => [...array_map(fn($item) => $item["Total recettes supports de cours"] ?? 0, $data)],
+        "name" => "Total recettes supports de cours",
+        "type" => "line"
+    ];
+      return json_encode($chartData);
+  }
+
+   public function toChartMonth (array $data) {
+          $chartData = [...array_map(fn($item) => $item["Mois"] ?? 0, $data)];
+          return json_encode($chartData);
+   }
+
+   public function toChartYear (array $data) {
+          $chartData = [
+                 "Total recettes cours" => array_sum(array_map(fn($item) => (int)$item["Total recettes cours"] ?? 0, $data)),
+                 "Révenue total" => array_sum(array_map(fn($item) => (int)$item["Révenue total"] ?? 0, $data)),
+                 "Total recettes supports de cours" => array_sum(array_map(fn($item) => (int)$item["Total recettes supports de cours"] ?? 0, $data))
+          ];
+
+          return $chartData;
+   }
+
+
 }
