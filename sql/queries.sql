@@ -15,4 +15,4 @@ UPDATE `formula` SET `price_prof` = '1' WHERE `formula`.`id` = 8;
 
 INSERT INTO charge_per (id,name) VALUES
 (1,'Par Mois'),
-(3,'Pas fixe');
+(3,'Pas fixe')
